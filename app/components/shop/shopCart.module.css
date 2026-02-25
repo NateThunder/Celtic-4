@@ -1,0 +1,119 @@
+.addButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border: 1px solid #111;
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  background: #111;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.addButton:hover,
+.addButton:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+}
+
+.addButton:focus-visible {
+  outline: none;
+}
+
+.addButton[data-added="true"] {
+  background: #1f6e3f;
+  border-color: #1f6e3f;
+}
+
+.addButtonIcon {
+  width: 0.86rem;
+  height: 0.86rem;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.addButtonIcon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.floatingCart {
+  position: fixed;
+  right: clamp(0.95rem, 2.6vw, 1.5rem);
+  bottom: clamp(0.95rem, 2.6vw, 1.5rem);
+  z-index: 980;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.64rem 0.78rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  background: #0f0f0f;
+  color: #ffffff;
+  text-decoration: none;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.34);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.floatingCart:hover,
+.floatingCart:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.4);
+}
+
+.floatingCart:focus-visible {
+  outline: none;
+}
+
+.floatingCartIcon {
+  width: 1.02rem;
+  height: 1.02rem;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+
+.floatingCartIcon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.floatingCartLabel {
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.floatingCartBadge {
+  min-width: 1.3rem;
+  height: 1.3rem;
+  padding: 0 0.34rem;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #111;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+@media (max-width: 680px) {
+  .floatingCartLabel {
+    display: none;
+  }
+
+  .floatingCart {
+    padding: 0.68rem;
+    gap: 0.35rem;
+  }
+}

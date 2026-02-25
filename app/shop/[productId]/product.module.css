@@ -1,0 +1,153 @@
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background: #f8f8f8;
+  color: #111;
+  padding: clamp(5.8rem, 10vw, 7rem) clamp(1rem, 4vw, 2rem) clamp(2.2rem, 4vw, 3rem);
+}
+
+.shell {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+}
+
+.backRow {
+  margin-bottom: 0.8rem;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  color: #222;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+}
+
+.backLink:hover,
+.backLink:focus-visible {
+  text-decoration: underline;
+}
+
+.backLink:focus-visible {
+  outline: none;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
+}
+
+.imageWrap {
+  background: #ececec;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+  display: block;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
+.imagePlaceholder {
+  background: linear-gradient(180deg, #ececec 0%, #e2e2e2 100%);
+}
+
+.meta {
+  padding: clamp(1rem, 2.1vw, 1.4rem);
+  display: grid;
+  align-content: start;
+  gap: 0.7rem;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--font-anton), Impact, sans-serif;
+  font-size: clamp(1.4rem, 2.6vw, 2.3rem);
+  line-height: 1;
+  letter-spacing: 0.012em;
+  text-transform: uppercase;
+}
+
+.price {
+  margin: 0;
+  color: #111;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  font-weight: 800;
+}
+
+.description {
+  margin: 0.25rem 0 0;
+  color: #444;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-top: 0.55rem;
+}
+
+.actionAdd {
+  min-width: 8.6rem;
+}
+
+.actionGhost,
+.actionPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0.48rem 0.9rem;
+  text-decoration: none;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.actionGhost {
+  border: 1px solid rgba(0, 0, 0, 0.24);
+  color: #111;
+  background: #fff;
+}
+
+.actionGhost:hover,
+.actionGhost:focus-visible {
+  background: #f4f4f4;
+}
+
+.actionPrimary {
+  border: 1px solid #101010;
+  color: #fff;
+  background: #101010;
+}
+
+.actionPrimary:hover,
+.actionPrimary:focus-visible {
+  background: #000;
+}
+
+.actionGhost:focus-visible,
+.actionPrimary:focus-visible {
+  outline: none;
+}
+
+@media (max-width: 900px) {
+  .page {
+    padding-top: 5.1rem;
+  }
+
+  .card {
+    grid-template-columns: 1fr;
+  }
+}
