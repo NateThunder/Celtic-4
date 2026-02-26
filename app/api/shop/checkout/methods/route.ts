@@ -25,25 +25,25 @@ type WooCartPayload = {
 
 const ALWAYS_EXPOSE_METHODS = [
   "ppcp-gateway",
-  "ppcp-applepay",
 ] as const;
 
 const PREFERRED_METHOD_ORDER = [
   "ppcp-gateway",
-  "ppcp-applepay",
-  "bacs",
-  "cheque",
-  "cod",
 ] as const;
 
 function isDisabledMethod(method: string): boolean {
   const normalizedMethod = method.toLowerCase();
   return (
+    normalizedMethod.includes("applepay") ||
     normalizedMethod.includes("stripe") ||
     normalizedMethod.includes("googlepay") ||
     normalizedMethod.includes("google_pay") ||
     normalizedMethod.includes("gpay")
   );
+}
+
+function isPayPalMethod(method: string): boolean {
+  return /(^ppcp-gateway$)|paypal/i.test(method);
 }
 
 function sortMethods(methods: string[]): string[] {
@@ -71,7 +71,7 @@ function getMethodEnum(payload: unknown): string[] {
 
   const methods = rawEnum.filter(
     (value): value is string =>
-      typeof value === "string" && value.trim().length > 0 && !isDisabledMethod(value),
+      typeof value === "string" && value.trim().length > 0 && !isDisabledMethod(value) && isPayPalMethod(value),
   );
   return sortMethods(Array.from(new Set(methods)));
 }
@@ -92,7 +92,10 @@ function getCartPaymentMethods(payload: unknown): string[] {
   return sortMethods(
     methods.filter(
       (method): method is string =>
-        typeof method === "string" && method.trim().length > 0 && !isDisabledMethod(method),
+        typeof method === "string" &&
+        method.trim().length > 0 &&
+        !isDisabledMethod(method) &&
+        isPayPalMethod(method),
     ),
   );
 }

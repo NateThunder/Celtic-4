@@ -58,7 +58,9 @@ const DEFAULT_FORM_VALUES: CheckoutFormValues = {
   note: "",
 };
 
-const APPLE_PAY_METHOD_IDS = ["ppcp-applepay"] as const;
+function isPayPalMethod(method: string): boolean {
+  return /(^ppcp-gateway$)|paypal/i.test(method);
+}
 
 const COUNTRY_OPTIONS: CountryOption[] = [
   { code: "GB" },
@@ -86,7 +88,7 @@ export default function ShopCheckoutPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
-  const [isApplePaySupported, setIsApplePaySupported] = useState(false);
+  const [hasMounted, setHasMounted] = useState(false);
 
   const canSubmit = useMemo(
     () => !isLoading && !isLoadingMethods && items.length > 0 && !!paymentMethod && !isSubmitting,
@@ -94,61 +96,13 @@ export default function ShopCheckoutPage() {
   );
 
   const paypalMethod = useMemo(
-    () => paymentMethods.find((method) => /(^ppcp-gateway$)|paypal/i.test(method)) || "",
+    () => paymentMethods.find((method) => isPayPalMethod(method)) || "",
     [paymentMethods],
   );
-
-  const applePayMethod = useMemo(
-    () => APPLE_PAY_METHOD_IDS.find((method) => paymentMethods.includes(method)) || "",
-    [paymentMethods],
-  );
-
-  const visibleApplePayMethod = isApplePaySupported ? applePayMethod : "";
-
-  const hiddenWalletMethods = useMemo(
-    () => [applePayMethod].filter((method): method is string => method.length > 0 && method !== visibleApplePayMethod),
-    [applePayMethod, visibleApplePayMethod],
-  );
-
-  const selectableMethods = useMemo(
-    () =>
-      Array.from(
-        new Set(
-          [paypalMethod, visibleApplePayMethod].filter(
-            (method): method is string => method.length > 0,
-          ),
-        ),
-      ),
-    [paypalMethod, visibleApplePayMethod],
-  );
-
-  const hasVisibleWalletOption = visibleApplePayMethod.length > 0;
-  const hasHiddenWalletOption = hiddenWalletMethods.length > 0;
-  const hasConfiguredWalletMethod = applePayMethod.length > 0;
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const windowWithApplePay = window as unknown as {
-      ApplePaySession?: {
-        canMakePayments?: () => boolean;
-      };
-    };
-    const applePayCanMakePayments =
-      typeof windowWithApplePay.ApplePaySession?.canMakePayments === "function" &&
-      windowWithApplePay.ApplePaySession.canMakePayments();
-    setIsApplePaySupported(Boolean(applePayCanMakePayments));
-
+    setHasMounted(true);
   }, []);
-
-  useEffect(() => {
-    if (!paymentMethod || !hiddenWalletMethods.includes(paymentMethod)) return;
-
-    const fallbackMethod = selectableMethods[0] || paymentMethods.find((method) => !hiddenWalletMethods.includes(method)) || "";
-    if (fallbackMethod && fallbackMethod !== paymentMethod) {
-      setPaymentMethod(fallbackMethod);
-    }
-  }, [paymentMethod, hiddenWalletMethods, selectableMethods, paymentMethods]);
 
   function openHostedCheckoutPopup(url: string): boolean {
     const openedPopup = window.open(url, "celtic_payment_popup", "popup,width=520,height=740");
@@ -180,13 +134,14 @@ export default function ShopCheckoutPage() {
         const methods = Array.isArray(payload.methods)
           ? payload.methods.filter((method): method is string => typeof method === "string" && method.length > 0)
           : [];
+        const paypalMethods = methods.filter((method) => isPayPalMethod(method));
 
         if (isCancelled) return;
 
-        setPaymentMethods(methods);
-        const defaultMethod = payload.defaultMethod && methods.includes(payload.defaultMethod)
+        setPaymentMethods(paypalMethods);
+        const defaultMethod = payload.defaultMethod && paypalMethods.includes(payload.defaultMethod)
           ? payload.defaultMethod
-          : methods[0] || "";
+          : paypalMethods[0] || "";
         setPaymentMethod(defaultMethod);
       } catch (error) {
         if (isCancelled) return;
@@ -291,6 +246,26 @@ export default function ShopCheckoutPage() {
     } finally {
       setIsSubmitting(false);
     }
+  }
+
+  if (!hasMounted) {
+    return (
+      <div className="site-shell">
+        <main className={styles.page}>
+          <section className={styles.shell}>
+            <header className={styles.header}>
+              <h1 className={styles.title}>Checkout</h1>
+              <div className={styles.nav}>
+                <Link className={styles.navLink} href="/shop/cart">
+                  Back to Cart
+                </Link>
+              </div>
+            </header>
+            <p className={styles.status}>Loading checkout...</p>
+          </section>
+        </main>
+      </div>
+    );
   }
 
   return (
@@ -435,29 +410,7 @@ export default function ShopCheckoutPage() {
                         <Image className={styles.paypalLogo} src="/paypal-logo.svg" alt="PayPal" width={129} height={32} />
                       </span>
                     </button>
-
-                    {visibleApplePayMethod ? (
-                      <button
-                        type="button"
-                        className={`${styles.paymentOption}${
-                          paymentMethod === visibleApplePayMethod ? ` ${styles.paymentOptionSelected}` : ""
-                        }`}
-                        onClick={() => {
-                          setPaymentMethod(visibleApplePayMethod);
-                        }}
-                        disabled={isLoadingMethods}
-                      >
-                        <span className={styles.walletMark}>Apple Pay</span>
-                      </button>
-                    ) : null}
-
                   </div>
-                  {!hasConfiguredWalletMethod ? (
-                    <p className={styles.status}>Apple Pay is not available for this cart yet.</p>
-                  ) : null}
-                  {!hasVisibleWalletOption && hasHiddenWalletOption ? (
-                    <p className={styles.status}>Apple Pay is only shown on supported browsers/devices.</p>
-                  ) : null}
                 </div>
 
                 <label className={styles.field}>
