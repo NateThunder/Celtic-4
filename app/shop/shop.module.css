@@ -65,6 +65,56 @@
   outline: none;
 }
 
+.filters {
+  margin-top: 0.7rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.filterLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 0.34rem 0.74rem;
+  color: #232323;
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: rgba(255, 255, 255, 0.78);
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0.08);
+  touch-action: manipulation;
+}
+
+.filterLink:not(.filterLinkActive):hover,
+.filterLink:not(.filterLinkActive):focus-visible,
+.filterLink:not(.filterLinkActive):active {
+  background: #fff;
+  color: #232323;
+}
+
+.filterLink:focus-visible {
+  outline: none;
+}
+
+.filterLinkActive {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+.filterLinkActive:hover,
+.filterLinkActive:focus-visible,
+.filterLinkActive:active {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
 .status {
   margin: 0.5rem 0 0;
   color: #3f3f3f;
@@ -114,6 +164,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 280px));
   justify-content: center;
+  align-items: start;
   gap: 1rem;
 }
 
@@ -122,7 +173,8 @@
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 14px;
   overflow: hidden;
-  display: grid;
+  display: flex;
+  flex-direction: column;
 }
 
 .cardImageLink {
@@ -143,9 +195,25 @@
 }
 
 .cardBody {
-  display: grid;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   gap: 0.45rem;
   padding: 0.9rem;
+}
+
+.cardContent {
+  display: grid;
+  align-content: start;
+  gap: 0.45rem;
+}
+
+.cardActions {
+  margin-top: auto;
+  display: grid;
+  justify-items: start;
+  gap: 0.3rem;
+  padding-top: 0.2rem;
 }
 
 .cardTitle {
@@ -170,11 +238,9 @@
 
 .cardAddButton {
   width: fit-content;
-  margin-top: 0.1rem;
 }
 
 .cardLink {
-  margin-top: 0.1rem;
   color: #111;
   text-decoration: none;
   font-size: 0.72rem;

@@ -1,39 +1,36 @@
 export default function CelticWorshipBio() {
   return (
-    <section className="max-w-3xl mx-auto px-6 py-12">
-      <h2 className="text-3xl font-semibold mb-6">Celtic Worship</h2>
+    <section className="max-w-4xl mx-auto px-6 py-12">
+      <h2 className="mb-8 text-center text-4xl">About The Band</h2>
 
-      <p className="mb-4">
-        Celtic Worship is a Christ-centred worship collective from Scotland.
-        They write and lead songs for the church, drawing on Scottish musical
-        language and tradition to express the heart of faith in Christ.
+      <p className="mb-8">
+        Celtic Worship is an authentic expression of sung worship deeply rooted in the sound and
+        traditions of Scottish music. As a collective of some of Scotland&apos;s finest contemporary
+        musicians, they share a deep desire to use their skills and giftings to praise and make known
+        Jesus Christ. Exploring psalms, hymns and new songs, their uniquely powerful pipes-and-fiddle-led
+        sound communicates the full range and depth of the Gospel.
       </p>
 
-      <p className="mb-4">
-        What began as a group of friends playing music together has grown into
-        a shared calling to serve local congregations across Scotland and
-        beyond. Their sound reflects the place they come from, with folk
-        textures, pipes, fiddles and simple arrangements that support
-        congregational singing rather than performance.
+      <p className="mb-8">
+        Since starting their journey in 2016, the group have released several studio albums, played all
+        over Scotland, the UK, and Europe, and had numerous television and radio appearances.
       </p>
 
-      <p className="mb-4">
-        At the centre of Celtic Worship is friendship and fellowship. They see
-        themselves first as believers who love Jesus and love serving the
-        church. Prayer, shared life and faithfulness matter more to them than
-        platform or profile. For them, success is measured by honouring God and
-        helping people focus on Christ, whatever the setting.
+      <p className="mb-8">
+        2025 marks the release of &apos;Harvest&apos;, the group&apos;s 4th studio album, written and arranged
+        at a family farm in Morayshire. Surrounded by fields ripe for harvest, the band drew deeply from
+        the rich biblical vein of harvest imagery to celebrate God&apos;s faithfulness, His promises, and new
+        life in Christ. Inspired by golden landscapes and long summer days at Cowfords Farm, Harvest
+        reflects both the physical beauty of the season and a deeper sense of spiritual growth for the
+        band.
       </p>
 
-      <p>
-        Their vision is to write, record and release songs that are sung in
-        churches on Sundays. They want their music to be rooted in Scotland
-        while remaining accessible to the wider church. They aim to serve
-        across traditions without being tied to one particular expression,
-        staying true to who they are while collaborating openly with others.
-        Their desire is simple: to bless communities, strengthen the church and
-        see lives shaped by the gospel through worship.
-      </p>
+      <h3 className="mb-2 text-2xl font-semibold">Members</h3>
+      <p className="mb-1">Naomi Stirrat - Vocals &amp; Guitar</p>
+      <p className="mb-1">David Hogg - Vocals &amp; Guitar</p>
+      <p className="mb-1">Chris Amer - Guitars</p>
+      <p className="mb-1">Mhairi Marwick - Fiddle</p>
+      <p>Gus Stirrat - Bass</p>
     </section>
   );
 }

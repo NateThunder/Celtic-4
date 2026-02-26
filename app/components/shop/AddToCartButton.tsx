@@ -12,6 +12,7 @@ type AddToCartButtonProps = {
 export default function AddToCartButton({ item, className }: AddToCartButtonProps) {
   const { addItem } = useShopCart();
   const [isAdded, setIsAdded] = useState(false);
+  const [isBusy, setIsBusy] = useState(false);
   const timeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -22,26 +23,38 @@ export default function AddToCartButton({ item, className }: AddToCartButtonProp
     };
   }, []);
 
-  const handleClick = () => {
-    addItem(item);
-    setIsAdded(true);
+  const handleClick = async () => {
+    if (isBusy) return;
+    setIsBusy(true);
 
-    if (timeoutRef.current !== null) {
-      window.clearTimeout(timeoutRef.current);
-    }
+    try {
+      await addItem(item);
+      setIsAdded(true);
 
-    timeoutRef.current = window.setTimeout(() => {
+      if (timeoutRef.current !== null) {
+        window.clearTimeout(timeoutRef.current);
+      }
+
+      timeoutRef.current = window.setTimeout(() => {
+        setIsAdded(false);
+        timeoutRef.current = null;
+      }, 1200);
+    } catch {
       setIsAdded(false);
-      timeoutRef.current = null;
-    }, 1200);
+    } finally {
+      setIsBusy(false);
+    }
   };
 
   return (
     <button
       type="button"
       className={`${styles.addButton}${className ? ` ${className}` : ""}`}
-      onClick={handleClick}
+      onClick={() => {
+        void handleClick();
+      }}
       data-added={isAdded ? "true" : "false"}
+      disabled={isBusy}
       aria-label={`Add ${item.name} to cart`}
     >
       <span className={styles.addButtonIcon} aria-hidden="true">

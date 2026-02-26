@@ -1,27 +1,9 @@
 (() => {
-  // Find the container that will hold the custom Bandsintown output.
-  const root = document.getElementById("bandsintown-events");
-  if (!root) return;
-
-  // Read artist/app configuration from data attributes so this script stays reusable.
-  const artistId = root.dataset.artistId || "849462";
-
-  // Bandsintown widget convention: default app_id can be derived from the hostname.
-  // This keeps the embed copy-paste friendly for any site.
-  const fallbackAppId = `js_${window.location.hostname || "localhost"}`;
-  const rawAppId = (root.dataset.appId || "").trim();
-  const appId = rawAppId && rawAppId !== "MY_APP_ID" ? rawAppId : fallbackAppId;
-
-  // Accept both "849462" and "id_849462" inputs.
-  const normalizedArtistId = artistId.startsWith("id_") ? artistId : `id_${artistId}`;
-
-  // Build the required REST endpoint.
-  const endpoint = `https://rest.bandsintown.com/V3.1/artists/${encodeURIComponent(
-    normalizedArtistId
-  )}/events/?app_id=${encodeURIComponent(appId)}`;
+  const initializedRoots = new WeakSet();
+  const PLACEHOLDER_APP_IDS = new Set(["MY_APP_ID", "YOUR_APP_ID"]);
 
   // Reusable helper for info/error/loading messages.
-  const renderMessage = (message, className = "events-status") => {
+  const renderMessage = (root, message, className = "events-status") => {
     root.innerHTML = "";
     const paragraph = document.createElement("p");
     paragraph.className = className;
@@ -57,9 +39,9 @@
   };
 
   // Render the events as plain HTML elements.
-  const renderEvents = (events) => {
+  const renderEvents = (root, events) => {
     if (!Array.isArray(events) || events.length === 0) {
-      renderMessage("No upcoming events available right now.");
+      renderMessage(root, "No upcoming events available right now.");
       return;
     }
 
@@ -110,34 +92,104 @@
   };
 
   // Fetch upcoming events and handle all failure states gracefully.
-  const loadEvents = async () => {
-    renderMessage("Loading upcoming events...");
+  const loadEvents = async (root) => {
+    // Read artist/app configuration from data attributes so this script stays reusable.
+    const artistId = root.dataset.artistId || "849462";
 
-    try {
-      const response = await fetch(endpoint, {
-        method: "GET",
-        headers: { Accept: "application/json" },
-      });
+    // Bandsintown widget convention: default app_id can be derived from the hostname.
+    // This keeps the embed copy-paste friendly for any site.
+    const fallbackAppId = `js_${window.location.hostname || "localhost"}`;
+    const rawAppId = (root.dataset.appId || "").trim();
+    const appIdCandidates = [];
 
-      if (!response.ok) {
-        throw new Error(`Bandsintown request failed (${response.status}).`);
-      }
-
-      const payload = await response.json();
-
-      if (payload && !Array.isArray(payload) && typeof payload.error === "string") {
-        throw new Error(payload.error);
-      }
-
-      renderEvents(Array.isArray(payload) ? payload : []);
-    } catch (error) {
-      console.error("Failed to load Bandsintown events:", error);
-      renderMessage(
-        "Unable to load events right now. Please try again later.",
-        "events-status events-status-error"
-      );
+    if (rawAppId && !PLACEHOLDER_APP_IDS.has(rawAppId.toUpperCase())) {
+      appIdCandidates.push(rawAppId);
     }
+
+    if (!appIdCandidates.includes(fallbackAppId)) {
+      appIdCandidates.push(fallbackAppId);
+    }
+
+    if (!appIdCandidates.includes("js_localhost")) {
+      appIdCandidates.push("js_localhost");
+    }
+
+    // Accept both "849462" and "id_849462" inputs.
+    const normalizedArtistId = artistId.startsWith("id_") ? artistId : `id_${artistId}`;
+
+    renderMessage(root, "Loading upcoming events...");
+
+    let lastError = null;
+
+    for (const appId of appIdCandidates) {
+      // Build the required REST endpoint.
+      const endpoint = `https://rest.bandsintown.com/V3.1/artists/${encodeURIComponent(
+        normalizedArtistId
+      )}/events/?app_id=${encodeURIComponent(appId)}`;
+
+      try {
+        const response = await fetch(endpoint, {
+          method: "GET",
+          headers: { Accept: "application/json" },
+        });
+
+        if (!response.ok) {
+          if (response.status === 401 || response.status === 403) {
+            lastError = new Error(`Bandsintown request failed (${response.status}) for app_id ${appId}.`);
+            continue;
+          }
+
+          throw new Error(`Bandsintown request failed (${response.status}).`);
+        }
+
+        const payload = await response.json();
+        if (payload && !Array.isArray(payload) && typeof payload.error === "string") {
+          const payloadError = payload.error.toLowerCase();
+          if (payloadError.includes("app_id") || payloadError.includes("authorized")) {
+            lastError = new Error(payload.error);
+            continue;
+          }
+
+          throw new Error(payload.error);
+        }
+
+        renderEvents(root, Array.isArray(payload) ? payload : []);
+        return;
+      } catch (error) {
+        lastError = error;
+      }
+    }
+
+    console.error("Failed to load Bandsintown events:", lastError);
+    renderMessage(
+      root,
+      "Unable to load events right now. Please try again later.",
+      "events-status events-status-error"
+    );
   };
 
-  loadEvents();
+  const initRoot = (root) => {
+    if (!root || initializedRoots.has(root)) return;
+    initializedRoots.add(root);
+    loadEvents(root);
+  };
+
+  const findAndInit = () => {
+    initRoot(document.getElementById("bandsintown-events"));
+  };
+
+  findAndInit();
+
+  // In App Router, route transitions are client-side. Observe the DOM so
+  // this can initialize when /live-events is mounted after navigation.
+  if (typeof MutationObserver !== "undefined") {
+    const observer = new MutationObserver(() => {
+      findAndInit();
+    });
+
+    observer.observe(document.documentElement, {
+      childList: true,
+      subtree: true,
+    });
+  }
 })();

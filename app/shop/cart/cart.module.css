@@ -199,7 +199,49 @@
 .footer {
   margin-top: 1rem;
   display: flex;
-  justify-content: flex-start;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.total {
+  margin: 0;
+  color: #111;
+  font-size: 0.96rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.footerActions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.checkoutLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid #101010;
+  background: #101010;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.45rem 0.82rem;
+}
+
+.checkoutLink:hover,
+.checkoutLink:focus-visible {
+  background: #000000;
+}
+
+.checkoutLink:focus-visible {
+  outline: none;
 }
 
 @media (max-width: 860px) {

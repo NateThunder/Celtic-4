@@ -32,6 +32,21 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       ...(wooRemotePattern ? [wooRemotePattern] : []),
       {
+        protocol: "https",
+        hostname: "i.ytimg.com",
+        pathname: "/vi/**",
+      },
+      {
+        protocol: "https",
+        hostname: "celticworship.co.uk",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "www.celticworship.co.uk",
+        pathname: "/**",
+      },
+      {
         protocol: "http",
         hostname: "localhost",
         port: "10003",
@@ -41,6 +56,16 @@ const nextConfig: NextConfig = {
         protocol: "http",
         hostname: "127.0.0.1",
         port: "10003",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "**.ngrok-free.dev",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "**.ngrok.app",
         pathname: "/**",
       },
     ],

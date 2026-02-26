@@ -1,0 +1,45 @@
+.wrapper {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.copy {
+  margin: 0;
+  color: #565656;
+  font-size: 0.83rem;
+  line-height: 1.42;
+}
+
+.copyCollapsed {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+
+.copyExpanded {
+  display: block;
+}
+
+.toggle {
+  width: fit-content;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #111111;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.toggle:hover,
+.toggle:focus-visible {
+  text-decoration: underline;
+}
+
+.toggle:focus-visible {
+  outline: none;
+}
