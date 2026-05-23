@@ -38,8 +38,64 @@
     return null;
   };
 
+  const renderFeaturedEvent = (root, events) => {
+    if (!Array.isArray(events) || events.length === 0) {
+      renderMessage(root, "No upcoming events available right now.");
+      return;
+    }
+
+    const event = events[0];
+    const venue = event?.venue?.name?.trim() || "Venue TBA";
+    const city = event?.venue?.city?.trim() || "City TBA";
+    const title = event?.title?.trim() || venue || "Celtic Worship Live";
+    const ticketUrl = getTicketUrl(event);
+
+    const card = document.createElement("article");
+    card.className = "events-featured-card";
+
+    const kicker = document.createElement("p");
+    kicker.className = "events-featured-kicker";
+    kicker.textContent = formatLocalDateTime(event?.datetime);
+
+    const heading = document.createElement("h3");
+    heading.className = "events-featured-title";
+    heading.textContent = title;
+
+    const location = document.createElement("p");
+    location.className = "events-featured-location";
+    location.textContent = `${venue} - ${city}`;
+
+    const meta = document.createElement("div");
+    meta.className = "events-featured-meta";
+    meta.append(kicker, heading, location);
+    card.appendChild(meta);
+
+    if (ticketUrl) {
+      const ticketLink = document.createElement("a");
+      ticketLink.className = "events-ticket-link events-featured-ticket";
+      ticketLink.href = ticketUrl;
+      ticketLink.target = "_blank";
+      ticketLink.rel = "noopener noreferrer";
+      ticketLink.textContent = "Get Tickets";
+      card.appendChild(ticketLink);
+    } else {
+      const unavailable = document.createElement("span");
+      unavailable.className = "events-ticket-unavailable events-featured-ticket";
+      unavailable.textContent = "Tickets TBA";
+      card.appendChild(unavailable);
+    }
+
+    root.innerHTML = "";
+    root.appendChild(card);
+  };
+
   // Render the events as plain HTML elements.
   const renderEvents = (root, events) => {
+    if (root.dataset.layout === "featured") {
+      renderFeaturedEvent(root, events);
+      return;
+    }
+
     if (!Array.isArray(events) || events.length === 0) {
       renderMessage(root, "No upcoming events available right now.");
       return;

@@ -6,9 +6,24 @@ import { useEffect, useMemo, useState } from "react";
 type FeaturedVideoProps = {
   videoId: string;
   fallbackTitle?: string;
+  sectionId?: string;
+  variant?: "default" | "editorial";
+  eyebrow?: string;
+  description?: string;
+  ctaLabel?: string;
+  watchUrl?: string;
 };
 
-export default function FeaturedVideo({ videoId, fallbackTitle = "Featured video" }: FeaturedVideoProps) {
+export default function FeaturedVideo({
+  videoId,
+  fallbackTitle = "Featured video",
+  sectionId,
+  variant = "default",
+  eyebrow = "Featured video",
+  description,
+  ctaLabel = "Watch on YouTube",
+  watchUrl,
+}: FeaturedVideoProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [fetchedTitle, setFetchedTitle] = useState<{ videoId: string; title: string } | null>(null);
   const thumbnailSources = useMemo(
@@ -72,6 +87,7 @@ export default function FeaturedVideo({ videoId, fallbackTitle = "Featured video
   const resolvedTitle = fetchedTitle?.videoId === videoId ? fetchedTitle.title : fallbackTitle;
   const thumbnailIndex = thumbnailState.videoId === videoId ? thumbnailState.index : 0;
   const thumbnailSrc = thumbnailSources[Math.min(thumbnailIndex, thumbnailSources.length - 1)];
+  const resolvedWatchUrl = watchUrl || `https://www.youtube.com/watch?v=${videoId}`;
 
   function handleThumbnailError() {
     setThumbnailState((current) => {
@@ -85,46 +101,77 @@ export default function FeaturedVideo({ videoId, fallbackTitle = "Featured video
     });
   }
 
+  const renderVideoFrame = (sizes: string) => (
+    <div className="featured-video-frame-wrap">
+      {isPlaying ? (
+        <iframe
+          className="featured-video-frame"
+          src={embedSrc}
+          title={resolvedTitle}
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
+      ) : (
+        <button
+          type="button"
+          className="featured-video-poster"
+          onClick={() => setIsPlaying(true)}
+          aria-label={`Play video: ${resolvedTitle}`}
+        >
+          <Image
+            className="featured-video-poster-image"
+            src={thumbnailSrc}
+            alt=""
+            fill
+            sizes={sizes}
+            onError={handleThumbnailError}
+            aria-hidden="true"
+          />
+          <span className="featured-video-poster-overlay" aria-hidden="true" />
+          <span className="featured-video-play-button" aria-hidden="true">
+            <svg viewBox="0 0 64 64" focusable="false">
+              <path d="M24 18v28l22-14-22-14Z" />
+            </svg>
+          </span>
+        </button>
+      )}
+    </div>
+  );
+
+  if (variant === "editorial") {
+    return (
+      <section
+        id={sectionId}
+        className="featured-video-section featured-video-section--editorial"
+        aria-label="Featured video"
+      >
+        <div className="featured-video-editorial-inner">
+          {renderVideoFrame("(max-width: 900px) 92vw, 700px")}
+          <div className="featured-video-copy">
+            <p className="featured-video-kicker">{eyebrow}</p>
+            <h2 className="featured-video-title">{resolvedTitle}</h2>
+            {description ? <p className="featured-video-description">{description}</p> : null}
+            <a
+              className="featured-video-link"
+              href={resolvedWatchUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {ctaLabel}
+            </a>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="featured-video-section" aria-label="Featured video">
+    <section id={sectionId} className="featured-video-section" aria-label="Featured video">
       <div className="featured-video-inner">
         <h2 className="featured-video-title">{resolvedTitle}</h2>
-        <div className="featured-video-frame-wrap">
-          {isPlaying ? (
-            <iframe
-              className="featured-video-frame"
-              src={embedSrc}
-              title={resolvedTitle}
-              loading="lazy"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              referrerPolicy="strict-origin-when-cross-origin"
-              allowFullScreen
-            />
-          ) : (
-            <button
-              type="button"
-              className="featured-video-poster"
-              onClick={() => setIsPlaying(true)}
-              aria-label={`Play video: ${resolvedTitle}`}
-            >
-              <Image
-                className="featured-video-poster-image"
-                src={thumbnailSrc}
-                alt=""
-                fill
-                sizes="(max-width: 1600px) 96vw, 1600px"
-                onError={handleThumbnailError}
-                aria-hidden="true"
-              />
-              <span className="featured-video-poster-overlay" aria-hidden="true" />
-              <span className="featured-video-play-button" aria-hidden="true">
-                <svg viewBox="0 0 64 64" focusable="false">
-                  <path d="M24 18v28l22-14-22-14Z" />
-                </svg>
-              </span>
-            </button>
-          )}
-        </div>
+        {renderVideoFrame("(max-width: 1600px) 96vw, 1600px")}
       </div>
     </section>
   );

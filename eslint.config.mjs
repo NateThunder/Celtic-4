@@ -9,8 +9,11 @@ const eslintConfig = defineConfig([
   globalIgnores([
     // Default ignores of eslint-config-next:
     ".next/**",
+    ".next_backup_*/**",
     "out/**",
     "build/**",
+    "public/HARVEST_files/**",
+    "public/wordpress/**",
     "next-env.d.ts",
   ]),
 ]);

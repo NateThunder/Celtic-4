@@ -9,8 +9,10 @@ export default function MusicPage() {
       <main className={styles.page}>
         <section className={styles.section}>
           <header className={styles.heading}>
-            <p className={styles.kicker}>Discography</p>
-            <h1 className={styles.title}>Celtic Worship Albums</h1>
+            <h1 className={styles.title}>
+              Disco<span>graphy</span>
+            </h1>
+            <div className={styles.titleRule} aria-hidden="true" />
           </header>
 
           <MusicAlbumTimeline />

@@ -1,0 +1,123 @@
+[
+  {
+    "id": "call-you-later-mpcgxf8e-fa867eff",
+    "title": "Call you later",
+    "artistName": "Nate",
+    "stems": [
+      {
+        "id": "call-you-later-mpcgxf8e-fa867eff-1",
+        "name": "7 Woodwinds",
+        "fileUrl": "/stems/uploads/call-you-later-mpcgxf8e-fa867eff/01-7-woodwinds.mp3",
+        "color": "#c97b12",
+        "fileName": "7 Woodwinds.mp3"
+      },
+      {
+        "id": "call-you-later-mpcgxf8e-fa867eff-2",
+        "name": "6 Brass",
+        "fileUrl": "/stems/uploads/call-you-later-mpcgxf8e-fa867eff/02-6-brass.mp3",
+        "color": "#7f9a63",
+        "fileName": "6 Brass.mp3"
+      },
+      {
+        "id": "call-you-later-mpcgxf8e-fa867eff-3",
+        "name": "5 Other",
+        "fileUrl": "/stems/uploads/call-you-later-mpcgxf8e-fa867eff/03-5-other.mp3",
+        "color": "#8b3f31",
+        "fileName": "5 Other.mp3"
+      },
+      {
+        "id": "call-you-later-mpcgxf8e-fa867eff-4",
+        "name": "4 Synth",
+        "fileUrl": "/stems/uploads/call-you-later-mpcgxf8e-fa867eff/04-4-synth.mp3",
+        "color": "#4c7a86",
+        "fileName": "4 Synth.mp3"
+      },
+      {
+        "id": "call-you-later-mpcgxf8e-fa867eff-5",
+        "name": "3 Keyboard",
+        "fileUrl": "/stems/uploads/call-you-later-mpcgxf8e-fa867eff/05-3-keyboard.mp3",
+        "color": "#9d7d31",
+        "fileName": "3 Keyboard.mp3"
+      },
+      {
+        "id": "call-you-later-mpcgxf8e-fa867eff-6",
+        "name": "2 Guitar",
+        "fileUrl": "/stems/uploads/call-you-later-mpcgxf8e-fa867eff/06-2-guitar.mp3",
+        "color": "#735c8f",
+        "fileName": "2 Guitar.mp3"
+      },
+      {
+        "id": "call-you-later-mpcgxf8e-fa867eff-7",
+        "name": "1 Bass",
+        "fileUrl": "/stems/uploads/call-you-later-mpcgxf8e-fa867eff/07-1-bass.mp3",
+        "color": "#b85d2a",
+        "fileName": "1 Bass.mp3"
+      },
+      {
+        "id": "call-you-later-mpcgxf8e-fa867eff-8",
+        "name": "0 Drums",
+        "fileUrl": "/stems/uploads/call-you-later-mpcgxf8e-fa867eff/08-0-drums.mp3",
+        "color": "#3f6f55",
+        "fileName": "0 Drums.mp3"
+      }
+    ],
+    "createdAt": "2026-05-19T10:06:35.881Z"
+  },
+  {
+    "id": "good-vibes-mpcgorox-faa22fe0",
+    "title": "good vibes",
+    "artistName": "Nate",
+    "stems": [
+      {
+        "id": "good-vibes-mpcgorox-faa22fe0-1",
+        "name": "0 Drums",
+        "fileUrl": "/stems/uploads/good-vibes-mpcgorox-faa22fe0/01-0-drums.mp3",
+        "color": "#c97b12",
+        "fileName": "0 Drums.mp3",
+        "price": "5"
+      },
+      {
+        "id": "good-vibes-mpcgorox-faa22fe0-2",
+        "name": "1 Bass",
+        "fileUrl": "/stems/uploads/good-vibes-mpcgorox-faa22fe0/02-1-bass.mp3",
+        "color": "#7f9a63",
+        "fileName": "1 Bass.mp3",
+        "price": "5"
+      },
+      {
+        "id": "good-vibes-mpcgorox-faa22fe0-3",
+        "name": "2 Guitar",
+        "fileUrl": "/stems/uploads/good-vibes-mpcgorox-faa22fe0/03-2-guitar.mp3",
+        "color": "#8b3f31",
+        "fileName": "2 Guitar.mp3",
+        "price": "5"
+      },
+      {
+        "id": "good-vibes-mpcgorox-faa22fe0-4",
+        "name": "3 Percussion",
+        "fileUrl": "/stems/uploads/good-vibes-mpcgorox-faa22fe0/04-3-percussion.mp3",
+        "color": "#4c7a86",
+        "fileName": "3 Percussion.mp3",
+        "price": "5"
+      },
+      {
+        "id": "good-vibes-mpcgorox-faa22fe0-5",
+        "name": "4 Other",
+        "fileUrl": "/stems/uploads/good-vibes-mpcgorox-faa22fe0/05-4-other.mp3",
+        "color": "#9d7d31",
+        "fileName": "4 Other.mp3",
+        "price": "5"
+      },
+      {
+        "id": "good-vibes-mpcgorox-faa22fe0-6",
+        "name": "5 Brass",
+        "fileUrl": "/stems/uploads/good-vibes-mpcgorox-faa22fe0/06-5-brass.mp3",
+        "color": "#735c8f",
+        "fileName": "5 Brass.mp3",
+        "price": "5"
+      }
+    ],
+    "createdAt": "2026-05-19T09:59:52.128Z",
+    "fullStemsPrice": "20"
+  }
+]

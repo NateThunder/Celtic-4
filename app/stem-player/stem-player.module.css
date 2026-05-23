@@ -1,0 +1,76 @@
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--editorial-paper);
+  background-image:
+    linear-gradient(rgba(234, 223, 205, 0.91), rgba(234, 223, 205, 0.91)),
+    var(--paper-background);
+  background-repeat: repeat;
+  background-size: auto, 760px auto;
+  color: var(--editorial-ink);
+  padding: clamp(6.2rem, 8vw, 7.7rem) clamp(1.35rem, 5vw, 3rem)
+    clamp(8.4rem, 13vw, 10.6rem);
+}
+
+.hero {
+  width: min(1120px, 100%);
+  margin: 0 auto clamp(1.65rem, 3.6vw, 2.9rem);
+}
+
+.title {
+  margin: 0.35rem 0 0;
+  color: #171512;
+  font-family: var(--font-anton), Impact, sans-serif;
+  font-size: clamp(3.8rem, 9vw, 6.3rem);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 0.86;
+  text-transform: uppercase;
+}
+
+.title span {
+  display: block;
+  color: var(--editorial-gold);
+}
+
+.rule {
+  width: 3.25rem;
+  height: 0.28rem;
+  margin-top: clamp(0.65rem, 1vw, 0.85rem);
+  background: var(--editorial-gold);
+}
+
+.intro {
+  width: min(100%, 34rem);
+  margin: clamp(0.7rem, 1.3vw, 0.9rem) 0 0;
+  color: rgba(21, 19, 15, 0.86);
+  font-size: clamp(0.78rem, 1vw, 0.95rem);
+  font-weight: 700;
+  line-height: 1.44;
+}
+
+@media (max-width: 700px) {
+  .page {
+    padding: 5.45rem clamp(1.35rem, 5.4vw, 2.2rem) 8.8rem;
+  }
+
+  .hero {
+    margin-bottom: 1.45rem;
+  }
+
+  .title {
+    font-size: clamp(3.1rem, 13vw, 4.3rem);
+  }
+
+  .rule {
+    width: 2.15rem;
+    height: 0.2rem;
+    margin-top: 0.5rem;
+  }
+
+  .intro {
+    width: min(100%, 24rem);
+    font-size: 0.68rem;
+    line-height: 1.38;
+  }
+}

@@ -9,7 +9,18 @@ export default function LiveEventsPage() {
       <main className="live-events-page">
         <section className="live-events-section live-events-standalone">
           <div className="live-events-inner">
-            <h1 className="live-events-title">Upcoming Events</h1>
+            <header className="live-events-heading">
+              <p className="editorial-kicker">Celtic Worship</p>
+              <h1 className="live-events-title">
+                Upcoming{" "}
+                <span>Events</span>
+              </h1>
+              <div className="live-events-title-rule" aria-hidden="true" />
+              <p className="live-events-intro">
+                Gather with Celtic Worship for nights of prayer, scripture, and songs of the
+                church through the sounds of Scotland.
+              </p>
+            </header>
             <div
               id="bandsintown-events"
               data-artist-id="849462"
