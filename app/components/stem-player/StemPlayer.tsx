@@ -20,13 +20,21 @@ type StemPlayerProps = {
 
 type PurchaseModalState = {
   title: string;
-  href: string;
   kind: "stem" | "all";
   price?: string;
+  stemId?: string;
+  externalHref?: string;
 } | null;
 
 const SECTION_COUNT = 8;
-const CHECKOUT_HREF = "/shop/checkout";
+
+function getMessageFromPayload(payload: unknown, fallback: string): string {
+  if (!payload || typeof payload !== "object") return fallback;
+  if ("message" in payload && typeof (payload as { message?: unknown }).message === "string") {
+    return String((payload as { message: string }).message);
+  }
+  return fallback;
+}
 
 export default function StemPlayer({
   track,
@@ -50,6 +58,8 @@ export default function StemPlayer({
   const [mutedStems, setMutedStems] = useState<Record<number, boolean>>({});
   const [soloedStems, setSoloedStems] = useState<Record<number, boolean>>({});
   const [purchaseModal, setPurchaseModal] = useState<PurchaseModalState>(null);
+  const [purchaseError, setPurchaseError] = useState("");
+  const [isCreatingCheckout, setIsCreatingCheckout] = useState(false);
 
   const audioContextRef = useRef<AudioContext | null>(null);
   const sourceNodesRef = useRef<Array<AudioBufferSourceNode | null>>([]);
@@ -60,21 +70,48 @@ export default function StemPlayer({
   const animationFrameRef = useRef<number | null>(null);
 
   const canPlay = isLoaded && decodedCount > 0 && duration > 0;
-  const purchaseAllHref = track.fullStemsPurchaseUrl || track.purchaseUrl || CHECKOUT_HREF;
   const fullStemsPriceLabel = formatPoundPrice(track.fullStemsPrice);
+  const hasFullPackCheckout = Boolean(track.fullStemsPrice || track.fullStemsPurchaseUrl || track.purchaseUrl);
 
   const closePurchaseModal = useCallback(() => {
     setPurchaseModal(null);
+    setPurchaseError("");
+    setIsCreatingCheckout(false);
   }, []);
 
-  const openPurchasePopup = useCallback((href: string) => {
-    const openedPopup = window.open(href, "celtic_payment_popup", "popup,width=520,height=740");
-    if (!openedPopup) {
-      window.location.assign(href);
+  const createCheckoutSession = useCallback(async () => {
+    if (!purchaseModal || isCreatingCheckout) return;
+
+    if (purchaseModal.externalHref) {
+      window.location.assign(purchaseModal.externalHref);
       return;
     }
-    closePurchaseModal();
-  }, [closePurchaseModal]);
+
+    setIsCreatingCheckout(true);
+    setPurchaseError("");
+
+    try {
+      const response = await fetch("/api/stems/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          trackId: track.id,
+          stemId: purchaseModal.stemId,
+          purchaseKind: purchaseModal.kind,
+        }),
+      });
+
+      const payload = (await response.json().catch(() => null)) as { url?: string } | null;
+      if (!response.ok || !payload?.url) {
+        throw new Error(getMessageFromPayload(payload, `Unable to start checkout (${response.status}).`));
+      }
+
+      window.location.assign(payload.url);
+    } catch (error) {
+      setPurchaseError(error instanceof Error ? error.message : "Unable to start checkout.");
+      setIsCreatingCheckout(false);
+    }
+  }, [isCreatingCheckout, purchaseModal, track.id]);
 
   const stopAll = useCallback(() => {
     sourceNodesRef.current.forEach((node) => {
@@ -383,16 +420,17 @@ export default function StemPlayer({
             />
             <strong>{Math.round(masterVolume * 100)}%</strong>
           </label>
-          {showPurchaseControls ? (
+          {showPurchaseControls && hasFullPackCheckout ? (
             <button
               className={styles.purchaseAllButton}
               type="button"
               onClick={() => {
+                setPurchaseError("");
                 setPurchaseModal({
                   title: track.title,
-                  href: purchaseAllHref,
                   kind: "all",
                   price: fullStemsPriceLabel,
+                  externalHref: track.fullStemsPurchaseUrl || track.purchaseUrl,
                 });
               }}
             >
@@ -426,6 +464,7 @@ export default function StemPlayer({
           const adminStemId = adminStem?.id || stem.id;
           const stemPrice = adminStem?.price ?? stem.price ?? "";
           const stemPriceLabel = isAdminPreview ? sanitizePriceInput(stemPrice) : formatPoundPrice(stemPrice);
+          const hasStemCheckout = Boolean(stemPrice || stem.purchaseUrl || track.purchaseUrl);
 
           return (
             <StemChannel
@@ -441,7 +480,7 @@ export default function StemPlayer({
               duration={duration}
               sectionCount={SECTION_COUNT}
               sectionModeEnabled={false}
-              showPurchaseControl={showPurchaseControls}
+              showPurchaseControl={showPurchaseControls && hasStemCheckout}
               price={stemPriceLabel}
               onPriceChange={
                 isAdminPreview && onAdminStemPriceChange
@@ -449,13 +488,15 @@ export default function StemPlayer({
                   : undefined
               }
               onPurchase={
-                showPurchaseControls
+                showPurchaseControls && hasStemCheckout
                   ? () => {
+                      setPurchaseError("");
                       setPurchaseModal({
                         title: stem.name || `Stem ${index + 1}`,
-                        href: stem.purchaseUrl || track.purchaseUrl || CHECKOUT_HREF,
                         kind: "stem",
+                        stemId: stem.id,
                         price: formatPoundPrice(stem.price),
+                        externalHref: stem.purchaseUrl || track.purchaseUrl,
                       });
                     }
                   : undefined
@@ -521,17 +562,27 @@ export default function StemPlayer({
               <p className={styles.purchaseModalPrice}>{purchaseModal.price}</p>
             ) : null}
 
+            {purchaseError ? (
+              <p className={styles.purchaseModalError} role="status">
+                {purchaseError}
+              </p>
+            ) : null}
+
             <div className={styles.purchaseModalActions}>
               <button
                 className={styles.purchaseModalPayButton}
                 type="button"
-                onClick={() => openPurchasePopup(purchaseModal.href)}
+                disabled={isCreatingCheckout}
+                onClick={() => {
+                  void createCheckoutSession();
+                }}
               >
-                Go To Checkout
+                {isCreatingCheckout ? "Opening..." : "Go To Checkout"}
               </button>
               <button
                 className={styles.purchaseModalSecondaryButton}
                 type="button"
+                disabled={isCreatingCheckout}
                 onClick={closePurchaseModal}
               >
                 Cancel

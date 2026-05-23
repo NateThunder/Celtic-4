@@ -987,6 +987,17 @@
   text-transform: uppercase;
 }
 
+.purchaseModalError {
+  margin: 0;
+  border: 1px solid rgba(163, 28, 28, 0.24);
+  background: rgba(163, 28, 28, 0.08);
+  color: #7b1717;
+  padding: 0.7rem 0.78rem;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.36;
+}
+
 .purchaseModalActions {
   display: flex;
   flex-wrap: wrap;
@@ -1027,6 +1038,13 @@
 .purchaseModalPayButton:hover,
 .purchaseModalSecondaryButton:hover {
   transform: translateY(-1px);
+}
+
+.purchaseModalPayButton:disabled,
+.purchaseModalSecondaryButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+  transform: none;
 }
 
 .channels {

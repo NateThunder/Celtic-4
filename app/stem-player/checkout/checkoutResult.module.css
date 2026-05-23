@@ -1,0 +1,118 @@
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background-color: var(--editorial-paper);
+  background-image:
+    linear-gradient(rgba(234, 223, 205, 0.91), rgba(234, 223, 205, 0.91)),
+    var(--paper-background);
+  background-repeat: repeat;
+  background-size: auto, 760px auto;
+  color: var(--editorial-ink);
+  padding: clamp(6.2rem, 8vw, 7.7rem) clamp(1.35rem, 5vw, 3rem)
+    clamp(5rem, 10vw, 7rem);
+}
+
+.shell {
+  width: min(720px, 100%);
+  margin: 0 auto;
+}
+
+.kicker {
+  margin: 0;
+  color: var(--editorial-gold);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0.35rem 0 0;
+  color: #171512;
+  font-family: var(--font-anton), Impact, sans-serif;
+  font-size: clamp(3rem, 8vw, 5rem);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 0.88;
+  text-transform: uppercase;
+}
+
+.copy {
+  margin: 1rem 0 0;
+  color: rgba(21, 19, 15, 0.78);
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+.downloadList {
+  display: grid;
+  gap: 0.6rem;
+  margin: 1.35rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.downloadItem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.8rem;
+  border: 1px solid rgba(21, 19, 15, 0.2);
+  background: rgba(255, 255, 255, 0.22);
+  padding: 0.78rem;
+}
+
+.downloadItem span {
+  min-width: 0;
+  color: #171512;
+  font-size: 0.9rem;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.downloadLink,
+.backLink {
+  display: inline-flex;
+  min-height: 2.45rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(21, 19, 15, 0.55);
+  color: #171512;
+  font-size: 0.68rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  padding: 0.72rem 0.9rem;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.downloadLink {
+  border-color: var(--editorial-gold);
+  background: var(--editorial-gold);
+}
+
+.backLink {
+  width: fit-content;
+  margin-top: 1.1rem;
+  background: transparent;
+}
+
+.downloadLink:hover,
+.downloadLink:focus-visible,
+.backLink:hover,
+.backLink:focus-visible {
+  outline: none;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 560px) {
+  .downloadItem {
+    grid-template-columns: 1fr;
+  }
+
+  .downloadLink {
+    width: 100%;
+  }
+}
