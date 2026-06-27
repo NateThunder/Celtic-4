@@ -14,14 +14,10 @@ export default function MediaPage() {
       <SiteHeader />
       <main className={styles.page}>
         <section className={styles.hero} aria-label="Celtic Worship videos">
-          <p className={styles.kicker}>Watch</p>
           <h1 className={styles.title}>
             Videos
           </h1>
           <div className={styles.rule} aria-hidden="true" />
-          <p className={styles.intro}>
-            Explore the latest recorded videos from Celtic Worship.
-          </p>
         </section>
 
         <VideosGridSection />

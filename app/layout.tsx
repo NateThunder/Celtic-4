@@ -41,6 +41,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${anton.variable} antialiased`}
       >
         {children}
+        <Script
+          src="https://widgetv3.bandsintown.com/main.min.js"
+          strategy="afterInteractive"
+          charSet="utf-8"
+        />
         <Script src="/scripts/bandsintown-events.js" strategy="afterInteractive" />
       </body>
     </html>
