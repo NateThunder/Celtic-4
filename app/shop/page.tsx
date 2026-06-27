@@ -57,7 +57,7 @@ type CategoryFilter = {
   title: string;
 };
 
-const SECTION_ORDER_PRIORITY = ["vinyl", "cd"] as const;
+const SECTION_ORDER_PRIORITY = ["cd", "vinyl"] as const;
 
 function stripHtml(input?: string): string {
   if (!input) return "";
