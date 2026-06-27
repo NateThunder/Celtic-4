@@ -164,6 +164,7 @@ export default function Home() {
         <FeaturedVideo
           sectionId="media"
           videoId={FEATURED_VIDEO_ID}
+          variant="editorial"
           fallbackTitle="I Need Thee"
         />
 
