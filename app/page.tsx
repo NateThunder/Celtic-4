@@ -1,4 +1,5 @@
 import AlbumStack from "./components/AlbumStack";
+import BandsintownWidget from "./components/BandsintownWidget";
 import FeaturedVideo from "./components/FeaturedVideo";
 import SiteHeader from "./components/SiteHeader";
 import Image from "next/image";
@@ -45,8 +46,6 @@ function YouTubeIcon() {
 }
 
 export default function Home() {
-  const bandsintownAppId = process.env.NEXT_PUBLIC_BANDSINTOWN_APP_ID?.trim() || "js_localhost";
-
   return (
     <div className="site-shell editorial-home-shell">
       <SiteHeader />
@@ -80,37 +79,40 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="live-events" className="editorial-events-band" aria-label="Live events">
-          <div className="editorial-events-inner">
-            <div className="editorial-events-copy">
-              <h2>
-                Upcoming{" "}
-                <span>Events</span>
-              </h2>
-              <Link className="editorial-button editorial-button--dark" href="/live-events">
-                View All Events
-              </Link>
-            </div>
+        <section id="live-events" className="live-events-section home-events-section" aria-label="Live events">
+          <div className="live-events-inner">
+            <div className="home-events-layout">
+              <div className="home-events-copy">
+                <h2 className="live-events-title">
+                  Upcoming <span>Events</span>
+                </h2>
+                <Link className="home-events-link" href="/live-events">
+                  View All Events
+                </Link>
+              </div>
 
-            <div className="editorial-events-image">
-              <Image
-                src="/Bio-Vertical-576x1024.webp"
-                alt=""
-                fill
-                sizes="(max-width: 900px) 92vw, 360px"
-                aria-hidden="true"
-              />
-            </div>
+              <div className="home-events-image" aria-label="Featured event posters">
+                <figure className="home-events-image-poster home-events-image-poster--primary">
+                  <Image
+                    src="/oh holy night poster.jpg"
+                    alt="O Holy Night presented by Celtic Worship and Zerua Music at O2 Academy Glasgow on 17 December 2026."
+                    fill
+                    sizes="(max-width: 900px) 42vw, 210px"
+                    priority
+                  />
+                </figure>
+                <figure className="home-events-image-poster home-events-image-poster--secondary">
+                  <Image
+                    src="/then sings poster.png"
+                    alt="Celtic Worship Then Sings My Soul events at St Luke's Glasgow and Charlotte Chapel Edinburgh."
+                    fill
+                    sizes="(max-width: 900px) 38vw, 190px"
+                  />
+                </figure>
+              </div>
 
-            <div className="editorial-events-feed">
-              <div
-                id="bandsintown-events"
-                data-layout="featured"
-                data-artist-id="849462"
-                data-app-id={bandsintownAppId}
-                aria-live="polite"
-              >
-                <p className="events-status">Loading upcoming events...</p>
+              <div className="home-events-feed">
+                <BandsintownWidget variant="home" />
               </div>
             </div>
           </div>
@@ -156,13 +158,6 @@ export default function Home() {
               </div>
               <p className="editorial-platform-note">Available on all platforms</p>
             </div>
-
-            <aside className="editorial-release-note">
-              <p>
-                A collection of songs rooted in scripture, crafted to lead you into presence.
-              </p>
-              <span aria-hidden="true">*</span>
-            </aside>
           </div>
         </section>
 
@@ -170,24 +165,9 @@ export default function Home() {
           sectionId="media"
           videoId={FEATURED_VIDEO_ID}
           fallbackTitle="I Need Thee"
-          variant="editorial"
-          eyebrow="Featured Video"
-          description="A live recording of an old hymn that still speaks today."
-          ctaLabel="Watch on YouTube"
-          watchUrl={`https://www.youtube.com/watch?v=${FEATURED_VIDEO_ID}`}
         />
 
         <section id="about" className="editorial-bottom-section" aria-label="About and updates">
-          <div className="editorial-scripture">
-            <h2>
-              Sing to the Lord
-              <span>A New Song;</span>
-              Sing to the Lord,
-              <span>All the Earth.</span>
-            </h2>
-            <p>Psalm 96:1</p>
-          </div>
-
           <div className="editorial-bottom-image">
             <Image
               src="/Bio-Vertical-576x1024.webp"
@@ -199,7 +179,6 @@ export default function Home() {
           </div>
 
           <div className="editorial-newsletter" role="group" aria-labelledby="newsletter-title">
-            <p className="editorial-section-kicker">Stay in the Loop</p>
             <h2 id="newsletter-title">Stay in the Loop</h2>
             <p>Get updates on new music, events, and more.</p>
             <label className="editorial-newsletter-label" htmlFor="newsletter-email">
