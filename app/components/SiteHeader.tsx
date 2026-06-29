@@ -47,6 +47,10 @@ type BodyScrollLockSnapshot = {
 const ALWAYS_SHOW_TOP_Y = 20;
 const MOBILE_DRAWER_MAX_WIDTH = 1024;
 
+type SiteHeaderProps = {
+  hideMobileSocials?: boolean;
+};
+
 function HeaderSocialIcon({ platform }: { platform: (typeof EDITORIAL_HOME_SOCIALS)[number]["platform"] }) {
   if (platform === "spotify") {
     return (
@@ -89,7 +93,7 @@ Manual test plan (no test framework configured):
 4) Return to top 20px zone: navbar shows again.
 5) On mobile, opening drawer prevents page scroll.
 */
-export default function SiteHeader() {
+export default function SiteHeader({ hideMobileSocials = false }: SiteHeaderProps = {}) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -300,7 +304,9 @@ export default function SiteHeader() {
     <header
       className={`site-header ${isHidden ? "nav--hidden" : "nav--shown"}${
         isScrolled ? " is-scrolled" : ""
-      } site-header--dark-links site-header--editorial-home`}
+      } site-header--dark-links site-header--editorial-home${
+        hideMobileSocials ? " site-header--hide-mobile-socials" : ""
+      }`}
     >
       <a
         className="brand editorial-brand"
@@ -361,9 +367,10 @@ export default function SiteHeader() {
         {NAV_ITEMS.map((item) => {
           const isHashLink = item.href.startsWith("#");
           const resolvedHref = isHashLink && !isHomePath ? `/${item.href}` : item.href;
+          const isMusicSection = item.href === "/music" && pathname.startsWith("/music/");
           const isActive = isHashLink
             ? isHomePath && activeHash === item.href
-            : pathname === item.href;
+            : pathname === item.href || isMusicSection;
 
           return (
             <a

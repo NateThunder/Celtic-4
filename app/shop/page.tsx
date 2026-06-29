@@ -412,7 +412,6 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
       <main className={styles.page}>
         <section className={styles.shell}>
           <header className={styles.header}>
-            <p className={styles.kicker}>Celtic Worship</p>
             <h1 className={styles.title}>Shop</h1>
             <div className={styles.nav}>
               <Link className={styles.navLink} href="/">

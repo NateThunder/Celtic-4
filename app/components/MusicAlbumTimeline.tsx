@@ -13,7 +13,6 @@ type AlbumLink = {
 type Album = {
   title: string;
   year: string;
-  description: string;
   coverSrc: string;
   coverAlt: string;
   links: AlbumLink[];
@@ -23,8 +22,6 @@ const ALBUMS: Album[] = [
   {
     title: "Harvest",
     year: "2025",
-    description:
-      "Our fourth studio album. Inspired by the richness of God's promises and the beauty of the harvest season. Songs of faithfulness, provision, and new life in Christ.",
     coverSrc: "/Harvest.webp",
     coverAlt: "Harvest album artwork",
     links: [
@@ -48,8 +45,6 @@ const ALBUMS: Album[] = [
   {
     title: "Come Behold: Christmas Collaborations",
     year: "2022",
-    description:
-      "Christmas songs and collaborations that carry ancient wonder through the sound of Celtic Worship.",
     coverSrc: "/COME%20BEHOLD.webp",
     coverAlt: "Come Behold: Christmas Collaborations album artwork",
     links: [
@@ -73,8 +68,6 @@ const ALBUMS: Album[] = [
   {
     title: "Morningtide",
     year: "2021",
-    description:
-      "Songs of dawn, hope, and stillness, drawing the heart toward prayer and the nearness of Christ.",
     coverSrc: "/MORNINGTIDE.webp",
     coverAlt: "Morningtide album artwork",
     links: [
@@ -98,8 +91,6 @@ const ALBUMS: Album[] = [
   {
     title: "Homeward",
     year: "2019",
-    description:
-      "A homeward gaze through hymns, psalms, and worship rooted in the gospel hope of Christ.",
     coverSrc: "/HOMEWARD.jpeg",
     coverAlt: "Homeward album artwork",
     links: [
@@ -174,7 +165,6 @@ export default function MusicAlbumTimeline() {
             <div className={styles.albumMeta}>
               <p className={styles.albumYear}>{album.year}</p>
               <h2 className={styles.albumTitle}>{album.title}</h2>
-              <p className={styles.albumDescription}>{album.description}</p>
 
               <div className={styles.streamStack} aria-label={`${album.title} streaming links`}>
                 {album.links.map((link) => (

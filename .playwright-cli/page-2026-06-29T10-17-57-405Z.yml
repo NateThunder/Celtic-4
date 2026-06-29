@@ -1,0 +1,244 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - link "Celtic Worship" [ref=e4] [cursor=pointer]:
+        - /url: /#home
+        - generic [ref=e5]: Celtic Worship
+      - generic "Social links" [ref=e6]:
+        - link "Spotify" [ref=e7] [cursor=pointer]:
+          - /url: https://open.spotify.com/artist/0h2AQKpVBEEXQQ03KGf7ep?si=9eAa0Ik8Rmm2Nip-K8Y-Kg
+          - img [ref=e8]
+        - link "YouTube" [ref=e10] [cursor=pointer]:
+          - /url: https://www.youtube.com/CelticWorshipMusic
+          - img [ref=e11]
+        - link "Instagram" [ref=e13] [cursor=pointer]:
+          - /url: https://www.instagram.com/celtic_worship
+          - img [ref=e14]
+      - navigation "Main" [ref=e16]:
+        - link "Home" [ref=e17] [cursor=pointer]:
+          - /url: /#home
+        - link "Music" [ref=e18] [cursor=pointer]:
+          - /url: /music
+        - link "Events" [ref=e19] [cursor=pointer]:
+          - /url: /live-events
+        - link "Videos" [ref=e20] [cursor=pointer]:
+          - /url: /videos
+        - link "Shop" [ref=e21] [cursor=pointer]:
+          - /url: /shop
+        - link "About" [ref=e22] [cursor=pointer]:
+          - /url: /about
+    - main [ref=e23]:
+      - generic [ref=e24]:
+        - navigation "Music section" [ref=e25]:
+          - link "Discography" [ref=e26] [cursor=pointer]:
+            - /url: /music
+          - link "Charts" [ref=e27] [cursor=pointer]:
+            - /url: /music/charts
+        - generic [ref=e29]:
+          - heading "Charts" [level=1] [ref=e30]
+          - paragraph [ref=e32]: Browse chords, lyrics, lead sheets, and piano resources from the Celtic Worship catalog. Instant downloads to help equip you and your team in leading worship.
+        - region "Search and filter music resources" [ref=e33]:
+          - generic [ref=e34]: Search resources
+          - generic [ref=e35]:
+            - generic:
+              - img
+            - searchbox "Search resources" [ref=e36]
+          - generic [ref=e37]:
+            - img [ref=e38]
+            - generic [ref=e40]: Filters
+          - list "Filter resource type" [ref=e41]:
+            - button "All" [pressed] [ref=e42] [cursor=pointer]
+            - button "Chord Chart" [ref=e43] [cursor=pointer]
+            - button "Chords & Lyrics" [ref=e44] [cursor=pointer]
+            - button "Lead & Piano" [ref=e45] [cursor=pointer]
+            - button "Full Pack" [ref=e46] [cursor=pointer]
+        - generic [ref=e47]:
+          - region "Available music resources" [ref=e48]:
+            - generic [ref=e49]:
+              - img "Morningtide album artwork" [ref=e50]
+              - generic [ref=e51]:
+                - heading "Morningtide (2021)" [level=2] [ref=e52]:
+                  - text: Morningtide
+                  - generic [ref=e53]: (2021)
+                - paragraph [ref=e54]: Songs of dawn, hope, and stillness, drawing the heart toward prayer and the nearness of Christ.
+              - link "View Album" [ref=e55] [cursor=pointer]:
+                - /url: /music
+                - text: View Album ->
+            - generic [ref=e56]:
+              - article [ref=e57]:
+                - img "Morningtide album artwork" [ref=e58]
+                - generic [ref=e59]:
+                  - heading "Come Thou Fount" [level=3] [ref=e60]
+                  - paragraph [ref=e61]: Celtic Worship
+                  - generic [ref=e62]: "Keys: A, Bb, C, D, Eb, F, G"
+                - generic [ref=e63]:
+                  - button "Chord Chart" [ref=e64] [cursor=pointer]
+                  - button "Chords & Lyrics" [ref=e65] [cursor=pointer]
+                  - button "Lead & Piano" [ref=e66] [cursor=pointer]
+                - link "Add Come Thou Fount Chords & Lyrics PDF to cart" [ref=e67] [cursor=pointer]:
+                  - /url: /cart/?add-to-cart=90102
+                  - text: £2.87
+              - article [ref=e68]:
+                - img "Morningtide album artwork" [ref=e69]
+                - generic [ref=e70]:
+                  - heading "How Deep The Father's Love For Us" [level=3] [ref=e71]
+                  - paragraph [ref=e72]: Celtic Worship
+                  - generic [ref=e73]: "Keys: Eb, F, Gb, G, Ab, Bb"
+                - generic [ref=e74]:
+                  - button "Chord Chart" [ref=e75] [cursor=pointer]
+                  - button "Chords & Lyrics" [ref=e76] [cursor=pointer]
+                  - button "Lead & Piano" [ref=e77] [cursor=pointer]
+                - link "Add How Deep The Father's Love For Us Chords & Lyrics PDF to cart" [ref=e78] [cursor=pointer]:
+                  - /url: /cart/?add-to-cart=90112
+                  - text: £2.87
+              - article [ref=e79]:
+                - img "Morningtide album artwork" [ref=e80]
+                - generic [ref=e81]:
+                  - heading "Blessed Assurance" [level=3] [ref=e82]
+                  - paragraph [ref=e83]: Celtic Worship
+                  - generic [ref=e84]: "Keys: A, Bb, C, Db, D, Eb"
+                - generic [ref=e85]:
+                  - button "Chord Chart" [ref=e86] [cursor=pointer]
+                  - button "Chords & Lyrics" [ref=e87] [cursor=pointer]
+                  - button "Lead & Piano" [ref=e88] [cursor=pointer]
+                - link "Add Blessed Assurance Chords & Lyrics PDF to cart" [ref=e89] [cursor=pointer]:
+                  - /url: /cart/?add-to-cart=90122
+                  - text: £2.87
+              - article [ref=e90]:
+                - img "Morningtide album artwork" [ref=e91]
+                - generic [ref=e92]:
+                  - heading "Old 100th" [level=3] [ref=e93]
+                  - paragraph [ref=e94]: Celtic Worship
+                  - generic [ref=e95]: "Keys: D, Eb, E, F, G"
+                - generic [ref=e96]:
+                  - button "Chord Chart" [ref=e97] [cursor=pointer]
+                  - button "Chords & Lyrics" [ref=e98] [cursor=pointer]
+                  - button "Lead & Piano" [ref=e99] [cursor=pointer]
+                - link "Add Old 100th Chords & Lyrics PDF to cart" [ref=e100] [cursor=pointer]:
+                  - /url: /cart/?add-to-cart=90132
+                  - text: £2.87
+              - article [ref=e101]:
+                - img "Morningtide album artwork" [ref=e102]
+                - generic [ref=e103]:
+                  - heading "I Trust In Jesus" [level=3] [ref=e104]
+                  - paragraph [ref=e105]: Celtic Worship
+                  - generic [ref=e106]: "Keys: E, F, F#, G, Ab, A"
+                - generic [ref=e107]:
+                  - button "Chord Chart" [ref=e108] [cursor=pointer]
+                  - button "Chords & Lyrics" [ref=e109] [cursor=pointer]
+                  - button "Lead & Piano" [ref=e110] [cursor=pointer]
+                - link "Add I Trust In Jesus Chords & Lyrics PDF to cart" [ref=e111] [cursor=pointer]:
+                  - /url: /cart/?add-to-cart=90142
+                  - text: £2.87
+            - generic [ref=e112]:
+              - generic [ref=e113]:
+                - heading "Album Resource Packs" [level=2] [ref=e114]
+                - paragraph [ref=e115]: Bundles for churches and teams.
+              - generic [ref=e116]:
+                - article [ref=e117]:
+                  - img "Harvest album artwork" [ref=e118]
+                  - generic [ref=e119]:
+                    - heading "Harvest" [level=3] [ref=e120]
+                    - paragraph [ref=e121]: Celtic Worship
+                    - generic [ref=e122]: "12 songs · Keys: A, Bb, C, D, Eb"
+                  - generic [ref=e123]:
+                    - button "Chord Chart" [ref=e124] [cursor=pointer]
+                    - button "Lead & Piano" [ref=e125] [cursor=pointer]
+                    - button "Full Pack" [ref=e126] [cursor=pointer]
+                  - link "Add Harvest Full Resource Pack to cart" [ref=e127] [cursor=pointer]:
+                    - /url: /cart/?add-to-cart=90203
+                    - text: £19.99
+                - article [ref=e128]:
+                  - 'img "Come Behold: Christmas Collaborations album artwork" [ref=e129]'
+                  - generic [ref=e130]:
+                    - 'heading "Come Behold: Christmas Collaborations" [level=3] [ref=e131]'
+                    - paragraph [ref=e132]: Celtic Worship
+                    - generic [ref=e133]: "9 songs · Keys: Bb, C, D, Eb"
+                  - generic [ref=e134]:
+                    - button "Chord Chart" [ref=e135] [cursor=pointer]
+                    - button "Lead & Piano" [ref=e136] [cursor=pointer]
+                    - button "Full Pack" [ref=e137] [cursor=pointer]
+                  - link "Add Come Behold Full Resource Pack to cart" [ref=e138] [cursor=pointer]:
+                    - /url: /cart/?add-to-cart=90213
+                    - text: £16.99
+                - article [ref=e139]:
+                  - img "Morningtide album artwork" [ref=e140]
+                  - generic [ref=e141]:
+                    - heading "Morningtide" [level=3] [ref=e142]
+                    - paragraph [ref=e143]: Celtic Worship
+                    - generic [ref=e144]: "11 songs · Keys: Bb, C, D, Eb"
+                  - generic [ref=e145]:
+                    - button "Chord Chart" [ref=e146] [cursor=pointer]
+                    - button "Lead & Piano" [ref=e147] [cursor=pointer]
+                    - button "Full Pack" [ref=e148] [cursor=pointer]
+                  - link "Add Morningtide Full Resource Pack to cart" [ref=e149] [cursor=pointer]:
+                    - /url: /cart/?add-to-cart=90223
+                    - text: £19.99
+          - complementary "Selected resource preview" [ref=e150]:
+            - generic [ref=e151]: Home / Music / Morningtide / Come Thou Fount / Chords & Lyrics
+            - generic [ref=e152]:
+              - img "Morningtide artwork" [ref=e153]
+              - generic [ref=e154]:
+                - paragraph [ref=e155]: Morningtide
+                - heading "Come Thou Fount Chords & Lyrics PDF" [level=2] [ref=e156]:
+                  - text: Come Thou Fount
+                  - generic [ref=e157]: Chords & Lyrics PDF
+                - paragraph [ref=e158]: Celtic Worship
+                - generic [ref=e159]:
+                  - generic [ref=e160]:
+                    - text: Key
+                    - combobox "Key" [ref=e161]:
+                      - option "A"
+                      - option "Bb" [selected]
+                      - option "C"
+                      - option "D"
+                      - option "Eb"
+                      - option "F"
+                      - option "G"
+                  - generic [ref=e162]:
+                    - text: Resource
+                    - combobox "Resource" [ref=e163]:
+                      - option "Chord Chart"
+                      - option "Chords & Lyrics" [selected]
+                      - option "Lead & Piano"
+                  - generic [ref=e164]:
+                    - text: Parts
+                    - combobox "Parts" [ref=e165]:
+                      - option "All Parts" [selected]
+                      - option "Worship Leader"
+                      - option "Band"
+              - generic [ref=e166]:
+                - strong [ref=e167]: £2.87
+                - link "Add to Cart" [ref=e168] [cursor=pointer]:
+                  - /url: /cart/?add-to-cart=90102
+                  - img [ref=e169]
+                  - text: Add to Cart
+                - generic [ref=e171]: Secure Checkout
+                - generic [ref=e172]: Instant Download
+                - generic [ref=e173]: Downloadable PDF
+            - generic [ref=e174]:
+              - generic [ref=e175]:
+                - generic [ref=e177]: 1 / 2
+                - generic [ref=e178]: 100%
+              - generic [ref=e180]:
+                - heading "Come Thou Fount" [level=3] [ref=e181]
+                - paragraph [ref=e182]: "Key: Bb | Tempo: 72 | Time: 4/4"
+                - generic [ref=e183]:
+                  - generic [ref=e184]:
+                    - strong [ref=e185]: Intro
+                    - generic [ref=e186]: Bb F/A Gm Eb
+                    - strong [ref=e187]: Verse 1
+                    - generic [ref=e188]: Bb F/A Gm Eb
+                    - generic [ref=e189]: Come Thou fount of every blessing
+                    - generic [ref=e190]: Bb F/A Eb
+                    - generic [ref=e191]: Tune my heart to sing Thy grace
+                  - generic [ref=e192]:
+                    - strong [ref=e193]: Chorus
+                    - generic [ref=e194]: Bb F/A Gm Eb
+                    - generic [ref=e195]: Prone to wander, Lord, I feel it
+                    - generic [ref=e196]: Bb Eb F
+                    - generic [ref=e197]: Here's my heart, Lord, take and seal it
+                    - generic [ref=e198]: Bb Eb F
+                - paragraph [ref=e199]: Preview only. Full PDF available after purchase.
+  - button "Open Next.js Dev Tools" [ref=e205] [cursor=pointer]:
+    - img [ref=e206]
