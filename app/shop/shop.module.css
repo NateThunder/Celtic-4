@@ -231,6 +231,35 @@
   width: fit-content;
 }
 
+.cardOptionsLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  border: 1px solid #111;
+  border-radius: 999px;
+  padding: 0.5rem 0.9rem;
+  background: #111;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+}
+
+.cardOptionsLink:hover,
+.cardOptionsLink:focus-visible {
+  transform: translateY(-1px);
+  background: #000;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+}
+
+.cardOptionsLink:focus-visible {
+  outline: none;
+}
+
 .cardLink {
   color: #111;
   text-decoration: none;

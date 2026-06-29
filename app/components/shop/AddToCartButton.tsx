@@ -5,11 +5,20 @@ import { useShopCart, type ShopCartItemInput } from "./ShopCartContext";
 import styles from "./shopCart.module.css";
 
 type AddToCartButtonProps = {
-  item: ShopCartItemInput;
+  item?: ShopCartItemInput;
   className?: string;
+  disabled?: boolean;
+  label?: string;
+  disabledLabel?: string;
 };
 
-export default function AddToCartButton({ item, className }: AddToCartButtonProps) {
+export default function AddToCartButton({
+  item,
+  className,
+  disabled = false,
+  label = "Add to Cart",
+  disabledLabel = "Select Options",
+}: AddToCartButtonProps) {
   const { addItem } = useShopCart();
   const [isAdded, setIsAdded] = useState(false);
   const [isBusy, setIsBusy] = useState(false);
@@ -24,7 +33,7 @@ export default function AddToCartButton({ item, className }: AddToCartButtonProp
   }, []);
 
   const handleClick = async () => {
-    if (isBusy) return;
+    if (isBusy || disabled || !item) return;
     setIsBusy(true);
 
     try {
@@ -54,8 +63,9 @@ export default function AddToCartButton({ item, className }: AddToCartButtonProp
         void handleClick();
       }}
       data-added={isAdded ? "true" : "false"}
-      disabled={isBusy}
-      aria-label={`Add ${item.name} to cart`}
+      data-busy={isBusy ? "true" : "false"}
+      disabled={isBusy || disabled || !item}
+      aria-label={item ? `Add ${item.name} to cart` : disabledLabel}
     >
       <span className={styles.addButtonIcon} aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -70,7 +80,7 @@ export default function AddToCartButton({ item, className }: AddToCartButtonProp
           <circle cx="18" cy="20" r="1.5" fill="currentColor" />
         </svg>
       </span>
-      {isAdded ? "Added" : "Add to Cart"}
+      {isAdded ? "Added" : item ? label : disabledLabel}
     </button>
   );
 }

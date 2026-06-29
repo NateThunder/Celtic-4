@@ -29,6 +29,7 @@ type WooStoreProduct = {
   id: number;
   name: string;
   type?: string;
+  has_options?: boolean;
   variation?: string;
   short_description?: string;
   images?: WooStoreImage[];
@@ -57,7 +58,8 @@ type CategoryFilter = {
   title: string;
 };
 
-const SECTION_ORDER_PRIORITY = ["cd", "vinyl"] as const;
+const SECTION_ORDER_PRIORITY = ["cd"] as const;
+const SECTION_ORDER_BOTTOM = ["vinyl"] as const;
 
 function stripHtml(input?: string): string {
   if (!input) return "";
@@ -255,7 +257,14 @@ function sortProductSections(sections: ProductSection[]): ProductSection[] {
       const matchedKeyword = SECTION_ORDER_PRIORITY.find((keyword) =>
         normalizedTitle.includes(keyword),
       );
-      const rank = matchedKeyword ? (rankByKeyword.get(matchedKeyword) ?? Number.MAX_SAFE_INTEGER) : Number.MAX_SAFE_INTEGER;
+      const matchedBottomKeyword = SECTION_ORDER_BOTTOM.find((keyword) =>
+        normalizedTitle.includes(keyword),
+      );
+      const rank = matchedKeyword
+        ? (rankByKeyword.get(matchedKeyword) ?? Number.MAX_SAFE_INTEGER)
+        : matchedBottomKeyword
+          ? Number.MAX_SAFE_INTEGER
+          : SECTION_ORDER_PRIORITY.length;
       return { section, index, rank };
     })
     .sort((left, right) => {
@@ -268,6 +277,7 @@ function sortProductSections(sections: ProductSection[]): ProductSection[] {
 function renderProductCard(item: ProductCardItem) {
   const image = item.product.images?.[0];
   const description = stripHtml(item.product.short_description);
+  const hasVariableOptions = item.product.type === "variable" || item.product.has_options === true;
 
   return (
     <li key={item.key} className={styles.card}>
@@ -292,17 +302,23 @@ function renderProductCard(item: ProductCardItem) {
           {description ? <ExpandableDescription text={description} /> : null}
         </div>
         <div className={styles.cardActions}>
-          <AddToCartButton
-            className={styles.cardAddButton}
-            item={{
-              id: item.cartItemId,
-              name: item.cartItemName,
-              href: `/shop/${item.product.id}`,
-              price: item.priceLabel,
-              imageSrc: image?.src,
-              imageAlt: image?.alt || item.product.name,
-            }}
-          />
+          {hasVariableOptions ? (
+            <Link className={styles.cardOptionsLink} href={`/shop/${item.product.id}`}>
+              View Options
+            </Link>
+          ) : (
+            <AddToCartButton
+              className={styles.cardAddButton}
+              item={{
+                id: item.cartItemId,
+                name: item.cartItemName,
+                href: `/shop/${item.product.id}`,
+                price: item.priceLabel,
+                imageSrc: image?.src,
+                imageAlt: image?.alt || item.product.name,
+              }}
+            />
+          )}
           <Link className={styles.cardLink} href={`/shop/${item.product.id}`}>
             View Product
           </Link>

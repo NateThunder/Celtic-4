@@ -51,6 +51,7 @@ export default function ShopCartPage() {
                       <Link href={item.href} className={styles.itemTitle}>
                         {item.name}
                       </Link>
+                      {item.variationLabel ? <p className={styles.itemOptions}>{item.variationLabel}</p> : null}
                       <p className={styles.itemPrice}>{item.price}</p>
                     </div>
 

@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 const NAV_ITEMS = [
   { label: "Home", href: "#home" },
   { label: "Music", href: "/music" },
+  { label: "Charts", href: "/music/charts" },
   { label: "Events", href: "/live-events" },
   { label: "Videos", href: "/videos" },
   { label: "Shop", href: "/shop" },
@@ -367,7 +368,10 @@ export default function SiteHeader({ hideMobileSocials = false }: SiteHeaderProp
         {NAV_ITEMS.map((item) => {
           const isHashLink = item.href.startsWith("#");
           const resolvedHref = isHashLink && !isHomePath ? `/${item.href}` : item.href;
-          const isMusicSection = item.href === "/music" && pathname.startsWith("/music/");
+          const isMusicSection =
+            item.href === "/music" &&
+            pathname.startsWith("/music/") &&
+            !pathname.startsWith("/music/charts");
           const isActive = isHashLink
             ? isHomePath && activeHash === item.href
             : pathname === item.href || isMusicSection;
