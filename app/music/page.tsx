@@ -1,5 +1,6 @@
 import SiteHeader from "../components/SiteHeader";
 import MusicAlbumTimeline from "../components/MusicAlbumTimeline";
+import MusicSectionTabs from "./MusicSectionTabs";
 import styles from "./music.module.css";
 
 export default function MusicPage() {
@@ -14,6 +15,8 @@ export default function MusicPage() {
             </h1>
             <div className={styles.titleRule} aria-hidden="true" />
           </header>
+
+          <MusicSectionTabs active="discography" />
 
           <MusicAlbumTimeline />
         </section>
