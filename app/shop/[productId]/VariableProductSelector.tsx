@@ -222,6 +222,17 @@ function collectProductImagesByOptionValue(
   return collectGalleryImages(images).filter((image) => imageMatchesOptionValue(image, selectedValue));
 }
 
+function getInitialSelectedOptions(attributes: VariableProductAttribute[]): SelectedOptions {
+  const firstAttribute = attributes[0];
+  if (!firstAttribute) return {};
+
+  const firstTerm = firstAttribute.terms?.find((term) => getOptionValue(term));
+  const firstValue = firstTerm ? getOptionValue(firstTerm) : "";
+  const firstKey = getAttributeKey(firstAttribute);
+
+  return firstKey && firstValue ? { [firstKey]: firstValue } : {};
+}
+
 export default function VariableProductSelector({
   product,
   variations,
@@ -243,7 +254,9 @@ export default function VariableProductSelector({
     () => variableAttributes.find(isColourAttribute),
     [variableAttributes],
   );
-  const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>({});
+  const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>(() =>
+    getInitialSelectedOptions(variableAttributes),
+  );
 
   const exactSelectedVariation = useMemo(() => {
     const hasAllOptions = variableAttributes.every((attribute) => selectedOptions[getAttributeKey(attribute)]);
