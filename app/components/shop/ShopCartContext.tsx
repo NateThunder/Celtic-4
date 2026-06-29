@@ -28,6 +28,12 @@ type WooCartItemImage = {
   thumbnail?: string;
 };
 
+type WooCartItemVariation = {
+  attribute?: string;
+  name?: string;
+  value?: string;
+};
+
 type WooCartItemPayload = {
   key?: string;
   id?: number;
@@ -39,6 +45,7 @@ type WooCartItemPayload = {
     price?: string;
   };
   totals?: WooCartItemTotals;
+  variation?: WooCartItemVariation[];
 };
 
 type WooCartTotalsPayload = WooCurrencyInfo & {
@@ -64,10 +71,17 @@ export type ShopCartItem = {
   imageSrc?: string;
   imageAlt?: string;
   quantity: number;
+  variationLabel?: string;
+};
+
+export type ShopCartVariationInput = {
+  attribute: string;
+  value: string;
 };
 
 export type ShopCartItemInput = Omit<ShopCartItem, "key" | "quantity"> & {
   quantity?: number;
+  variation?: ShopCartVariationInput[];
 };
 
 export type ShopCartTotals = {
@@ -156,6 +170,32 @@ function toMinorAmount(rawValue: unknown): number | null {
   return Number.isFinite(amount) ? amount : null;
 }
 
+function toTitleCaseFromSlug(value: string): string {
+  return value
+    .replace(/^attribute_/, "")
+    .replace(/^pa_/, "")
+    .replace(/[-_]+/g, " ")
+    .trim()
+    .replace(/\b\w/g, (match) => match.toUpperCase());
+}
+
+function getVariationOptionLabel(option: WooCartItemVariation): string {
+  const value = option.value?.trim();
+  if (value) return toTitleCaseFromSlug(value);
+
+  const attribute = option.attribute?.trim() || option.name?.trim() || "";
+  return attribute ? toTitleCaseFromSlug(attribute) : "";
+}
+
+function toVariationLabel(variation?: WooCartItemVariation[]): string {
+  if (!Array.isArray(variation)) return "";
+
+  return variation
+    .map(getVariationOptionLabel)
+    .filter(Boolean)
+    .join(" / ");
+}
+
 function hasNonZeroAmount(rawValue: unknown): boolean {
   const amount = toMinorAmount(rawValue);
   return amount !== null && Math.abs(amount) > 0;
@@ -190,6 +230,7 @@ function toShopCartItems(payload: WooCartPayload): ShopCartItem[] {
         imageSrc: image?.src || image?.thumbnail,
         imageAlt: image?.alt || item.name,
         quantity: Math.max(1, Math.round(item.quantity)),
+        variationLabel: toVariationLabel(item.variation),
       };
     });
 }
@@ -285,6 +326,7 @@ export function ShopCartProvider({ children }: { children: ReactNode }) {
           body: JSON.stringify({
             id: input.id,
             quantity,
+            variation: input.variation,
           }),
         });
         applyCartPayload(payload);

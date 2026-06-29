@@ -314,13 +314,25 @@ button.paymentOption:disabled {
   line-height: 1.32;
 }
 
+.summaryItemMeta {
+  min-width: 0;
+  display: grid;
+  gap: 0.18rem;
+}
+
+.summaryItemOptions {
+  color: #5c5c5c;
+  font-size: 0.88rem;
+  line-height: 1.3;
+}
+
 .summaryEmpty {
   margin: 0;
   color: #505050;
   font-size: 0.98rem;
 }
 
-.summaryItem span:last-child {
+.summaryItem > span:last-child {
   white-space: nowrap;
 }
 

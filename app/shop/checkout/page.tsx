@@ -433,7 +433,12 @@ export default function ShopCheckoutPage() {
                 {items.length > 0 ? (
                   items.map((item) => (
                     <li key={item.key} className={styles.summaryItem}>
-                      <span>{item.name}</span>
+                      <span className={styles.summaryItemMeta}>
+                        <span>{item.name}</span>
+                        {item.variationLabel ? (
+                          <span className={styles.summaryItemOptions}>{item.variationLabel}</span>
+                        ) : null}
+                      </span>
                       <span>
                         {item.quantity} x {item.price}
                       </span>

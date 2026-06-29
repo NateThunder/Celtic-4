@@ -163,6 +163,9 @@ export default function FloatingCartButton() {
                     >
                       {item.name}
                     </Link>
+                    {item.variationLabel ? (
+                      <p className={styles.cartDrawerItemOptions}>{item.variationLabel}</p>
+                    ) : null}
                     <p className={styles.cartDrawerItemPrice}>{item.price}</p>
                   </div>
 
