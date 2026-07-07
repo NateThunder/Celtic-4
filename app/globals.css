@@ -394,13 +394,16 @@ body {
   position: relative;
   isolation: isolate;
   width: 100%;
-  min-height: clamp(31rem, 50vw, 43rem);
+  /* try-video-lower: a taller hero + extra bottom padding gives the video
+     room to sit lower and leaves calm, dark breathing room at the bottom
+     so the hand-off into the events section feels gentler. */
+  min-height: clamp(35rem, 58vw, 49rem);
   margin: 0 auto;
   overflow: hidden;
   background: #11100d;
   color: #efe6d7;
   padding: clamp(4.2rem, 8.2vw, 7.6rem) clamp(1.35rem, 4.6vw, 4.1rem)
-    clamp(3.5rem, 7vw, 6.2rem);
+    clamp(5.5rem, 11vw, 9.5rem);
   display: grid;
   align-items: center;
 }
@@ -512,9 +515,13 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 45%;
-  /* The source file has baked-in pillarboxing, so the hero needs extra crop. */
-  transform: scale(1.34);
+  /* try-video-lower: bias the crop toward the lower half of the frame so the
+     focal point reads lower in the hero. */
+  object-position: center 34%;
+  /* The source file has baked-in pillarboxing, so the hero needs extra crop.
+     translateY nudges the whole video down the screen (the 1.34 scale leaves
+     ~17% of headroom top/bottom, so a ~7% drop stays fully covered). */
+  transform: scale(1.34) translateY(7%);
   transform-origin: center;
 }
 
