@@ -2910,3 +2910,39 @@ body.has-open-shop-cart-drawer {
     padding-block: 2rem;
   }
 }
+
+/* ============================================================
+   try-overlap: hero -> events overlap / parallax transition
+   The hero pins (sticky) while the black events section scrolls
+   up and interleaves over its bottom edge via a negative margin.
+   ============================================================ */
+.editorial-home-page .editorial-hero {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+}
+
+.editorial-home-page .home-events-section {
+  position: relative;
+  z-index: 1;
+  margin-top: clamp(-7rem, -6vw, -3.5rem);
+  border-top-left-radius: clamp(1rem, 2.4vw, 2.4rem);
+  border-top-right-radius: clamp(1rem, 2.4vw, 2.4rem);
+  box-shadow: 0 -34px 64px rgba(0, 0, 0, 0.55);
+}
+
+/* Everything after the overlapping events section sits above the
+   pinned hero too, so the pinned hero only ever shows through the
+   overlap gap at the very top of the scroll. */
+.editorial-home-page .editorial-release-section,
+.editorial-home-page .featured-video-section--editorial,
+.editorial-home-page .editorial-bottom-section {
+  position: relative;
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .editorial-home-page .editorial-hero {
+    position: relative;
+  }
+}
