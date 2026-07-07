@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Anton, Geist, Geist_Mono, Montserrat } from "next/font/google";
 import Script from "next/script";
+import "lenis/dist/lenis.css";
 import "./globals.css";
+import SmoothScrollProvider from "./components/SmoothScrollProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,7 +42,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${anton.variable} antialiased`}
       >
-        {children}
+        <SmoothScrollProvider>{children}</SmoothScrollProvider>
         <Script
           src="https://widgetv3.bandsintown.com/main.min.js"
           strategy="afterInteractive"
