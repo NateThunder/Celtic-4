@@ -516,13 +516,34 @@ body {
   /* The source file has baked-in pillarboxing, so the hero needs extra crop. */
   transform: scale(1.34);
   transform-origin: center;
+  /* try-fade: dissolve the bottom of the video so it melts into the
+     dark hero background (which matches the events section). */
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 80%,
+    rgba(0, 0, 0, 0) 100%
+  );
 }
 
 .editorial-hero-scrim {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: transparent;
+  /* try-fade: a bottom gradient into the events colour (#11100d) so the
+     seam between the hero and the black events section disappears. */
+  background: linear-gradient(
+    to bottom,
+    rgba(17, 16, 13, 0) 74%,
+    rgba(17, 16, 13, 0.6) 88%,
+    #11100d 100%
+  );
   pointer-events: none;
 }
 
