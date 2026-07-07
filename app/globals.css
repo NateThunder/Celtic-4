@@ -522,7 +522,13 @@ body {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: transparent;
+  /* try-scrub: gentle base into the events colour so the scroll-scrubbed
+     video fade resolves cleanly into the black events section. */
+  background: linear-gradient(
+    to bottom,
+    rgba(17, 16, 13, 0) 82%,
+    #11100d 100%
+  );
   pointer-events: none;
 }
 

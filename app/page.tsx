@@ -1,6 +1,7 @@
 import AlbumStack from "./components/AlbumStack";
 import BandsintownWidget from "./components/BandsintownWidget";
 import FeaturedVideo from "./components/FeaturedVideo";
+import HeroVideoScrub from "./components/HeroVideoScrub";
 import SiteHeader from "./components/SiteHeader";
 import Image from "next/image";
 import Link from "next/link";
@@ -52,16 +53,7 @@ export default function Home() {
 
       <main className="editorial-home-page">
         <section id="home" className="editorial-hero" aria-label="Celtic Worship home">
-          <video
-            className="editorial-hero-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-          >
-            <source src="/Sequence%2001_1.mp4" type="video/mp4" />
-          </video>
+          <HeroVideoScrub />
           <div className="editorial-hero-scrim" aria-hidden="true" />
 
           <div className="editorial-hero-copy">
