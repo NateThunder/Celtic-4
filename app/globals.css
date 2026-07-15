@@ -1485,39 +1485,128 @@ body {
 }
 
 .home-events-section {
-  min-height: auto;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  /* A major, near-full-height section of the page. */
+  min-height: 85vh;
+  min-height: 85dvh;
+  display: flex;
+  align-items: center;
   padding: clamp(4.4rem, 8vw, 7rem) clamp(1.35rem, 5vw, 4.6rem);
+  /* Begin with the exact colour the hero fade resolves to, so there is no
+     seam where the hero hands off to this section. */
   background-color: #11100d;
-  background-image:
-    linear-gradient(rgba(17, 16, 13, 0.9), rgba(17, 16, 13, 0.9)),
-    var(--charcoal-linen);
-  background-size: auto, 960px 540px;
   color: #efe6d7;
 }
 
-.home-events-section .live-events-inner {
+/* --- Background photography band --------------------------------------- */
+.home-events-band {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background-color: #11100d;
+  pointer-events: none;
+}
+
+.home-events-band-photos {
+  position: absolute;
+  inset: 0;
+  /* Dark atmospheric wash only — ~33% brightness and heavily desaturated so
+     the room is barely sensed and never competes with the poster artwork. */
+  filter: brightness(0.33) saturate(0.22);
+}
+
+/* Three photos overlap ~10% and fade at their meeting edges, cross-fading
+   into one continuous image. */
+.home-events-band-photo {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+}
+
+.home-events-band-photo--a {
+  left: 0;
+  width: 42%;
+  -webkit-mask-image: linear-gradient(to right, #000 62%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 62%, transparent 100%);
+}
+
+.home-events-band-photo--b {
+  left: 30%;
+  width: 44%;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 26%,
+    #000 74%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 26%,
+    #000 74%,
+    transparent 100%
+  );
+}
+
+.home-events-band-photo--c {
+  right: 0;
+  width: 42%;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 40%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 40%);
+}
+
+.home-events-band-overlay {
+  position: absolute;
+  inset: 0;
+  background-image:
+    /* Overall dark wash to push the photography right down into atmosphere. */
+    linear-gradient(
+      rgba(17, 16, 13, 0.5),
+      rgba(17, 16, 13, 0.5)
+    ),
+    /* Top and bottom fade into the section background (no hard edges). */
+    linear-gradient(
+      to bottom,
+      #11100d 0%,
+      rgba(17, 16, 13, 0) 22%,
+      rgba(17, 16, 13, 0) 76%,
+      #11100d 100%
+    );
+}
+
+/* --- Layout ----------------------------------------------------------- */
+.home-events-inner {
+  position: relative;
+  z-index: 1;
   width: min(1640px, 100%);
-  padding: 0;
+  margin: 0 auto;
 }
 
-.home-events-layout {
-  display: grid;
-  grid-template-columns: minmax(260px, 0.8fr) minmax(320px, 480px) minmax(320px, 1fr);
-  gap: clamp(2rem, 4vw, 3.8rem);
-  align-items: center;
-}
-
-.home-events-copy {
-  min-width: 0;
+/* Heading + "View All Events" run full width across the top of the section. */
+.home-events-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: clamp(1.2rem, 3vw, 2.4rem);
+  margin-bottom: clamp(2.4rem, 5vw, 4.4rem);
 }
 
 .home-events-section .live-events-title {
   margin: 0;
   color: #efe6d7;
-  font-size: clamp(2.35rem, 4.4vw, 4.7rem);
+  font-size: clamp(3rem, 7vw, 7rem);
   letter-spacing: 0;
-  line-height: 0.92;
+  line-height: 0.9;
   white-space: normal;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55);
 }
 
 .home-events-section .live-events-title span {
@@ -1529,7 +1618,6 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 3.55rem;
-  margin-top: clamp(1.1rem, 2vw, 1.8rem);
   padding: 0.95rem 1.65rem;
   background: #c97b12;
   color: #11100d;
@@ -1553,134 +1641,117 @@ body {
   outline-offset: 3px;
 }
 
-.home-events-image {
+/* --- Full-width row of poster cards (all four visible, no scrolling) --- */
+.home-events-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1.4rem, 2.6vw, 2.6rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.home-events-row-item {
+  min-width: 0;
+}
+
+.event-card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  transition: transform 220ms ease;
+}
+
+.event-card:hover {
+  transform: translateY(-8px);
+}
+
+.event-card-media {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-  border: 0;
-  background-color: #050504;
-  background-image:
-    linear-gradient(rgba(5, 5, 4, 0.68), rgba(5, 5, 4, 0.68)),
-    var(--charcoal-linen);
-  background-size: auto, 960px 540px;
+  /* All four posters render at a consistent 4:5 frame. */
+  aspect-ratio: 4 / 5;
   border-radius: 4px;
-  box-shadow:
-    0 22px 48px rgba(0, 0, 0, 0.5),
-    0 6px 16px rgba(0, 0, 0, 0.35);
-}
-
-.home-events-image-poster {
-  position: absolute;
-  margin: 0;
   overflow: hidden;
-  background: #11100d;
-  box-shadow: 0 18px 30px rgba(0, 0, 0, 0.38);
+  /* Large, soft shadow so the poster reads as a physical object with weight. */
+  box-shadow:
+    0 34px 70px rgba(0, 0, 0, 0.62),
+    0 12px 26px rgba(0, 0, 0, 0.45);
 }
 
-.home-events-image-poster img {
-  object-fit: contain;
-  background: #11100d;
+.event-card-poster {
+  /* Fill the 4:5 frame so every poster matches regardless of source ratio. */
+  object-fit: cover;
 }
 
-.home-events-image-poster--primary {
-  top: 8%;
-  left: 13%;
-  z-index: 2;
-  width: 38%;
-  aspect-ratio: 1639 / 2048;
-  transform: rotate(-3deg);
+.event-card-body {
+  padding-top: clamp(0.9rem, 1.6vw, 1.25rem);
 }
 
-.home-events-image-poster--secondary {
-  right: 13%;
-  bottom: 8%;
-  z-index: 1;
-  width: 35%;
-  aspect-ratio: 1880 / 2659;
-  transform: rotate(3.5deg);
-}
-
-.home-events-feed {
-  min-width: 0;
-  color: #efe6d7;
-}
-
-.home-events-section .bandsintown-widget-shell--home {
-  width: 100%;
-}
-
-.home-events-section .events-status {
-  color: #efe6d7;
-  font-size: clamp(1rem, 1.45vw, 1.35rem);
-  font-weight: 900;
-  line-height: 1.35;
-}
-
-.home-events-section .events-status-error {
-  color: #ffd4d4;
-}
-
-.home-events-section .events-list {
-  gap: 1rem;
-  border-top: 0;
-}
-
-.home-events-section .events-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1.35rem;
-  padding: clamp(1rem, 2vw, 1.28rem) 0;
-  border: 0;
-  border-bottom: 1px solid rgba(201, 123, 18, 0.48);
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-.home-events-section .events-datetime {
+.event-card-date {
+  margin: 0;
   color: #efe6d7;
   font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
-  font-size: clamp(0.98rem, 1.5vw, 1.22rem);
+  font-size: clamp(1rem, 1.4vw, 1.18rem);
   font-weight: 800;
-  line-height: 1.25;
-  text-transform: none;
+  letter-spacing: 0.02em;
 }
 
-.home-events-section .events-venue {
-  color: rgba(239, 230, 215, 0.76);
-  margin-top: 0.28rem;
-  font-size: clamp(0.9rem, 1.35vw, 1.1rem);
-  font-weight: 400;
-  letter-spacing: 0;
-  text-transform: none;
-}
-
-.home-events-section .events-ticket-link,
-.home-events-section .events-ticket-unavailable {
-  font-size: 0.9rem;
-  letter-spacing: 0.09em;
+.event-card-venue {
+  margin: 0.35rem 0 0;
+  color: #efe6d7;
+  font-size: clamp(0.95rem, 1.3vw, 1.08rem);
   font-weight: 700;
+  line-height: 1.3;
 }
 
-.home-events-section .events-ticket-link {
+.event-card-city {
+  margin: 0.12rem 0 0;
+  color: rgba(239, 230, 215, 0.72);
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  font-weight: 400;
+}
+
+.event-card-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: clamp(0.85rem, 1.6vw, 1.15rem);
+  padding: 0.72rem 1.2rem;
+  background: #c97b12;
   color: #11100d;
-  border: 1px solid #efe6d7;
-  border-radius: 0;
-  background: #efe6d7;
-  padding: 0.72rem 1.05rem;
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: transform 160ms ease, background-color 160ms ease;
 }
 
-.home-events-section .events-ticket-link:hover,
-.home-events-section .events-ticket-link:focus-visible {
-  background: #ffffff;
-  border-color: #ffffff;
-  color: #11100d;
+.event-card-cta:hover,
+.event-card-cta:focus-visible {
+  background: #d98a19;
+  transform: translateY(-1px);
 }
 
-.home-events-section .events-ticket-unavailable {
-  color: rgba(239, 230, 215, 0.62);
+.event-card-cta:focus-visible {
+  outline: 2px solid #efe6d7;
+  outline-offset: 3px;
+}
+
+.event-card-cta--disabled {
+  background: rgba(239, 230, 215, 0.16);
+  color: rgba(239, 230, 215, 0.7);
+  cursor: default;
+  pointer-events: none;
+}
+
+.home-events-empty {
+  margin: 0;
+  color: rgba(239, 230, 215, 0.8);
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  font-weight: 700;
 }
 
 .bandsintown-widget-shell {
@@ -2807,25 +2878,11 @@ body.has-open-shop-cart-drawer {
   }
 }
 
-@media (max-width: 900px) {
-  .home-events-layout {
-    grid-template-columns: 1fr;
-    gap: clamp(1.6rem, 5vw, 2.4rem);
-  }
-
-  .home-events-image {
-    width: min(100%, 34rem);
-    aspect-ratio: 16 / 11;
-  }
-
-  .home-events-image-poster--primary {
-    left: 16%;
-    width: 35%;
-  }
-
-  .home-events-image-poster--secondary {
-    right: 16%;
-    width: 32%;
+@media (max-width: 1100px) {
+  /* Four across gets cramped on tablets — wrap to a 2x2 grid. Still no
+     horizontal scrolling and nothing clipped. */
+  .home-events-row {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -2868,33 +2925,11 @@ body.has-open-shop-cart-drawer {
   }
 
   .home-events-section .live-events-title {
-    font-size: clamp(2.2rem, 12vw, 3.5rem);
+    font-size: clamp(2.6rem, 13vw, 4rem);
   }
 
-  .home-events-image {
-    aspect-ratio: 16 / 12;
-  }
-
-  .home-events-image-poster--primary {
-    top: 8%;
-    left: 10%;
-    width: 40%;
-  }
-
-  .home-events-image-poster--secondary {
-    right: 10%;
-    bottom: 8%;
-    width: 37%;
-  }
-
-  .home-events-section .events-item {
-    flex-direction: column;
+  .home-events-header {
     align-items: flex-start;
-  }
-
-  .home-events-section .events-ticket-link,
-  .home-events-section .events-ticket-unavailable {
-    width: fit-content;
   }
 
   .events-featured-card {

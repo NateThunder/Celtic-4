@@ -1,6 +1,6 @@
 import AlbumStack from "./components/AlbumStack";
-import BandsintownWidget from "./components/BandsintownWidget";
 import FeaturedVideo from "./components/FeaturedVideo";
+import HomeEvents from "./components/HomeEvents";
 import SiteHeader from "./components/SiteHeader";
 import Image from "next/image";
 import Link from "next/link";
@@ -79,44 +79,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="live-events" className="live-events-section home-events-section" aria-label="Live events">
-          <div className="live-events-inner">
-            <div className="home-events-layout">
-              <div className="home-events-copy">
-                <h2 className="live-events-title">
-                  Upcoming <span>Events</span>
-                </h2>
-                <Link className="home-events-link" href="/live-events">
-                  View All Events
-                </Link>
-              </div>
-
-              <div className="home-events-image" aria-label="Featured event posters">
-                <figure className="home-events-image-poster home-events-image-poster--primary">
-                  <Image
-                    src="/oh holy night poster.jpg"
-                    alt="O Holy Night presented by Celtic Worship and Zerua Music at O2 Academy Glasgow on 17 December 2026."
-                    fill
-                    sizes="(max-width: 900px) 42vw, 210px"
-                    priority
-                  />
-                </figure>
-                <figure className="home-events-image-poster home-events-image-poster--secondary">
-                  <Image
-                    src="/then sings poster.png"
-                    alt="Celtic Worship Then Sings My Soul events at St Luke's Glasgow and Charlotte Chapel Edinburgh."
-                    fill
-                    sizes="(max-width: 900px) 38vw, 190px"
-                  />
-                </figure>
-              </div>
-
-              <div className="home-events-feed">
-                <BandsintownWidget variant="home" />
-              </div>
-            </div>
-          </div>
-        </section>
+        <HomeEvents />
 
         <section id="music" className="editorial-release-section" aria-label="Latest release">
           <div className="editorial-release-inner">
