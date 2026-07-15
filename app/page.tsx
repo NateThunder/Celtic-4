@@ -52,17 +52,21 @@ export default function Home() {
 
       <main className="editorial-home-page">
         <section id="home" className="editorial-hero" aria-label="Celtic Worship home">
-          <video
-            className="editorial-hero-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-          >
-            <source src="/Sequence%2001_1.mp4" type="video/mp4" />
-          </video>
-          <div className="editorial-hero-scrim" aria-hidden="true" />
+          {/* The frame insets the video from the hero's edges and clips it to a
+              slight radius, so it reads as an object sitting on the section
+              colour rather than a full-bleed backdrop. */}
+          <div className="editorial-hero-frame">
+            <video
+              className="editorial-hero-video"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+            >
+              <source src="/Sequence%2001_1.mp4" type="video/mp4" />
+            </video>
+          </div>
 
           <div className="editorial-hero-copy">
             <h1 className="editorial-hero-title">
