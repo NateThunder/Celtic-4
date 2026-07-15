@@ -529,7 +529,17 @@ body {
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: transparent;
+  /* Dissolve the video into the black events section over the bottom ~25%.
+     The gradient resolves to the exact events background (#11100d) at 100%,
+     so there is no visible edge between the hero and the section below. */
+  background: linear-gradient(
+    to bottom,
+    rgba(17, 16, 13, 0) 74%,
+    rgba(17, 16, 13, 0.35) 84%,
+    rgba(17, 16, 13, 0.72) 92%,
+    rgba(17, 16, 13, 0.94) 97%,
+    #11100d 100%
+  );
   pointer-events: none;
 }
 
@@ -2821,7 +2831,14 @@ body.has-open-shop-cart-drawer {
   }
 
   .editorial-hero-scrim {
-    background: transparent;
+    background: linear-gradient(
+      to bottom,
+      rgba(17, 16, 13, 0) 74%,
+      rgba(17, 16, 13, 0.35) 84%,
+      rgba(17, 16, 13, 0.72) 92%,
+      rgba(17, 16, 13, 0.94) 97%,
+      #11100d 100%
+    );
   }
 
   .editorial-hero-title {
