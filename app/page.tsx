@@ -62,7 +62,6 @@ export default function Home() {
           >
             <source src="/Sequence%2001_1.mp4" type="video/mp4" />
           </video>
-          <div className="editorial-hero-scrim" aria-hidden="true" />
 
           <div className="editorial-hero-copy">
             <h1 className="editorial-hero-title">

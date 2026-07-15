@@ -534,23 +534,9 @@ body {
   transform-origin: center;
 }
 
-.editorial-hero-scrim {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  /* Dissolve the video into the black events section over the bottom ~25%.
-     The gradient resolves to the exact events background (#11100d) at 100%,
-     so there is no visible edge between the hero and the section below. */
-  background: linear-gradient(
-    to bottom,
-    rgba(17, 16, 13, 0) 74%,
-    rgba(17, 16, 13, 0.35) 84%,
-    rgba(17, 16, 13, 0.72) 92%,
-    rgba(17, 16, 13, 0.94) 97%,
-    #11100d 100%
-  );
-  pointer-events: none;
-}
+/* sep-hard-cut: no scrim. The video plays all the way to the hero's bottom
+   edge and the events section starts on the next pixel — a clean straight
+   cut with no dissolve. */
 
 .editorial-hero-rail {
   height: 100%;
@@ -1494,8 +1480,8 @@ body {
   display: flex;
   align-items: center;
   padding: clamp(4.4rem, 8vw, 7rem) clamp(1.35rem, 5vw, 4.6rem);
-  /* Begin with the exact colour the hero fade resolves to, so there is no
-     seam where the hero hands off to this section. */
+  /* sep-hard-cut: the hero's video now runs to a straight edge, and this
+     section's colour starts immediately beneath it. */
   background-color: #11100d;
   color: #efe6d7;
 }
@@ -2897,17 +2883,6 @@ body.has-open-shop-cart-drawer {
   .editorial-hero-video {
     object-position: 58% center;
     transform: scale(1.34);
-  }
-
-  .editorial-hero-scrim {
-    background: linear-gradient(
-      to bottom,
-      rgba(17, 16, 13, 0) 74%,
-      rgba(17, 16, 13, 0.35) 84%,
-      rgba(17, 16, 13, 0.72) 92%,
-      rgba(17, 16, 13, 0.94) 97%,
-      #11100d 100%
-    );
   }
 
   .editorial-hero-title {
