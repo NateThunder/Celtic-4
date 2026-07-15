@@ -28,6 +28,10 @@
      (as padding) to drop the video's bottom fade band lower on screen. Tune
      the fade position from this one number — larger = fade sits lower. */
   --hero-fade-drop: 180px;
+  /* sep-overlap: how far the events section rides up over the bottom of the
+     hero video. Tune the interleave from this one number — larger = the
+     events panel covers more of the video. */
+  --events-overlap: 130px;
 }
 
 @theme inline {
@@ -394,8 +398,21 @@ body {
   text-transform: uppercase;
 }
 
-.editorial-hero {
+/* sep-overlap: bounds the sticky hero. Because the hero's containing block is
+   this stage rather than <main>, the hero unpins as soon as the events section
+   has finished passing over it — the sections after it scroll normally and are
+   never covered by a hero left pinned behind them. */
+.hero-overlap-stage {
   position: relative;
+}
+
+.editorial-hero {
+  /* sep-overlap: the hero holds still at the top of the viewport while the
+     events section slides up over the bottom of the video, so the two
+     interleave instead of butting together. */
+  position: sticky;
+  top: 0;
+  z-index: 0;
   isolation: isolate;
   width: 100%;
   /* try-video-lower: a taller hero + extra bottom padding gives the video
@@ -534,23 +551,10 @@ body {
   transform-origin: center;
 }
 
-.editorial-hero-scrim {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  /* Dissolve the video into the black events section over the bottom ~25%.
-     The gradient resolves to the exact events background (#11100d) at 100%,
-     so there is no visible edge between the hero and the section below. */
-  background: linear-gradient(
-    to bottom,
-    rgba(17, 16, 13, 0) 74%,
-    rgba(17, 16, 13, 0.35) 84%,
-    rgba(17, 16, 13, 0.72) 92%,
-    rgba(17, 16, 13, 0.94) 97%,
-    #11100d 100%
-  );
-  pointer-events: none;
-}
+/* sep-overlap: no scrim. The old gradient resolved the bottom of the video to
+   #11100d — the events section's own colour — which would hide the overlap
+   completely. The video stays lit right up to the edge the events panel
+   crosses, so the interleave is visible. */
 
 .editorial-hero-rail {
   height: 100%;
@@ -1486,6 +1490,13 @@ body {
 
 .home-events-section {
   position: relative;
+  /* sep-overlap: ride up over the bottom of the pinned hero and paint above
+     it, so the video is still running behind this section's top edge. */
+  z-index: 1;
+  margin-top: calc(-1 * var(--events-overlap));
+  /* Depth at the leading edge, so the panel reads as sliding over the video
+     rather than being cut into it. */
+  box-shadow: 0 -30px 60px -20px rgba(0, 0, 0, 0.85);
   isolation: isolate;
   overflow: hidden;
   /* A major, near-full-height section of the page. */
@@ -1494,8 +1505,6 @@ body {
   display: flex;
   align-items: center;
   padding: clamp(4.4rem, 8vw, 7rem) clamp(1.35rem, 5vw, 4.6rem);
-  /* Begin with the exact colour the hero fade resolves to, so there is no
-     seam where the hero hands off to this section. */
   background-color: #11100d;
   color: #efe6d7;
 }
@@ -2897,17 +2906,6 @@ body.has-open-shop-cart-drawer {
   .editorial-hero-video {
     object-position: 58% center;
     transform: scale(1.34);
-  }
-
-  .editorial-hero-scrim {
-    background: linear-gradient(
-      to bottom,
-      rgba(17, 16, 13, 0) 74%,
-      rgba(17, 16, 13, 0.35) 84%,
-      rgba(17, 16, 13, 0.72) 92%,
-      rgba(17, 16, 13, 0.94) 97%,
-      #11100d 100%
-    );
   }
 
   .editorial-hero-title {

@@ -51,35 +51,39 @@ export default function Home() {
       <SiteHeader />
 
       <main className="editorial-home-page">
-        <section id="home" className="editorial-hero" aria-label="Celtic Worship home">
-          <video
-            className="editorial-hero-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-          >
-            <source src="/Sequence%2001_1.mp4" type="video/mp4" />
-          </video>
-          <div className="editorial-hero-scrim" aria-hidden="true" />
+        {/* The stage is the sticky hero's containing block, so the hero stays
+            pinned only while the events section is climbing over it and
+            releases once the stage has scrolled past. */}
+        <div className="hero-overlap-stage">
+          <section id="home" className="editorial-hero" aria-label="Celtic Worship home">
+            <video
+              className="editorial-hero-video"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+            >
+              <source src="/Sequence%2001_1.mp4" type="video/mp4" />
+            </video>
 
-          <div className="editorial-hero-copy">
-            <h1 className="editorial-hero-title">
-              <span>Celtic Worship Is</span>
-              <span className="is-gold">A Christ-Centred</span>
-              <span className="is-gold">Worship Collective</span>
-            </h1>
-            <p className="editorial-hero-subtitle">
-              Writing and leading songs for the church through the sounds of Scotland.
-            </p>
-            <Link className="editorial-button editorial-button--gold" href="/music">
-              Listen Now
-            </Link>
-          </div>
-        </section>
+            <div className="editorial-hero-copy">
+              <h1 className="editorial-hero-title">
+                <span>Celtic Worship Is</span>
+                <span className="is-gold">A Christ-Centred</span>
+                <span className="is-gold">Worship Collective</span>
+              </h1>
+              <p className="editorial-hero-subtitle">
+                Writing and leading songs for the church through the sounds of Scotland.
+              </p>
+              <Link className="editorial-button editorial-button--gold" href="/music">
+                Listen Now
+              </Link>
+            </div>
+          </section>
 
-        <HomeEvents />
+          <HomeEvents />
+        </div>
 
         <section id="music" className="editorial-release-section" aria-label="Latest release">
           <div className="editorial-release-inner">
