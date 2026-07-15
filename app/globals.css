@@ -24,6 +24,10 @@
   --header-link: rgba(255, 255, 255, 0.93);
   --header-link-hover: #ffffff;
   --header-link-active: #ffffff;
+  /* try-video-lower: how much extra height is added to the bottom of the hero
+     (as padding) to drop the video's bottom fade band lower on screen. Tune
+     the fade position from this one number — larger = fade sits lower. */
+  --hero-fade-drop: 180px;
 }
 
 @theme inline {
@@ -396,14 +400,19 @@ body {
   width: 100%;
   /* try-video-lower: a taller hero + extra bottom padding gives the video
      room to sit lower and leaves calm, dark breathing room at the bottom
-     so the hand-off into the events section feels gentler. */
-  min-height: clamp(35rem, 58vw, 49rem);
+     so the hand-off into the events section feels gentler. The +100px of
+     min-height lets the bottom fade band sit lower on screen while the
+     gradient keeps its original ~200px softness. The additional
+     --hero-fade-drop is applied as padding-bottom (not min-height) so the hero
+     grows at the bottom — dropping the fade by that amount — without shifting
+     the vertically-centred copy, whose centring box is min-height. */
+  min-height: calc(clamp(35rem, 58vw, 49rem) + 100px);
   margin: 0 auto;
   overflow: hidden;
   background: #11100d;
   color: #efe6d7;
   padding: clamp(4.2rem, 8.2vw, 7.6rem) clamp(1.35rem, 4.6vw, 4.1rem)
-    clamp(5.5rem, 11vw, 9.5rem);
+    calc(clamp(5.5rem, 11vw, 9.5rem) + var(--hero-fade-drop));
   display: grid;
   align-items: center;
 }
@@ -2822,7 +2831,10 @@ body.has-open-shop-cart-drawer {
 
 @media (max-width: 700px) {
   .editorial-hero {
-    min-height: 34rem;
+    min-height: calc(34rem + 100px);
+    /* Extra --hero-fade-drop added at the bottom via padding so the fade drops
+       without moving the centred copy (see the base .editorial-hero rule). */
+    padding-bottom: calc(clamp(3rem, 10vw, 5rem) + var(--hero-fade-drop));
   }
 
   .editorial-hero-video {
