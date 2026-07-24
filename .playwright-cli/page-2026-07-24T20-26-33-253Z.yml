@@ -1,0 +1,125 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - banner [ref=f1e3]:
+      - link "Celtic Worship" [ref=f1e4] [cursor=pointer]:
+        - /url: "#home"
+      - generic "Social links" [ref=f1e6]:
+        - link "Spotify" [ref=f1e7] [cursor=pointer]:
+          - /url: https://open.spotify.com/artist/0h2AQKpVBEEXQQ03KGf7ep?si=9eAa0Ik8Rmm2Nip-K8Y-Kg
+        - link "YouTube" [ref=f1e10] [cursor=pointer]:
+          - /url: https://www.youtube.com/CelticWorshipMusic
+        - link "Instagram" [ref=f1e13] [cursor=pointer]:
+          - /url: https://www.instagram.com/celtic_worship
+      - navigation "Main" [ref=f1e16]:
+        - link "Home" [ref=f1e17] [cursor=pointer]:
+          - /url: "#home"
+        - link "Music" [ref=f1e18] [cursor=pointer]:
+          - /url: /music
+        - link "Charts" [ref=f1e19] [cursor=pointer]:
+          - /url: /music/charts
+        - link "Events" [ref=f1e20] [cursor=pointer]:
+          - /url: /live-events
+        - link "Videos" [ref=f1e21] [cursor=pointer]:
+          - /url: /videos
+        - link "Shop" [ref=f1e22] [cursor=pointer]:
+          - /url: /shop
+        - link "About" [ref=f1e23] [cursor=pointer]:
+          - /url: /about
+    - main [ref=f1e24]:
+      - region "Celtic Worship home" [ref=f1e25]:
+        - generic [ref=f1e27]:
+          - paragraph [ref=f1e28]: Songs for the church · Sounds of Scotland
+          - heading "Celtic Worship" [level=1] [ref=f1e29]:
+            - generic [ref=f1e30]: Celtic
+            - generic [ref=f1e31]: Worship
+          - paragraph [ref=f1e32]: A Christ-centred worship collective.
+          - generic [ref=f1e33]:
+            - link "Listen Now" [ref=f1e34] [cursor=pointer]:
+              - /url: /music
+            - link "See us live" [ref=f1e35] [cursor=pointer]:
+              - /url: /live-events
+        - paragraph [ref=f1e36]: Scroll to discover
+      - region "Upcoming live events" [ref=f1e37]:
+        - generic [ref=f1e38]:
+          - generic [ref=f1e39]:
+            - heading "Upcoming Events" [level=2] [ref=f1e40]
+            - link "View All Events" [ref=f1e41] [cursor=pointer]:
+              - /url: /live-events
+          - list [ref=f1e42]:
+            - listitem [ref=f1e43]:
+              - article [ref=f1e44]:
+                - img "Saint Luke's, Glasgow — 07 Aug 2026" [ref=f1e46]
+                - generic [ref=f1e47]:
+                  - paragraph [ref=f1e48]: 07 Aug 2026
+                  - paragraph [ref=f1e49]: Saint Luke's
+                  - paragraph [ref=f1e50]: Glasgow
+                  - link "Get Tickets" [ref=f1e51] [cursor=pointer]:
+                    - /url: https://www.bandsintown.com/t/108488330?app_id=js_celticworship.co.uk&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket
+            - listitem [ref=f1e52]:
+              - article [ref=f1e53]:
+                - img "Charlotte Chapel, Edinburgh — 08 Aug 2026" [ref=f1e55]
+                - generic [ref=f1e56]:
+                  - paragraph [ref=f1e57]: 08 Aug 2026
+                  - paragraph [ref=f1e58]: Charlotte Chapel
+                  - paragraph [ref=f1e59]: Edinburgh
+                  - link "Get Tickets" [ref=f1e60] [cursor=pointer]:
+                    - /url: https://www.bandsintown.com/t/108488319?app_id=js_celticworship.co.uk&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket
+            - listitem [ref=f1e61]:
+              - article [ref=f1e62]:
+                - img "Big Church Festival 2026, Steyning — 28 Aug 2026" [ref=f1e64]
+                - generic [ref=f1e65]:
+                  - paragraph [ref=f1e66]: 28 Aug 2026
+                  - paragraph [ref=f1e67]: Big Church Festival 2026
+                  - paragraph [ref=f1e68]: Steyning
+                  - link "Get Tickets" [ref=f1e69] [cursor=pointer]:
+                    - /url: https://www.bandsintown.com/t/108038882?app_id=js_celticworship.co.uk&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket
+            - listitem [ref=f1e70]:
+              - article [ref=f1e71]:
+                - img "O2 Academy Glasgow, Glasgow — 17 Dec 2026" [ref=f1e73]
+                - generic [ref=f1e74]:
+                  - paragraph [ref=f1e75]: 17 Dec 2026
+                  - paragraph [ref=f1e76]: O2 Academy Glasgow
+                  - paragraph [ref=f1e77]: Glasgow
+                  - link "Get Tickets" [ref=f1e78] [cursor=pointer]:
+                    - /url: https://www.bandsintown.com/t/1039146958?app_id=js_celticworship.co.uk&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket
+      - region "Latest release" [ref=f1e79]:
+        - generic [ref=f1e80]:
+          - button "Stacked albums" [ref=f1e82] [cursor=pointer]:
+            - figure [ref=f1e83]:
+              - img "Celtic Worship Homeward album art" [ref=f1e84]
+            - figure [ref=f1e85]:
+              - img "Celtic Worship Morningtide album art" [ref=f1e86]
+            - figure [ref=f1e87]:
+              - img "Celtic Worship Come Behold album art" [ref=f1e88]
+            - figure [ref=f1e89]:
+              - img "Celtic Worship Harvest album art" [ref=f1e90]
+          - generic [ref=f1e91]:
+            - paragraph [ref=f1e92]: New Release
+            - heading "Celtic Worship - Harvest" [level=2] [ref=f1e93]
+            - generic "Listen to Harvest" [ref=f1e94]:
+              - link "Spotify" [ref=f1e95] [cursor=pointer]:
+                - /url: https://open.spotify.com/album/1wHT87ZTsVzWlHBPl068YZ
+              - link "Music" [ref=f1e99] [cursor=pointer]:
+                - /url: https://music.apple.com/us/album/harvest/1843396548
+              - link "YouTube" [ref=f1e103] [cursor=pointer]:
+                - /url: https://www.youtube.com/playlist?list=OLAK5uy_l8_ItN9BtXWp2pnL6sTJjHMxzSsPbk3Nc
+            - paragraph [ref=f1e107]: Available on all platforms
+      - region "Featured video" [ref=f1e108]:
+        - generic [ref=f1e109]:
+          - 'button "Play video: I Need Thee (Official Music Video) | Celtic Worship (feat. Zerua Music)" [ref=f1e111] [cursor=pointer]'
+          - heading "I Need Thee (Official Music Video) | Celtic Worship (feat. Zerua Music)" [level=2] [ref=f1e115]
+      - region "About and updates" [ref=f1e116]:
+        - group [ref=f1e119]:
+          - heading "Stay in the Loop" [level=2] [ref=f1e120]
+          - paragraph [ref=f1e121]: Get updates on new music, events, and more.
+          - generic [ref=f1e122]: Email address
+          - textbox "Email address" [ref=f1e123]:
+            - /placeholder: Your email address
+          - button "Subscribe" [ref=f1e124]
+    - contentinfo "Shop Celtic Worship" [ref=f1e125]:
+      - heading "Take Celtic Worship Home" [level=2] [ref=f1e126]
+      - paragraph [ref=f1e127]: Browse apparel, music, and more from the official Celtic Worship store.
+      - link "Shop Now" [ref=f1e128] [cursor=pointer]:
+        - /url: /shop
+  - button "Open Next.js Dev Tools" [ref=f1e134] [cursor=pointer]
+  - alert [ref=f1e138]

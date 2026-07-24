@@ -1,0 +1,42 @@
+- generic [active] [ref=f6e1]:
+  - generic [ref=f6e2]:
+    - banner [ref=f6e3]:
+      - link "Celtic Worship" [ref=f6e4] [cursor=pointer]:
+        - /url: /#home
+      - generic "Social links" [ref=f6e6]:
+        - link "Spotify" [ref=f6e7] [cursor=pointer]:
+          - /url: https://open.spotify.com/artist/0h2AQKpVBEEXQQ03KGf7ep?si=9eAa0Ik8Rmm2Nip-K8Y-Kg
+        - link "YouTube" [ref=f6e10] [cursor=pointer]:
+          - /url: https://www.youtube.com/CelticWorshipMusic
+        - link "Instagram" [ref=f6e13] [cursor=pointer]:
+          - /url: https://www.instagram.com/celtic_worship
+      - navigation "Main" [ref=f6e16]:
+        - link "Home" [ref=f6e17] [cursor=pointer]:
+          - /url: /#home
+        - link "Music" [ref=f6e18] [cursor=pointer]:
+          - /url: /music
+        - link "Charts" [ref=f6e19] [cursor=pointer]:
+          - /url: /music/charts
+        - link "Events" [ref=f6e20] [cursor=pointer]:
+          - /url: /live-events
+        - link "Videos" [ref=f6e21] [cursor=pointer]:
+          - /url: /videos
+        - link "Shop" [ref=f6e22] [cursor=pointer]:
+          - /url: /shop
+        - link "About" [ref=f6e23] [cursor=pointer]:
+          - /url: /about
+    - main [ref=f6e24]:
+      - generic [ref=f6e25]:
+        - heading "About The Band" [level=2] [ref=f6e26]
+        - paragraph [ref=f6e27]: Celtic Worship is an authentic expression of sung worship deeply rooted in the sound and traditions of Scottish music. As a collective of some of Scotland's finest contemporary musicians, they share a deep desire to use their skills and giftings to praise and make known Jesus Christ. Exploring psalms, hymns and new songs, their uniquely powerful pipes-and-fiddle-led sound communicates the full range and depth of the Gospel.
+        - paragraph [ref=f6e28]: Since starting their journey in 2016, the group have released several studio albums, played all over Scotland, the UK, and Europe, and had numerous television and radio appearances.
+        - paragraph [ref=f6e29]: 2025 marks the release of 'Harvest', the group's 4th studio album, written and arranged at a family farm in Morayshire. Surrounded by fields ripe for harvest, the band drew deeply from the rich biblical vein of harvest imagery to celebrate God's faithfulness, His promises, and new life in Christ. Inspired by golden landscapes and long summer days at Cowfords Farm, Harvest reflects both the physical beauty of the season and a deeper sense of spiritual growth for the band.
+        - heading "Members" [level=3] [ref=f6e30]
+        - paragraph [ref=f6e31]: Naomi Stirrat - Vocals & Guitar
+        - paragraph [ref=f6e32]: David Hogg - Vocals & Guitar
+        - paragraph [ref=f6e33]: Chris Amer - Guitars
+        - paragraph [ref=f6e34]: Mhairi Marwick - Fiddle
+        - paragraph [ref=f6e35]: Gus Stirrat - Bass
+        - paragraph [ref=f6e36]: Ifedade Thomas - Drums
+  - button "Open Next.js Dev Tools" [ref=f6e42] [cursor=pointer]
+  - alert [ref=f6e46]

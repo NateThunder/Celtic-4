@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getUpcomingEvents, type HomeEvent } from "../lib/events";
+import type { HomeEvent } from "../lib/events";
 
 // The three background photos, laid side by side and cross-faded into one
 // continuous, heavily-dimmed atmospheric band behind the section.
@@ -45,9 +45,8 @@ function EventCard({ event }: { event: HomeEvent }) {
   );
 }
 
-export default async function HomeEvents() {
-  const events = await getUpcomingEvents();
-
+export default function HomeEvents({ events }: { events: HomeEvent[] }) {
+  const visibleEvents = events.slice(0, 4);
   return (
     <section
       id="live-events"
@@ -79,9 +78,9 @@ export default async function HomeEvents() {
           </Link>
         </div>
 
-        {events.length > 0 ? (
+        {visibleEvents.length > 0 ? (
           <ul className="home-events-row">
-            {events.map((event) => (
+            {visibleEvents.map((event) => (
               <li key={event.id} className="home-events-row-item">
                 <EventCard event={event} />
               </li>

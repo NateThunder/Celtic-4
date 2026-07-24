@@ -1,0 +1,213 @@
+- generic [active] [ref=e1]:
+  - region [ref=e2]:
+    - generic [ref=e5]:
+      - paragraph [ref=e7]:
+        - text: We use cookies to improve your experience and for analytics. Learn more in our
+        - link "Cookie Policy" [ref=e8] [cursor=pointer]:
+          - /url: https://vanmorrison.com/cookie-policy
+        - text: .
+      - generic [ref=e9]:
+        - button "Customise" [ref=e10] [cursor=pointer]
+        - button "Reject All" [ref=e11] [cursor=pointer]
+        - button "Accept All" [ref=e12] [cursor=pointer]
+  - generic [ref=e14]:
+    - main [ref=e15]:
+      - region "Homepage hero" [ref=e17]:
+        - heading "VAN MORRISON" [level=1] [ref=e22]
+      - generic [ref=e27]:
+        - heading "The Music" [level=2]
+      - region [ref=e29]:
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - paragraph [ref=e34]: EXCLUSIVE on-demand access
+            - heading "Concert Vault" [level=2] [ref=e35]
+            - generic [ref=e36]: A curated archive of exclusive, full-length filmed live concerts
+          - article [ref=e38]:
+            - generic [ref=e39]:
+              - 'link "View Astral Weeks: Live At The Hollywood Bowl" [ref=e40] [cursor=pointer]':
+                - /url: https://vanmorrison.com/concert-vault/astral-weeks-live-at-the-hollywood-bowl
+                - 'img "Astral Weeks: Live At The Hollywood Bowl" [ref=e42]'
+              - generic [ref=e47]:
+                - generic [ref=e48]:
+                  - paragraph [ref=e49]: Full Concert
+                  - heading [level=2] [ref=e50]:
+                    - 'link "Astral Weeks: Live At The Hollywood Bowl" [ref=e51] [cursor=pointer]':
+                      - /url: https://vanmorrison.com/concert-vault/astral-weeks-live-at-the-hollywood-bowl
+                  - paragraph [ref=e52]: Los Angeles, November 2008
+                - link "Access for 7 Days - $20" [ref=e54] [cursor=pointer]:
+                  - /url: https://vanmorrison.com/concert-vault/astral-weeks-live-at-the-hollywood-bowl
+                  - generic [ref=e55]:
+                    - text: Access for 7 Days -
+                    - generic [ref=e56]: $20
+          - link "All concerts" [ref=e61] [cursor=pointer]:
+            - /url: https://vanmorrison.com/concert-vault
+      - heading "Latest News" [level=2] [ref=e65]
+      - generic [ref=e67]:
+        - generic [ref=e68]:
+          - heading "Orangefield Records" [level=2] [ref=e69]
+          - paragraph [ref=e70]: A label driven by independence, integrity and creative control.
+          - generic [ref=e71]:
+            - link "About Label" [ref=e72] [cursor=pointer]:
+              - /url: https://vanmorrison.com/orangefield-records
+            - link "Store" [ref=e73] [cursor=pointer]:
+              - /url: https://vanmorrison.com/store
+        - generic [ref=e76]:
+          - 'link "Beyond Words: Instrumental" [ref=e77] [cursor=pointer]':
+            - /url: https://vanmorrison.com/music/beyond-words-instrumental
+          - link "Live at Orangefield" [ref=e78] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/live-at-orangefield
+          - link "Somebody Tried To Sell Me A Bridge" [ref=e79] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/somebody-tried-to-sell-me-a-bridge
+          - 'link "Beyond Words: Instrumental" [ref=e80] [cursor=pointer]':
+            - /url: https://vanmorrison.com/music/beyond-words-instrumental
+          - link "Live at Orangefield" [ref=e81] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/live-at-orangefield
+          - link "Somebody Tried To Sell Me A Bridge" [ref=e82] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/somebody-tried-to-sell-me-a-bridge
+          - 'link "Beyond Words: Instrumental" [ref=e83] [cursor=pointer]':
+            - /url: https://vanmorrison.com/music/beyond-words-instrumental
+          - link "Live at Orangefield" [ref=e84] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/live-at-orangefield
+          - link "Somebody Tried To Sell Me A Bridge" [ref=e85] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/somebody-tried-to-sell-me-a-bridge
+          - 'link "Beyond Words: Instrumental" [ref=e86] [cursor=pointer]':
+            - /url: https://vanmorrison.com/music/beyond-words-instrumental
+          - link "Live at Orangefield" [ref=e87] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/live-at-orangefield
+          - link "Somebody Tried To Sell Me A Bridge" [ref=e88] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/somebody-tried-to-sell-me-a-bridge
+          - 'link "Beyond Words: Instrumental" [ref=e89] [cursor=pointer]':
+            - /url: https://vanmorrison.com/music/beyond-words-instrumental
+          - link "Live at Orangefield" [ref=e90] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/live-at-orangefield
+          - link "Somebody Tried To Sell Me A Bridge" [ref=e91] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/somebody-tried-to-sell-me-a-bridge
+          - 'link "Beyond Words: Instrumental" [ref=e92] [cursor=pointer]':
+            - /url: https://vanmorrison.com/music/beyond-words-instrumental
+          - link "Live at Orangefield" [ref=e93] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/live-at-orangefield
+          - link "Somebody Tried To Sell Me A Bridge" [ref=e94] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/somebody-tried-to-sell-me-a-bridge
+          - 'link "Beyond Words: Instrumental" [ref=e95] [cursor=pointer]':
+            - /url: https://vanmorrison.com/music/beyond-words-instrumental
+          - link "Live at Orangefield" [ref=e96] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/live-at-orangefield
+          - link "Somebody Tried To Sell Me A Bridge" [ref=e97] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/somebody-tried-to-sell-me-a-bridge
+          - 'link "Beyond Words: Instrumental" [ref=e98] [cursor=pointer]':
+            - /url: https://vanmorrison.com/music/beyond-words-instrumental
+          - link "Live at Orangefield" [ref=e99] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/live-at-orangefield
+          - link "Somebody Tried To Sell Me A Bridge" [ref=e100] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/somebody-tried-to-sell-me-a-bridge
+          - 'link "Beyond Words: Instrumental" [ref=e101] [cursor=pointer]':
+            - /url: https://vanmorrison.com/music/beyond-words-instrumental
+          - link "Live at Orangefield" [ref=e102] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/live-at-orangefield
+          - link "Somebody Tried To Sell Me A Bridge" [ref=e103] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/somebody-tried-to-sell-me-a-bridge
+          - 'link "Beyond Words: Instrumental" [ref=e104] [cursor=pointer]':
+            - /url: https://vanmorrison.com/music/beyond-words-instrumental
+          - link "Live at Orangefield" [ref=e105] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/live-at-orangefield
+          - link "Somebody Tried To Sell Me A Bridge" [ref=e106] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/somebody-tried-to-sell-me-a-bridge
+          - 'link "Beyond Words: Instrumental" [ref=e107] [cursor=pointer]':
+            - /url: https://vanmorrison.com/music/beyond-words-instrumental
+          - link "Live at Orangefield" [ref=e108] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/live-at-orangefield
+          - link "Somebody Tried To Sell Me A Bridge" [ref=e109] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/somebody-tried-to-sell-me-a-bridge
+          - 'link "Beyond Words: Instrumental" [ref=e110] [cursor=pointer]':
+            - /url: https://vanmorrison.com/music/beyond-words-instrumental
+          - link "Live at Orangefield" [ref=e111] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/live-at-orangefield
+          - link "Somebody Tried To Sell Me A Bridge" [ref=e112] [cursor=pointer]:
+            - /url: https://vanmorrison.com/music/somebody-tried-to-sell-me-a-bridge
+    - generic [ref=e115]:
+      - generic [ref=e116]:
+        - heading "Join our Community" [level=2] [ref=e117]
+        - paragraph [ref=e118]: Sign up to receive exclusive updates on Van’s music, tours and latest news.
+      - generic [ref=e120]:
+        - textbox [ref=e121]
+        - generic [ref=e122]:
+          - generic [ref=e123]:
+            - generic [ref=e124]: First Name
+            - textbox "First Name*" [ref=e125]
+          - generic [ref=e126]:
+            - generic [ref=e127]: Last Name
+            - textbox "Last Name*" [ref=e128]
+        - generic [ref=e130]:
+          - generic [ref=e131]: Email
+          - textbox "Email*" [ref=e132]
+        - button "Sign Up" [ref=e134] [cursor=pointer]
+        - generic [ref=e137]:
+          - checkbox "I agree to be contacted by email for marketing purposes from vanmorrison.com. For further information see our Privacy Policy" [ref=e138] [cursor=pointer]
+          - generic [ref=e139]:
+            - text: I agree to be contacted by email for marketing purposes from vanmorrison.com. For further information see our
+            - link "Privacy Policy" [ref=e140] [cursor=pointer]:
+              - /url: https://vanmorrison.com/privacy-policy
+    - contentinfo "Site footer" [ref=e141]:
+      - paragraph: Van Morrison
+      - generic [ref=e142]:
+        - navigation "Footer navigation" [ref=e143]:
+          - list [ref=e144]:
+            - listitem [ref=e145]:
+              - link "Home" [ref=e146] [cursor=pointer]:
+                - /url: https://vanmorrison.com/
+            - listitem [ref=e147]:
+              - link "Shows" [ref=e148] [cursor=pointer]:
+                - /url: https://vanmorrison.com/live
+            - listitem [ref=e149]:
+              - link "Music" [ref=e150] [cursor=pointer]:
+                - /url: https://vanmorrison.com/music
+            - listitem [ref=e151]:
+              - link "News" [ref=e152] [cursor=pointer]:
+                - /url: https://vanmorrison.com/news
+            - listitem [ref=e153]:
+              - link "Concert Vault" [ref=e154] [cursor=pointer]:
+                - /url: /concert-vault
+            - listitem [ref=e155]:
+              - link "Orangefield Records" [ref=e156] [cursor=pointer]:
+                - /url: https://vanmorrison.com/orangefield-records
+            - listitem [ref=e157]:
+              - link "Fans" [ref=e158] [cursor=pointer]:
+                - /url: https://vanmorrison.com/fans
+            - listitem [ref=e159]:
+              - link "About" [ref=e160] [cursor=pointer]:
+                - /url: https://vanmorrison.com/about
+            - listitem [ref=e161]:
+              - link "Store" [ref=e162] [cursor=pointer]:
+                - /url: https://vanmorrison.com/store
+        - list "Follow Van Morrison on social media" [ref=e163]:
+          - listitem [ref=e164]:
+            - link "Van Morrison on Spotify" [ref=e165] [cursor=pointer]:
+              - /url: https://open.spotify.com/artist/44NX2ffIYHr6D4n7RaZF7A
+          - listitem [ref=e168]:
+            - link "Van Morrison on Apple Music" [ref=e169] [cursor=pointer]:
+              - /url: https://music.apple.com/gb/artist/van-morrison/253638
+          - listitem [ref=e172]:
+            - link "Van Morrison on Amazon Music" [ref=e173] [cursor=pointer]:
+              - /url: https://music.amazon.co.uk/artists/B001E2ZA5I
+          - listitem [ref=e176]:
+            - link "Van Morrison on YouTube" [ref=e177] [cursor=pointer]:
+              - /url: https://www.youtube.com/channel/UCEaleBSrSBDmm3VFKgpDsgA
+        - generic [ref=e180]:
+          - paragraph [ref=e181]: Copyright © 2026 Exile Productions LTD. All Rights Reserved.
+          - list [ref=e182]:
+            - listitem [ref=e183]:
+              - link "Terms & Conditions" [ref=e184] [cursor=pointer]:
+                - /url: https://vanmorrison.com/terms-conditions
+            - listitem [ref=e185]:
+              - link "Privacy Policy" [ref=e186] [cursor=pointer]:
+                - /url: https://vanmorrison.com/privacy-policy
+            - listitem [ref=e187]:
+              - link "Cookie Policy" [ref=e188] [cursor=pointer]:
+                - /url: https://vanmorrison.com/cookie-policy
+            - listitem [ref=e189]:
+              - button "Manage Cookies" [ref=e190] [cursor=pointer]
+          - paragraph [ref=e191]:
+            - text: Website by
+            - link "Eyekiller" [ref=e192] [cursor=pointer]:
+              - /url: https://www.eyekiller.com
+  - paragraph [ref=e194] [cursor=pointer]: Please accept cookies to access this content

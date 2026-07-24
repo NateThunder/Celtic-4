@@ -12,6 +12,7 @@ type FeaturedVideoProps = {
   description?: string;
   ctaLabel?: string;
   watchUrl?: string;
+  preferFallbackTitle?: boolean;
 };
 
 export default function FeaturedVideo({
@@ -23,6 +24,7 @@ export default function FeaturedVideo({
   description,
   ctaLabel = "Watch on YouTube",
   watchUrl,
+  preferFallbackTitle = false,
 }: FeaturedVideoProps) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [fetchedTitle, setFetchedTitle] = useState<{ videoId: string; title: string } | null>(null);
@@ -84,7 +86,8 @@ export default function FeaturedVideo({
     return () => controller.abort();
   }, [videoId]);
 
-  const resolvedTitle = fetchedTitle?.videoId === videoId ? fetchedTitle.title : fallbackTitle;
+  const resolvedTitle =
+    !preferFallbackTitle && fetchedTitle?.videoId === videoId ? fetchedTitle.title : fallbackTitle;
   const thumbnailIndex = thumbnailState.videoId === videoId ? thumbnailState.index : 0;
   const thumbnailSrc = thumbnailSources[Math.min(thumbnailIndex, thumbnailSources.length - 1)];
   const resolvedWatchUrl = watchUrl || `https://www.youtube.com/watch?v=${videoId}`;

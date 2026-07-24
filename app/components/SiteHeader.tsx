@@ -50,6 +50,7 @@ const MOBILE_DRAWER_MAX_WIDTH = 1024;
 
 type SiteHeaderProps = {
   hideMobileSocials?: boolean;
+  variant?: "default" | "home";
 };
 
 function HeaderSocialIcon({ platform }: { platform: (typeof EDITORIAL_HOME_SOCIALS)[number]["platform"] }) {
@@ -94,12 +95,17 @@ Manual test plan (no test framework configured):
 4) Return to top 20px zone: navbar shows again.
 5) On mobile, opening drawer prevents page scroll.
 */
-export default function SiteHeader({ hideMobileSocials = false }: SiteHeaderProps = {}) {
+export default function SiteHeader({
+  hideMobileSocials = false,
+  variant = "default",
+}: SiteHeaderProps = {}) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [activeHash, setActiveHash] = useState("#home");
   const pathname = usePathname() || "/";
+  const headerRef = useRef<HTMLElement>(null);
+  const toggleButtonRef = useRef<HTMLButtonElement>(null);
   const navScrollRef = useRef<NavScrollState>({
     lastScrollY: 0,
     isHidden: false,
@@ -200,14 +206,45 @@ export default function SiteHeader({ hideMobileSocials = false }: SiteHeaderProp
   useEffect(() => {
     if (!isDrawerOpen) return;
 
+    const getFocusableElements = () =>
+      Array.from(
+        headerRef.current?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]):not(.nav-drawer-backdrop)',
+        ) ?? [],
+      ).filter((element) => element.tabIndex !== -1);
+
+    const focusId = window.requestAnimationFrame(() => {
+      const firstNavLink = headerRef.current?.querySelector<HTMLElement>(".main-nav a");
+      firstNavLink?.focus();
+    });
+
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsDrawerOpen(false);
+        window.requestAnimationFrame(() => toggleButtonRef.current?.focus());
+        return;
+      }
+
+      if (event.key !== "Tab") return;
+      const focusable = getFocusableElements();
+      if (focusable.length === 0) return;
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const activeElement = document.activeElement;
+
+      if (event.shiftKey && activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
     };
 
     window.addEventListener("keydown", onKeyDown);
     return () => {
+      window.cancelAnimationFrame(focusId);
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [isDrawerOpen]);
@@ -231,7 +268,7 @@ export default function SiteHeader({ hideMobileSocials = false }: SiteHeaderProp
 
     const updateNavbarVisibility = () => {
       const currentScrollY = getScrollY();
-      setHeaderScrolled(currentScrollY > 0);
+      setHeaderScrolled(currentScrollY > 24);
       const isMobileViewport = window.innerWidth <= MOBILE_DRAWER_MAX_WIDTH;
 
       if (!isMobileViewport && isDrawerOpenRef.current) {
@@ -251,8 +288,14 @@ export default function SiteHeader({ hideMobileSocials = false }: SiteHeaderProp
         return;
       }
 
-      setHeaderHidden(true);
-      if (isDrawerOpenRef.current) {
+      const scrollDelta = currentScrollY - navScrollState.lastScrollY;
+      if (scrollDelta > 5) {
+        setHeaderHidden(true);
+      } else if (scrollDelta < -5) {
+        setHeaderHidden(false);
+      }
+
+      if (scrollDelta > 5 && isDrawerOpenRef.current) {
         setIsDrawerOpen(false);
       }
 
@@ -284,7 +327,7 @@ export default function SiteHeader({ hideMobileSocials = false }: SiteHeaderProp
       if (rafId !== null) window.cancelAnimationFrame(rafId);
       navScrollState.ticking = false;
     };
-  }, []);
+  }, [variant]);
 
   useEffect(() => {
     if (pathname !== "/") return;
@@ -303,11 +346,12 @@ export default function SiteHeader({ hideMobileSocials = false }: SiteHeaderProp
 
   return (
     <header
+      ref={headerRef}
       className={`site-header ${isHidden ? "nav--hidden" : "nav--shown"}${
         isScrolled ? " is-scrolled" : ""
       } site-header--dark-links site-header--editorial-home${
         hideMobileSocials ? " site-header--hide-mobile-socials" : ""
-      }`}
+      } ${variant === "home" ? "site-header--home-overlay" : "site-header--inner"}`}
     >
       <a
         className="brand editorial-brand"
@@ -321,6 +365,7 @@ export default function SiteHeader({ hideMobileSocials = false }: SiteHeaderProp
       </a>
 
       <button
+        ref={toggleButtonRef}
         className={`nav-toggle${isDrawerOpen ? " is-open" : ""}`}
         type="button"
         aria-label="Toggle navigation menu"
@@ -354,7 +399,7 @@ export default function SiteHeader({ hideMobileSocials = false }: SiteHeaderProp
         className={`nav-drawer-backdrop${isDrawerOpen ? " is-open" : ""}`}
         type="button"
         aria-label="Close navigation menu"
-        tabIndex={isDrawerOpen ? 0 : -1}
+        tabIndex={-1}
         onClick={() => {
           setIsDrawerOpen(false);
         }}
