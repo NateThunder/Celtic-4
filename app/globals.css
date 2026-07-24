@@ -1566,10 +1566,11 @@ body {
   position: absolute;
   inset: 0;
   background-image:
-    /* Overall dark wash to push the photography right down into atmosphere. */
+    /* Overall dark wash. Darker now the posters are dulled at rest, so they
+       still clearly sit in front of the photography. */
     linear-gradient(
-      rgba(17, 16, 13, 0.5),
-      rgba(17, 16, 13, 0.5)
+      rgba(17, 16, 13, 0.68),
+      rgba(17, 16, 13, 0.68)
     ),
     /* Top and bottom fade into the section background (no hard edges). */
     linear-gradient(
@@ -1599,18 +1600,20 @@ body {
   margin-bottom: clamp(2.4rem, 5vw, 4.4rem);
 }
 
+/* A quiet section label, not a headline: ~40% of the previous size, all cream
+   (no two-colour split), wide tracking. */
 .home-events-section .live-events-title {
   margin: 0;
   color: #efe6d7;
-  font-size: clamp(3rem, 7vw, 7rem);
-  letter-spacing: 0;
-  line-height: 0.9;
+  font-size: clamp(1.2rem, 2.8vw, 2.8rem);
+  letter-spacing: 0.15em;
+  line-height: 1;
   white-space: normal;
   text-shadow: 0 2px 16px rgba(0, 0, 0, 0.55);
 }
 
 .home-events-section .live-events-title span {
-  color: #c97b12;
+  color: inherit;
 }
 
 .home-events-link {
@@ -1659,11 +1662,6 @@ body {
   display: flex;
   flex-direction: column;
   width: 100%;
-  transition: transform 220ms ease;
-}
-
-.event-card:hover {
-  transform: translateY(-8px);
 }
 
 .event-card-media {
@@ -1671,7 +1669,7 @@ body {
   width: 100%;
   /* All four posters render at a consistent 4:5 frame. */
   aspect-ratio: 4 / 5;
-  border-radius: 4px;
+  border-radius: 10px;
   overflow: hidden;
   /* Large, soft shadow so the poster reads as a physical object with weight. */
   box-shadow:
@@ -1682,6 +1680,30 @@ body {
 .event-card-poster {
   /* Fill the 4:5 frame so every poster matches regardless of source ratio. */
   object-fit: cover;
+}
+
+/* Only dull posters on devices that can hover — touch devices get full colour
+   (no dead grey grid). The whole card is the hover/focus target. Slow, filmic
+   reveal to full saturation/brightness with a small lift. */
+@media (hover: hover) {
+  .event-card-media {
+    transition: transform 600ms ease;
+  }
+
+  .event-card-poster {
+    filter: saturate(0.5) brightness(0.75);
+    transition: filter 600ms ease;
+  }
+
+  .event-card:hover .event-card-poster,
+  .event-card:focus-within .event-card-poster {
+    filter: none;
+  }
+
+  .event-card:hover .event-card-media,
+  .event-card:focus-within .event-card-media {
+    transform: translateY(-6px);
+  }
 }
 
 .event-card-body {
@@ -1712,37 +1734,39 @@ body {
   font-weight: 400;
 }
 
+/* Quiet cream text with a hairline rule — spends no resting amber. The one
+   amber block in this section is VIEW ALL EVENTS; Get Tickets only warms to
+   amber on hover/focus. */
 .event-card-cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  align-self: flex-start;
   margin-top: clamp(0.85rem, 1.6vw, 1.15rem);
-  padding: 0.72rem 1.2rem;
-  background: #c97b12;
-  color: #11100d;
+  padding: 0 0 0.32rem;
+  border-bottom: 1px solid rgba(239, 230, 215, 0.55);
+  background: transparent;
+  color: #efe6d7;
   font-size: 0.82rem;
   font-weight: 900;
   letter-spacing: 0.12em;
   line-height: 1;
   text-decoration: none;
   text-transform: uppercase;
-  transition: transform 160ms ease, background-color 160ms ease;
+  transition: color 200ms ease, border-color 200ms ease;
 }
 
 .event-card-cta:hover,
 .event-card-cta:focus-visible {
-  background: #d98a19;
-  transform: translateY(-1px);
+  color: #c97b12;
+  border-color: #c97b12;
 }
 
 .event-card-cta:focus-visible {
-  outline: 2px solid #efe6d7;
+  outline: 2px solid #c97b12;
   outline-offset: 3px;
 }
 
 .event-card-cta--disabled {
-  background: rgba(239, 230, 215, 0.16);
-  color: rgba(239, 230, 215, 0.7);
+  border-bottom-color: transparent;
+  color: rgba(239, 230, 215, 0.4);
   cursor: default;
   pointer-events: none;
 }
@@ -2925,7 +2949,7 @@ body.has-open-shop-cart-drawer {
   }
 
   .home-events-section .live-events-title {
-    font-size: clamp(2.6rem, 13vw, 4rem);
+    font-size: clamp(1.1rem, 5vw, 1.7rem);
   }
 
   .home-events-header {
