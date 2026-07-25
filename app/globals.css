@@ -1580,6 +1580,21 @@ body {
   content: none;
 }
 
+.home-events-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-color: #151515;
+  background-image: url("/textures/Canvas.png");
+  background-repeat: repeat;
+  background-position: left top;
+  background-blend-mode: multiply;
+  filter: grayscale(1);
+  opacity: 0.82;
+  pointer-events: none;
+}
+
 /* --- Layout ----------------------------------------------------------- */
 .home-events-inner {
   position: relative;
@@ -3247,14 +3262,22 @@ body.has-open-shop-cart-drawer {
 }
 
 .editorial-home-shell .home-events-section .live-events-title {
-  color: #fff;
+  color: transparent;
+  font-family: var(--font-bebas-neue), var(--font-anton), Impact, sans-serif;
   font-size: clamp(2.52rem, 5.4vw, 5.4rem);
+  font-weight: 400;
+  letter-spacing: -0.025em;
   line-height: 0.78;
   text-shadow: none;
+  text-transform: uppercase;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: clamp(1px, 0.1vw, 2px) rgba(255, 255, 255, 0.94);
+  paint-order: stroke fill;
 }
 
 .editorial-home-shell .home-events-section .live-events-title span {
-  color: #fff;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 .editorial-home-shell .home-events-link,
