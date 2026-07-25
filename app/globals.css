@@ -356,6 +356,14 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .home-events-noise {
+    animation: none;
+  }
+
+  .home-events-featured-poster {
+    transition: none;
+  }
+
   .site-header {
     transition: none;
   }
@@ -1569,18 +1577,7 @@ body {
 
 /* Final visual layer across the full section, including headings and cards. */
 .home-events-section::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 10;
-  background-color: rgba(5, 10, 14, 0.32);
-  background-image: url("/textures/Canvas.png");
-  background-repeat: repeat;
-  background-position: left top;
-  background-blend-mode: multiply;
-  filter: grayscale(1) contrast(1.08);
-  opacity: 0.16;
-  pointer-events: none;
+  content: none;
 }
 
 /* --- Layout ----------------------------------------------------------- */
@@ -3234,13 +3231,13 @@ body.has-open-shop-cart-drawer {
 }
 
 .editorial-home-shell .home-events-band-photos {
-  filter: brightness(0.2) saturate(0.08) contrast(1.12);
+  filter: grayscale(1) brightness(0.42) contrast(1.16);
 }
 
 .editorial-home-shell .home-events-band-overlay {
   background:
-    linear-gradient(90deg, rgba(4, 7, 10, 0.96), rgba(4, 7, 10, 0.7) 50%, rgba(4, 7, 10, 0.95)),
-    linear-gradient(180deg, #07090b, rgba(7, 9, 11, 0.3) 24%, rgba(7, 9, 11, 0.3) 74%, #07090b);
+    linear-gradient(90deg, rgba(4, 7, 10, 0.72), rgba(4, 7, 10, 0.28) 50%, rgba(4, 7, 10, 0.7)),
+    linear-gradient(180deg, #07090b, rgba(7, 9, 11, 0.12) 24%, rgba(7, 9, 11, 0.12) 74%, #07090b);
 }
 
 .editorial-home-shell .home-events-header {
@@ -3337,6 +3334,191 @@ body.has-open-shop-cart-drawer {
   border-color: rgba(238, 230, 216, 0.25);
   background: transparent;
   color: rgba(238, 230, 216, 0.6);
+}
+
+/* Black gig-list treatment: a single sliding poster beside the dates. */
+.editorial-home-shell .home-events-section {
+  background: #050505;
+}
+
+.home-events-noise {
+  position: absolute;
+  inset: -50%;
+  z-index: 0;
+  width: 200%;
+  height: 200%;
+  background-image: url("/textures/noise-black-subtle-512.png");
+  background-repeat: repeat;
+  filter: invert(1);
+  mix-blend-mode: screen;
+  opacity: 0.26;
+  pointer-events: none;
+  animation: home-events-noise-movement 200ms steps(1, end) infinite;
+}
+
+@keyframes home-events-noise-movement {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-5%, -5%); }
+  20% { transform: translate(-10%, 5%); }
+  30% { transform: translate(5%, -10%); }
+  40% { transform: translate(-5%, 15%); }
+  50% { transform: translate(-10%, 5%); }
+  60% { transform: translate(15%, 0); }
+  70% { transform: translate(0, 10%); }
+  80% { transform: translate(-15%, 0); }
+  90% { transform: translate(10%, 5%); }
+  100% { transform: translate(5%, 0); }
+}
+
+.editorial-home-shell .home-events-header {
+  margin-bottom: clamp(2rem, 4vw, 4rem);
+  padding-bottom: clamp(1rem, 1.6vw, 1.5rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.home-events-feature {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.88fr) minmax(420px, 1.12fr);
+  gap: clamp(2.5rem, 6vw, 7rem);
+  align-items: center;
+}
+
+.home-events-poster-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #0b0b0b;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 34px 80px rgba(0, 0, 0, 0.72);
+}
+
+.home-events-featured-poster {
+  position: absolute;
+  inset: 0;
+  transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.home-events-featured-poster-image {
+  object-fit: cover;
+}
+
+.home-events-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.22);
+}
+
+.home-events-list-item {
+  display: grid;
+  grid-template-columns: minmax(7.5rem, 0.72fr) minmax(0, 1.5fr) auto;
+  gap: clamp(1rem, 2.4vw, 2.4rem);
+  align-items: center;
+  min-height: clamp(6.2rem, 9vw, 8.2rem);
+  padding: 1rem 0.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  color: rgba(255, 255, 255, 0.62);
+  cursor: default;
+  transition: color 220ms ease, padding 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.home-events-list-item:hover,
+.home-events-list-item:focus-visible,
+.home-events-list-item.is-active {
+  padding-left: 1rem;
+  color: #fff;
+  outline: none;
+}
+
+.home-events-list-date {
+  color: var(--home-amber);
+  font-size: clamp(0.68rem, 0.9vw, 0.82rem);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.home-events-list-place h3 {
+  margin: 0;
+  color: inherit;
+  font-family: var(--font-anton), Impact, sans-serif;
+  font-size: clamp(1.45rem, 2.3vw, 2.4rem);
+  font-weight: 400;
+  letter-spacing: 0.025em;
+  line-height: 0.96;
+  text-transform: uppercase;
+}
+
+.home-events-list-place p {
+  margin: 0.42rem 0 0;
+  color: rgba(255, 255, 255, 0.54);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.home-events-list-ticket {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 6.4rem;
+  min-height: 2.65rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  color: #fff;
+  font-size: 0.67rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color 180ms ease, color 180ms ease;
+}
+
+.home-events-list-ticket:hover,
+.home-events-list-ticket:focus-visible {
+  background: #fff;
+  color: #050505;
+  outline: none;
+}
+
+.home-events-list-ticket.is-disabled {
+  opacity: 0.42;
+}
+
+@media (max-width: 900px) {
+  .home-events-feature {
+    grid-template-columns: minmax(220px, 0.8fr) minmax(0, 1.2fr);
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .home-events-list-item {
+    grid-template-columns: 1fr auto;
+    gap: 0.8rem 1rem;
+  }
+
+  .home-events-list-date {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 700px) {
+  .home-events-feature {
+    grid-template-columns: 1fr;
+    gap: 2.4rem;
+  }
+
+  .home-events-poster-stage {
+    width: min(100%, 30rem);
+    margin: 0 auto;
+  }
+
+  .home-events-list-item {
+    min-height: 7rem;
+  }
 }
 
 /* Music showcase */
