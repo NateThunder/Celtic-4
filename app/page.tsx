@@ -53,7 +53,10 @@ export default async function Home() {
           >
             <source src="/Sequence%2001_1.mp4" type="video/mp4" />
           </video>
-          <h1 className="editorial-hero-title">Celtic Worship</h1>
+          <h1 className="editorial-hero-title">
+            <span>Celtic</span>
+            <span>Worship</span>
+          </h1>
         </section>
 
         <HomeEvents events={events} />
@@ -148,36 +151,53 @@ export default async function Home() {
           </div>
         </section>
 
-        <section className="home-community" aria-labelledby="home-community-title">
-          <div className="home-community-inner" data-home-reveal>
-            <h2 id="home-community-title">Join Our Community</h2>
-            <p>Sign up for music, events, and stories from Celtic Worship.</p>
-            <form className="home-community-form" aria-describedby="community-status">
-              <div className="home-community-name-row">
-                <label>
-                  <span>First name</span>
-                  <input type="text" name="firstName" placeholder="First name*" disabled />
-                </label>
-                <label>
-                  <span>Last name</span>
-                  <input type="text" name="lastName" placeholder="Last name*" disabled />
-                </label>
+        <section
+          className="home-community"
+          aria-labelledby="home-community-title"
+          data-community-reveal
+        >
+          <div className="home-community-stage">
+            <div className="home-community-photos" aria-hidden="true">
+              <div className="home-community-photo home-community-photo--church">
+                <Image src="/photos/Church.png" alt="" fill sizes="(max-width: 760px) 31vw, 24vw" />
               </div>
-              <label>
-                <span>Email address</span>
-                <input type="email" name="email" placeholder="Email*" disabled />
-              </label>
-              <button type="button" disabled>
-                Sign-up coming soon
-              </button>
-              <label className="home-community-consent">
-                <input type="checkbox" disabled />
-                <span>I agree to receive email updates from Celtic Worship.</span>
-              </label>
-              <p id="community-status" className="home-community-status">
-                Mailing-list integration is coming soon.
-              </p>
-            </form>
+              <div className="home-community-photo home-community-photo--crowd-two">
+                <Image src="/photos/crowd2.png" alt="" fill sizes="(max-width: 760px) 31vw, 20vw" />
+              </div>
+              <div className="home-community-photo home-community-photo--crowd-three">
+                <Image src="/photos/Crowd3.png" alt="" fill sizes="(max-width: 760px) 31vw, 22vw" />
+              </div>
+            </div>
+            <div className="home-community-inner" data-home-reveal>
+              <h2 id="home-community-title">Join Our Community</h2>
+              <p>Sign up for music, events, and stories from Celtic Worship.</p>
+              <form className="home-community-form" aria-describedby="community-status">
+                <div className="home-community-name-row">
+                  <label>
+                    <span>First name</span>
+                    <input type="text" name="firstName" placeholder="First name*" disabled />
+                  </label>
+                  <label>
+                    <span>Last name</span>
+                    <input type="text" name="lastName" placeholder="Last name*" disabled />
+                  </label>
+                </div>
+                <label>
+                  <span>Email address</span>
+                  <input type="email" name="email" placeholder="Email*" disabled />
+                </label>
+                <button type="button" disabled>
+                  Sign-up coming soon
+                </button>
+                <label className="home-community-consent">
+                  <input type="checkbox" disabled />
+                  <span>I agree to receive email updates from Celtic Worship.</span>
+                </label>
+                <p id="community-status" className="home-community-status">
+                  Mailing-list integration is coming soon.
+                </p>
+              </form>
+            </div>
           </div>
         </section>
       </main>

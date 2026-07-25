@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Anton, Geist, Geist_Mono, Montserrat } from "next/font/google";
+import { Anton, Bebas_Neue, Geist, Geist_Mono, Montserrat } from "next/font/google";
 import Script from "next/script";
 import "lenis/dist/lenis.css";
 import "./globals.css";
@@ -27,6 +27,12 @@ const anton = Anton({
   weight: "400",
 });
 
+const bebasNeue = Bebas_Neue({
+  variable: "--font-bebas-neue",
+  subsets: ["latin"],
+  weight: "400",
+});
+
 export const metadata: Metadata = {
   title: "Celtic Worship | Songs for the Church",
   description:
@@ -41,7 +47,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${anton.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${anton.variable} ${bebasNeue.variable} antialiased`}
       >
         <SmoothScrollProvider>{children}</SmoothScrollProvider>
         <Script
