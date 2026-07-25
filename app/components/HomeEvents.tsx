@@ -68,7 +68,7 @@ export default function HomeEvents({ events }: { events: HomeEvent[] }) {
         <div className="home-events-band-overlay" />
       </div>
 
-      <div className="home-events-inner">
+      <div className="home-events-inner" data-home-reveal>
         <div className="home-events-header">
           <h2 className="live-events-title">
             Upcoming <span>Events</span>
