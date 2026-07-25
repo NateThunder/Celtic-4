@@ -3758,21 +3758,22 @@ body.has-open-shop-cart-drawer {
 }
 
 .editorial-home-shell .featured-video-section--editorial {
-  padding: clamp(6.5rem, 10vw, 10rem) clamp(1rem, 4.5vw, 4.5rem);
+  padding: clamp(2.5rem, 3.5vw, 3.5rem) clamp(1rem, 4.5vw, 4.5rem);
   border: 0;
   background: transparent;
 }
 
 .editorial-home-shell .featured-video-editorial-inner {
-  width: min(1180px, 100%);
+  width: min(760px, 100%);
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(2rem, 4vw, 3.4rem);
-  transform: none;
+  align-items: center;
+  gap: clamp(1rem, 1.8vw, 1.4rem);
 }
 
 .editorial-home-shell .featured-video-copy {
+  grid-column: 1;
   order: -1;
   display: grid;
   justify-items: center;
@@ -3781,21 +3782,21 @@ body.has-open-shop-cart-drawer {
   text-align: center;
 }
 
+.editorial-home-shell .featured-video-section--editorial .featured-video-frame-wrap {
+  grid-column: 1;
+  grid-row: auto;
+  order: 0;
+}
+
 .editorial-home-shell .featured-video-kicker {
-  display: block;
-  margin: 0 0 1rem;
-  color: var(--home-amber);
-  font-family: var(--font-anton), Impact, sans-serif;
-  font-size: 0.9rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  display: none;
 }
 
 .editorial-home-shell .featured-video-section--editorial .featured-video-title {
   max-width: min(12em, 72vw);
   margin: 0;
   color: #fff;
-  font-size: clamp(3.2rem, 6vw, 6rem);
+  font-size: clamp(2.8rem, 4.2vw, 4.25rem);
   letter-spacing: -0.025em;
   line-height: 0.9;
   text-align: center;
@@ -3805,11 +3806,11 @@ body.has-open-shop-cart-drawer {
 
 .featured-video-title-row {
   display: grid;
-  grid-template-columns: clamp(2.75rem, 4vw, 3.5rem) minmax(0, 1fr) clamp(2.75rem, 4vw, 3.5rem);
+  grid-template-columns: clamp(2.5rem, 3vw, 3rem) minmax(0, 1fr) clamp(2.5rem, 3vw, 3rem);
   align-items: center;
-  gap: clamp(1rem, 4vw, 4rem);
+  gap: clamp(0.65rem, 1.3vw, 1.25rem);
   width: 100%;
-  min-height: clamp(6rem, 10vw, 9rem);
+  min-height: clamp(5rem, 7vw, 7rem);
 }
 
 .featured-video-title-row .featured-video-title {
@@ -3817,15 +3818,15 @@ body.has-open-shop-cart-drawer {
 }
 
 .editorial-home-shell .featured-video-section--editorial .featured-video-title--short {
-  font-size: clamp(3.2rem, 6vw, 6rem);
+  font-size: clamp(2.8rem, 4.2vw, 4.25rem);
 }
 
 .editorial-home-shell .featured-video-section--editorial .featured-video-title--medium {
-  font-size: clamp(2.9rem, 5.4vw, 5.4rem);
+  font-size: clamp(2.55rem, 3.8vw, 3.85rem);
 }
 
 .editorial-home-shell .featured-video-section--editorial .featured-video-title--long {
-  font-size: clamp(2.55rem, 4.8vw, 4.8rem);
+  font-size: clamp(2.25rem, 3.35vw, 3.4rem);
 }
 
 .featured-video-arrow {
@@ -3996,7 +3997,7 @@ body.has-open-shop-cart-drawer {
 .editorial-home-shell .featured-video-description {
   display: block;
   max-width: 35rem;
-  margin: 1.3rem auto 0;
+  margin: 0.85rem auto 0;
   color: rgba(238, 230, 216, 0.8);
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(1rem, 1.35vw, 1.22rem);
@@ -4008,7 +4009,7 @@ body.has-open-shop-cart-drawer {
 
 .editorial-home-shell .featured-video-link {
   display: inline-flex;
-  margin-top: 1.7rem;
+  margin-top: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.76);
   background: transparent;
   color: #fff;
@@ -4046,6 +4047,41 @@ body.has-open-shop-cart-drawer {
 .editorial-home-shell .featured-video-section--editorial .featured-video-poster:hover .featured-video-poster-image {
   filter: saturate(1) contrast(1.06);
   transform: scale(1.025);
+}
+
+@media (max-width: 1024px) {
+  .editorial-home-shell .featured-video-section--editorial {
+    padding-top: clamp(3.5rem, 7vw, 5rem);
+    padding-bottom: clamp(3.5rem, 7vw, 5rem);
+  }
+
+  .editorial-home-shell .featured-video-editorial-inner {
+    width: min(760px, 100%);
+    grid-template-columns: 1fr;
+    gap: clamp(1.5rem, 3vw, 2.25rem);
+  }
+
+  .editorial-home-shell .featured-video-copy {
+    grid-column: 1;
+    order: -1;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .editorial-home-shell .featured-video-section--editorial .featured-video-frame-wrap {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .editorial-home-shell .featured-video-section--editorial .featured-video-title {
+    max-width: min(12em, 72vw);
+    text-align: center;
+  }
+
+  .editorial-home-shell .featured-video-description {
+    margin-right: auto;
+    margin-left: auto;
+  }
 }
 
 /* About manifesto */
