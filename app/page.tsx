@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import AlbumStack from "./components/AlbumStack";
+import EventMusicDivider from "./components/EventMusicDivider";
 import FeaturedVideo from "./components/FeaturedVideo";
 import HomeEvents from "./components/HomeEvents";
 import HomeReveal from "./components/HomeReveal";
@@ -9,6 +10,14 @@ import { getUpcomingEvents } from "./lib/events";
 import { getFeaturedProducts } from "./lib/featuredProducts";
 
 const FEATURED_VIDEO_ID = "3zGhq1ZKbjg";
+const FEATURED_VIDEOS = [
+  { videoId: FEATURED_VIDEO_ID, title: "I Need Thee" },
+  { videoId: "cXFQuxZF61Q", title: "When I Survey" },
+  { videoId: "VKeF820DlGU", title: "Hear Now Our Hearts" },
+  { videoId: "haisvt45Kdc", title: "All Creatures Of Our God And King" },
+  { videoId: "732dkRJZOLE", title: "We Find Our Joy In You" },
+  { videoId: "-KnzDx8UV5M", title: "Where Can I Go" },
+];
 
 const FOOTER_LINKS = [
   { label: "Home", href: "#home" },
@@ -71,6 +80,7 @@ export default async function Home() {
         <HomeEvents events={events} />
 
         <section id="music" className="home-music-showcase" aria-labelledby="home-music-title">
+          <EventMusicDivider />
           <div className="home-music-inner" data-home-reveal>
             <h2 id="home-music-title">The Music</h2>
             <div className="home-music-albums">
@@ -86,6 +96,7 @@ export default async function Home() {
           <FeaturedVideo
             sectionId="media"
             videoId={FEATURED_VIDEO_ID}
+            videos={FEATURED_VIDEOS}
             variant="editorial"
             fallbackTitle="I Need Thee"
             eyebrow="Featured performance"

@@ -76,7 +76,7 @@
   margin: 0;
   color: #171512;
   font-family: var(--font-anton), Impact, sans-serif;
-  font-size: clamp(3.8rem, 9vw, 6.3rem);
+  font-size: clamp(3.04rem, 7.2vw, 5.04rem);
   font-weight: 400;
   letter-spacing: 0;
   line-height: 0.86;
