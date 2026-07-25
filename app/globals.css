@@ -1609,7 +1609,7 @@ body {
 }
 
 .home-events-section .live-events-title span {
-  color: #c97b12;
+  color: #fff;
 }
 
 .home-events-link {
@@ -3255,7 +3255,7 @@ body.has-open-shop-cart-drawer {
 }
 
 .editorial-home-shell .home-events-section .live-events-title span {
-  color: var(--home-amber);
+  color: #fff;
 }
 
 .editorial-home-shell .home-events-link,
