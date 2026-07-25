@@ -3119,7 +3119,7 @@ body.has-open-shop-cart-drawer {
   display: grid;
   justify-items: center;
   width: min(94vw, 78rem);
-  translate: -50% -47%;
+  translate: -50% -50%;
 }
 
 .editorial-home-shell .editorial-hero-title {
@@ -3129,11 +3129,11 @@ body.has-open-shop-cart-drawer {
   max-width: none;
   margin: 0;
   color: transparent;
-  font-family: var(--font-bebas-neue), var(--font-anton), Impact, sans-serif;
+  font-family: var(--font-anton), Impact, sans-serif;
   font-size: clamp(6.5rem, 16.5vw, 16.5rem);
   font-weight: 400;
   letter-spacing: -0.045em;
-  line-height: 0.74;
+  line-height: 0.885;
   text-align: center;
   text-shadow: none;
   text-transform: uppercase;
@@ -4038,7 +4038,7 @@ body.has-open-shop-cart-drawer {
     top: 50%;
     left: 50%;
     width: 94vw;
-    translate: -50% -45%;
+    translate: -50% -50%;
   }
 
   .editorial-home-shell .editorial-hero-title {
