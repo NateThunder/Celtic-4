@@ -53,10 +53,13 @@ export default async function Home() {
           >
             <source src="/Sequence%2001_1.mp4" type="video/mp4" />
           </video>
-          <h1 className="editorial-hero-title">
-            <span>Celtic</span>
-            <span>Worship</span>
-          </h1>
+          <div className="editorial-hero-lockup">
+            <h1 className="editorial-hero-title">
+              <span>Celtic</span>
+              <span>Worship</span>
+            </h1>
+            <p className="editorial-hero-tagline">Hymns · Sessions · Live</p>
+          </div>
         </section>
 
         <HomeEvents events={events} />
