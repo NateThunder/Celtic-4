@@ -59,6 +59,12 @@ export default async function Home() {
               <span>Worship</span>
             </h1>
             <p className="editorial-hero-tagline">Hymns · Sessions · Live</p>
+            <Link className="editorial-hero-cta" href="/music">
+              <span>Listen now</span>
+              <span className="editorial-hero-cta-arrow" aria-hidden="true">
+                →
+              </span>
+            </Link>
           </div>
         </section>
 
