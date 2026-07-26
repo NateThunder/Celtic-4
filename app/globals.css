@@ -4771,6 +4771,312 @@ body.has-open-shop-cart-drawer {
   font-size: 0.78rem;
 }
 
+/* Laptop/desktop viewport sections for both short and zoomed-out canvases. */
+@media (min-width: 1025px) {
+  .editorial-home-shell {
+    --home-major-section-height: 100svh;
+  }
+
+  .editorial-home-shell .home-music-showcase,
+  .editorial-home-shell .home-performance-wrap,
+  .editorial-home-shell .home-about-manifesto {
+    height: var(--home-major-section-height);
+    min-height: var(--home-major-section-height);
+  }
+
+  .editorial-home-shell .home-performance-wrap,
+  .editorial-home-shell .home-about-manifesto {
+    display: grid;
+    align-items: center;
+  }
+
+  .editorial-home-shell .featured-video-section--editorial {
+    display: grid;
+    align-items: center;
+    height: 100%;
+    min-height: 0;
+    padding: clamp(1.5rem, 3.5svh, 3.5rem) clamp(1rem, 4.5vw, 4.5rem);
+  }
+
+  .editorial-home-shell .home-music-inner {
+    padding-top: clamp(3rem, 6svh, 5.4rem);
+    padding-bottom: clamp(3rem, 6svh, 5.4rem);
+  }
+
+  .editorial-home-shell .home-music-inner h2 {
+    top: clamp(2.5rem, 5.5svh, 5.2rem);
+    font-size: clamp(6rem, 15svh, 11rem);
+  }
+
+  .editorial-home-shell .home-music-albums {
+    width: min(52vw, 50svh, 48rem);
+    margin-top: clamp(5.5rem, 14svh, 9rem);
+  }
+
+  .editorial-home-shell .home-music-inner > .home-outline-link {
+    min-height: clamp(2.72rem, 5svh, 3.35rem);
+    margin-top: clamp(0.9rem, 2.2svh, 1.85rem);
+    font-size: clamp(0.78rem, 1.45svh, 0.95rem);
+  }
+
+  .editorial-home-shell .featured-video-editorial-inner {
+    width: min(
+      clamp(44rem, 48vw, 92rem),
+      calc(177.78svh - 32rem)
+    );
+    gap: clamp(0.75rem, 1.8svh, 1.4rem);
+  }
+
+  .editorial-home-shell .featured-video-title-row {
+    min-height: clamp(4rem, 8svh, 7rem);
+  }
+
+  .editorial-home-shell .featured-video-section--editorial .featured-video-title,
+  .editorial-home-shell .featured-video-section--editorial .featured-video-title--short {
+    font-size: clamp(2.75rem, 6.5svh, 6.5rem);
+  }
+
+  .editorial-home-shell .featured-video-section--editorial .featured-video-title--medium {
+    font-size: clamp(2.45rem, 5.9svh, 5.75rem);
+  }
+
+  .editorial-home-shell .featured-video-section--editorial .featured-video-title--long {
+    font-size: clamp(2.15rem, 5.2svh, 5rem);
+  }
+
+  .editorial-home-shell .featured-video-arrow {
+    width: clamp(2.65rem, 5.4svh, 3.65rem);
+    height: clamp(2.65rem, 5.4svh, 3.65rem);
+  }
+
+  .editorial-home-shell .featured-video-description {
+    margin-top: clamp(0.5rem, 1.2svh, 0.9rem);
+    font-size: clamp(0.95rem, 1.8svh, 1.22rem);
+  }
+
+  .editorial-home-shell .featured-video-link {
+    margin-top: clamp(0.65rem, 1.5svh, 1rem);
+  }
+
+  .editorial-home-shell .home-about-copy {
+    width: min(clamp(56rem, 64vw, 74rem), 100%);
+    padding-top: clamp(3.5rem, 8svh, 7rem);
+    padding-bottom: clamp(2.5rem, 5svh, 4rem);
+  }
+
+  .editorial-home-shell .home-about-copy h2 {
+    font-size: clamp(4rem, 10svh, 7.5rem);
+  }
+
+  .editorial-home-shell .home-about-copy > p:not(.home-section-kicker) {
+    max-width: clamp(34rem, 40vw, 44rem);
+    margin-top: clamp(1rem, 2.2svh, 1.6rem);
+    font-size: clamp(1rem, 1.8svh, 1.3rem);
+  }
+
+  .editorial-home-shell .home-about-copy .home-outline-link {
+    min-height: clamp(3rem, 5.4svh, 3.65rem);
+    margin-top: clamp(1.25rem, 2.8svh, 2.4rem);
+    font-size: clamp(0.88rem, 1.45svh, 1rem);
+  }
+
+  .editorial-home-shell .home-community-inner {
+    width: min(clamp(40rem, 48vw, 64rem), 100%);
+    padding-top: clamp(3rem, 6svh, 5rem);
+    padding-bottom: clamp(2rem, 4svh, 3.5rem);
+  }
+
+  .editorial-home-shell .home-community h2 {
+    font-size: clamp(4rem, 9svh, 6.5rem);
+  }
+
+  .editorial-home-shell .home-community-inner > p {
+    max-width: clamp(32rem, 36vw, 39rem);
+    margin-top: clamp(0.75rem, 1.6svh, 1.2rem);
+    font-size: clamp(1rem, 1.65svh, 1.15rem);
+  }
+
+  .editorial-home-shell .home-community-form {
+    gap: clamp(0.55rem, 1.1svh, 0.8rem);
+    margin-top: clamp(1.4rem, 3svh, 2.4rem);
+  }
+
+  .editorial-home-shell .home-community-form input[type="text"],
+  .editorial-home-shell .home-community-form input[type="email"],
+  .editorial-home-shell .home-community-form button {
+    min-height: clamp(3rem, 5.5svh, 3.75rem);
+  }
+
+  .editorial-home-shell .home-about-background {
+    inset: 0;
+    height: 100%;
+  }
+
+  .editorial-home-shell .home-community-stage {
+    height: var(--home-major-section-height);
+    min-height: var(--home-major-section-height);
+  }
+}
+
+@media (min-width: 1025px) and (max-height: 850px) {
+  .editorial-home-shell .home-music-inner {
+    padding-top: clamp(2.5rem, 5vh, 3.5rem);
+    padding-bottom: clamp(2.5rem, 5vh, 3.5rem);
+  }
+
+  .editorial-home-shell .home-music-inner h2 {
+    top: clamp(2rem, 5vh, 3rem);
+    font-size: clamp(5.5rem, 16vh, 8.5rem);
+  }
+
+  .editorial-home-shell .home-music-albums {
+    width: min(56vw, 50svh, 34rem);
+    margin-top: clamp(5rem, 14vh, 7rem);
+  }
+
+  .editorial-home-shell .home-music-inner > .home-outline-link {
+    margin-top: clamp(0.85rem, 2vh, 1.25rem);
+  }
+
+  .editorial-home-shell .featured-video-section--editorial {
+    padding: clamp(1rem, 2.5vh, 1.35rem) clamp(1rem, 4.5vw, 4.5rem);
+  }
+
+  .editorial-home-shell .featured-video-editorial-inner {
+    width: min(
+      clamp(42rem, 62vw, 60rem),
+      calc(177.78svh - 18rem)
+    );
+    gap: clamp(0.6rem, 1.5vh, 0.85rem);
+  }
+
+  .editorial-home-shell .featured-video-title-row {
+    min-height: clamp(3.5rem, 9vh, 4.5rem);
+  }
+
+  .editorial-home-shell .featured-video-section--editorial .featured-video-title,
+  .editorial-home-shell .featured-video-section--editorial .featured-video-title--short {
+    font-size: clamp(2.65rem, 8.5svh, 3.75rem);
+  }
+
+  .editorial-home-shell .featured-video-section--editorial .featured-video-title--medium {
+    font-size: clamp(2.25rem, 6.8vh, 3rem);
+  }
+
+  .editorial-home-shell .featured-video-section--editorial .featured-video-title--long {
+    font-size: clamp(2rem, 6vh, 2.7rem);
+  }
+
+  .editorial-home-shell .featured-video-arrow {
+    width: clamp(2.45rem, 6.5vh, 3rem);
+    height: clamp(2.45rem, 6.5vh, 3rem);
+  }
+
+  .editorial-home-shell .featured-video-description {
+    margin-top: clamp(0.35rem, 1vh, 0.6rem);
+    font-size: clamp(0.9rem, 2.2vh, 1rem);
+    line-height: 1.35;
+  }
+
+  .editorial-home-shell .featured-video-link {
+    margin-top: clamp(0.5rem, 1.4vh, 0.75rem);
+  }
+
+  .editorial-home-shell .home-about-copy {
+    padding-top: clamp(2.5rem, 7vh, 4rem);
+    padding-bottom: clamp(2rem, 5vh, 3rem);
+  }
+
+  .editorial-home-shell .home-about-copy h2 {
+    font-size: clamp(3.5rem, 11vh, 5.5rem);
+  }
+
+  .editorial-home-shell .home-about-copy > p:not(.home-section-kicker) {
+    margin-top: clamp(0.8rem, 2vh, 1.2rem);
+  }
+
+  .editorial-home-shell .home-about-copy .home-outline-link {
+    margin-top: clamp(1rem, 2.5vh, 1.5rem);
+  }
+
+  .editorial-home-shell .home-community-inner {
+    padding-top: clamp(2rem, 5vh, 3rem);
+    padding-bottom: clamp(1.5rem, 4vh, 2.5rem);
+  }
+
+  .editorial-home-shell .home-community h2 {
+    font-size: clamp(3.5rem, 10vh, 5rem);
+  }
+
+  .editorial-home-shell .home-community-form {
+    gap: 0.55rem;
+    margin-top: clamp(1rem, 2.5vh, 1.5rem);
+  }
+
+  .editorial-home-shell .home-community-form input[type="text"],
+  .editorial-home-shell .home-community-form input[type="email"],
+  .editorial-home-shell .home-community-form button {
+    min-height: 3rem;
+  }
+}
+
+@media (min-width: 2200px) and (min-height: 1100px) {
+  .editorial-home-shell .featured-video-section--editorial {
+    padding-top: clamp(1.5rem, 2.2svh, 2.25rem);
+    padding-bottom: clamp(1.5rem, 2.2svh, 2.25rem);
+  }
+
+  .editorial-home-shell .featured-video-editorial-inner {
+    width: min(68vw, calc(177.78svh - 20rem), 132rem);
+    gap: clamp(1rem, 1.5svh, 1.5rem);
+  }
+
+  .editorial-home-shell .featured-video-section--editorial .featured-video-title,
+  .editorial-home-shell .featured-video-section--editorial .featured-video-title--short {
+    font-size: clamp(5rem, 7svh, 7rem);
+  }
+
+  .editorial-home-shell .featured-video-section--editorial .featured-video-title--medium {
+    font-size: clamp(4.5rem, 6.4svh, 6.4rem);
+  }
+
+  .editorial-home-shell .featured-video-section--editorial .featured-video-title--long {
+    font-size: clamp(4rem, 5.8svh, 5.8rem);
+  }
+
+  .editorial-home-shell .featured-video-arrow {
+    width: clamp(3.5rem, 5.2svh, 5rem);
+    height: clamp(3.5rem, 5.2svh, 5rem);
+  }
+
+  .editorial-home-shell .featured-video-description {
+    font-size: clamp(1.2rem, 1.75svh, 1.65rem);
+  }
+
+  .editorial-home-shell .featured-video-link {
+    min-height: clamp(3.2rem, 4.6svh, 4.25rem);
+    padding-right: clamp(1.5rem, 2vw, 2.5rem);
+    padding-left: clamp(1.5rem, 2vw, 2.5rem);
+    font-size: clamp(0.95rem, 1.3svh, 1.2rem);
+  }
+
+  .editorial-home-shell .home-music-albums {
+    width: min(55vw, 55svh, 55rem);
+  }
+
+  .editorial-home-shell .home-about-copy {
+    width: min(76vw, 92rem);
+  }
+
+  .editorial-home-shell .home-about-copy h2 {
+    font-size: clamp(7rem, 10svh, 9rem);
+  }
+
+  .editorial-home-shell .home-community-inner {
+    width: min(42vw, 76rem);
+  }
+}
+
 /* Scroll reveals are progressively enhanced after the observer mounts. */
 .has-home-reveal [data-home-reveal] {
   opacity: 0;
