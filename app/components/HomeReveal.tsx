@@ -5,7 +5,9 @@ import { useEffect } from "react";
 export default function HomeReveal() {
   useEffect(() => {
     document.documentElement.classList.add("has-home-reveal");
-    const targets = Array.from(document.querySelectorAll<HTMLElement>("[data-home-reveal]"));
+    const targets = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-home-reveal], [data-home-collage]"),
+    );
     const community = document.querySelector<HTMLElement>("[data-community-reveal]");
     const communityPhotos = community
       ? Array.from(community.querySelectorAll<HTMLElement>(".home-community-photo"))

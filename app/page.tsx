@@ -107,6 +107,24 @@ export default async function Home() {
         </div>
 
         <section className="home-about-manifesto" aria-labelledby="home-about-title">
+          <div className="home-about-background" aria-hidden="true">
+            <div className="home-about-background-image home-about-background-image-left">
+              <Image
+                src="/photos/Church.png"
+                alt=""
+                fill
+                sizes="(max-width: 700px) 55vw, 38vw"
+              />
+            </div>
+            <div className="home-about-background-image home-about-background-image-right">
+              <Image
+                src="/photos/Church3.png"
+                alt=""
+                fill
+                sizes="(max-width: 700px) 55vw, 38vw"
+              />
+            </div>
+          </div>
           <div className="home-about-copy" data-home-reveal>
             <p className="home-section-kicker">Celtic Worship</p>
             <h2 id="home-about-title">Songs for the church, through the sounds of Scotland.</h2>
@@ -117,14 +135,6 @@ export default async function Home() {
             <Link className="home-outline-link" href="/about">
               About the collective
             </Link>
-          </div>
-          <div className="home-about-photo-strip" aria-hidden="true">
-            <Image
-              src="/photos/events-band_1.jpg"
-              alt=""
-              fill
-              sizes="100vw"
-            />
           </div>
         </section>
 

@@ -4086,14 +4086,60 @@ body.has-open-shop-cart-drawer {
 
 /* About manifesto */
 .home-about-manifesto {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   background: var(--home-paper);
   color: var(--home-ink);
 }
 
+.home-about-background {
+  position: absolute;
+  z-index: 0;
+  inset: 0 0 auto;
+  height: clamp(34rem, 58vw, 56rem);
+  pointer-events: none;
+}
+
+.home-about-background-image {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 37.5%;
+  opacity: 0.4;
+}
+
+.home-about-background-image-left {
+  left: 0;
+  -webkit-mask-image: linear-gradient(to right, #000 58%, transparent 100%);
+  mask-image: linear-gradient(to right, #000 58%, transparent 100%);
+}
+
+.home-about-background-image-right {
+  right: 0;
+  -webkit-mask-image: linear-gradient(to left, #000 58%, transparent 100%);
+  mask-image: linear-gradient(to left, #000 58%, transparent 100%);
+}
+
+.home-about-background-image img {
+  object-fit: cover;
+}
+
+.home-about-background-image-left img {
+  object-position: center 42%;
+}
+
+.home-about-background-image-right img {
+  object-position: center 38%;
+}
+
 .home-about-copy {
+  position: relative;
+  z-index: 1;
   width: min(1040px, 100%);
   margin: 0 auto;
-  padding: clamp(7rem, 12vw, 12rem) clamp(1.2rem, 4vw, 4rem);
+  padding: clamp(7rem, 12vw, 12rem) clamp(1.2rem, 4vw, 4rem)
+    clamp(2rem, 3.5vw, 3.5rem);
   text-align: center;
 }
 
@@ -4133,6 +4179,7 @@ body.has-open-shop-cart-drawer {
 
 .home-about-photo-strip {
   position: relative;
+  z-index: 1;
   min-height: clamp(19rem, 42vw, 38rem);
   overflow: hidden;
   background: var(--home-ink);
@@ -4141,14 +4188,241 @@ body.has-open-shop-cart-drawer {
 .home-about-photo-strip::after {
   content: "";
   position: absolute;
+  z-index: 3;
   inset: 0;
-  background: linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, 0.42));
+  background: linear-gradient(180deg, transparent 68%, rgba(0, 0, 0, 0.18));
+  pointer-events: none;
 }
 
-.home-about-photo-strip img {
-  object-fit: cover;
-  object-position: center 42%;
-  filter: saturate(0.8) contrast(1.06);
+.home-about-collage-layer {
+  position: absolute;
+  top: -6%;
+  height: 112%;
+  will-change: transform;
+  animation: home-about-collage-drift 34s cubic-bezier(0.42, 0, 0.58, 1)
+    infinite alternate both;
+}
+
+.home-about-collage-layer span {
+  position: absolute;
+  inset: 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  filter: grayscale(1);
+  mix-blend-mode: screen;
+  opacity: 0;
+  will-change: transform, opacity, filter;
+  -webkit-mask-image: radial-gradient(
+    ellipse 54% 82% at 50% 44%,
+    #000 0%,
+    rgba(0, 0, 0, 0.72) 44%,
+    rgba(0, 0, 0, 0.3) 70%,
+    transparent 92%
+  );
+  mask-image: radial-gradient(
+    ellipse 54% 82% at 50% 44%,
+    #000 0%,
+    rgba(0, 0, 0, 0.72) 44%,
+    rgba(0, 0, 0, 0.3) 70%,
+    transparent 92%
+  );
+  animation: home-about-collage-reveal 5.4s cubic-bezier(0.22, 0.61, 0.24, 1)
+    both;
+}
+
+.home-about-collage-layer--fiddle {
+  left: 0;
+  width: 46%;
+  --collage-drift-x: 14px;
+  --collage-drift-y: -8px;
+  animation-delay: 3.4s;
+}
+
+.home-about-collage-layer--fiddle span {
+  --collage-rest-opacity: 0.6;
+  background-image: url("/photos/celtic-collage/01-fiddle.png");
+  background-position: 36% 22%;
+}
+
+.home-about-collage-layer--whistle {
+  left: 6%;
+  width: 44%;
+  --collage-drift-x: -11px;
+  --collage-drift-y: 6px;
+  animation-delay: 3.9s;
+}
+
+.home-about-collage-layer--whistle span {
+  --collage-rest-opacity: 0.62;
+  background-image: url("/photos/celtic-collage/06-whistle.png");
+  background-position: 36% 26%;
+  animation-delay: 0.5s;
+}
+
+.home-about-collage-layer--voice {
+  left: 16%;
+  width: 48%;
+  --collage-drift-x: 9px;
+  --collage-drift-y: -5px;
+  animation-delay: 4.4s;
+}
+
+.home-about-collage-layer--voice span {
+  --collage-rest-opacity: 0.72;
+  background-image: url("/photos/celtic-collage/03-voice.png");
+  background-position: 54% 30%;
+  animation-delay: 1s;
+}
+
+.home-about-collage-layer--bass {
+  left: 38%;
+  width: 44%;
+  --collage-drift-x: -13px;
+  --collage-drift-y: 7px;
+  animation-delay: 4.9s;
+}
+
+.home-about-collage-layer--bass span {
+  --collage-rest-opacity: 0.62;
+  background-image: url("/photos/celtic-collage/02-bass.png");
+  background-position: 40% 20%;
+  animation-delay: 1.5s;
+}
+
+.home-about-collage-layer--lead {
+  left: 49%;
+  width: 46%;
+  --collage-drift-x: 12px;
+  --collage-drift-y: -6px;
+  animation-delay: 5.4s;
+}
+
+.home-about-collage-layer--lead span {
+  --collage-rest-opacity: 0.62;
+  background-image: url("/photos/celtic-collage/05-lead.png");
+  background-position: 53% 24%;
+  animation-delay: 2s;
+}
+
+.home-about-collage-layer--drums {
+  left: 58%;
+  width: 42%;
+  --collage-drift-x: -10px;
+  --collage-drift-y: 5px;
+  animation-delay: 5.9s;
+}
+
+.home-about-collage-layer--drums span {
+  --collage-rest-opacity: 0.6;
+  background-image: url("/photos/celtic-collage/07-drums.png");
+  background-position: 77% 40%;
+  animation-delay: 2.5s;
+}
+
+.home-about-collage-layer--guitar {
+  left: 28%;
+  width: 44%;
+  --collage-drift-x: 6px;
+  --collage-drift-y: -4px;
+  animation-delay: 6.6s;
+}
+
+.home-about-collage-layer--guitar span {
+  --collage-rest-opacity: 0.95;
+  background-image: url("/photos/celtic-collage/04-guitar.png");
+  background-position: 44% 28%;
+  animation-delay: 3.2s;
+}
+
+.home-about-collage-grade,
+.home-about-collage-vignette {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+}
+
+.home-about-collage-grade {
+  background: #8a8a8a;
+  mix-blend-mode: color;
+}
+
+.home-about-collage-vignette {
+  z-index: 2;
+  background: radial-gradient(
+    135% 110% at 48% 42%,
+    rgba(255, 255, 255, 0.06) 0%,
+    transparent 44%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+}
+
+@keyframes home-about-collage-reveal {
+  from {
+    opacity: 0;
+    transform: scale(1.26);
+    filter: grayscale(1) blur(30px);
+  }
+
+  to {
+    opacity: var(--collage-rest-opacity, 1);
+    transform: scale(1);
+    filter: grayscale(1) blur(0);
+  }
+}
+
+@keyframes home-about-collage-drift {
+  from {
+    transform: translate3d(var(--collage-drift-x, 0), 0, 0);
+  }
+
+  to {
+    transform: translate3d(
+      calc(var(--collage-drift-x, 0px) * -1),
+      var(--collage-drift-y, 0),
+      0
+    );
+  }
+}
+
+.has-home-reveal [data-home-collage] .home-about-collage-layer,
+.has-home-reveal [data-home-collage] .home-about-collage-layer span {
+  animation-play-state: paused;
+}
+
+.has-home-reveal
+  [data-home-collage].is-home-visible
+  .home-about-collage-layer,
+.has-home-reveal
+  [data-home-collage].is-home-visible
+  .home-about-collage-layer
+  span {
+  animation-play-state: running;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-about-collage-layer {
+    animation: none;
+  }
+
+  .home-about-collage-layer span {
+    animation-duration: 0.01s;
+  }
+}
+
+@media (max-width: 700px) {
+  .home-about-background-image {
+    width: 55%;
+    opacity: 0.32;
+  }
+
+  .home-about-background-image-left {
+    left: -16%;
+  }
+
+  .home-about-background-image-right {
+    right: -16%;
+  }
 }
 
 /* Live merchandise */
@@ -4727,7 +5001,7 @@ body.has-open-shop-cart-drawer {
 
   .home-about-copy {
     padding-top: 5.8rem;
-    padding-bottom: 5.8rem;
+    padding-bottom: 2.25rem;
   }
 
   .home-about-copy h2,
