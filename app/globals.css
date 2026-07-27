@@ -4672,51 +4672,51 @@ body.has-open-shop-cart-drawer {
 }
 
 .home-community-photo--church {
-  top: 3%;
-  left: clamp(-3rem, 2vw, 2rem);
-  width: clamp(10rem, 15vw, 15rem);
-  aspect-ratio: 4 / 5;
-  rotate: -3deg;
+  top: clamp(3.5rem, 6vh, 5rem);
+  left: clamp(3rem, 4vw, 4rem);
+  width: clamp(9.5rem, 13.2vw, 13.2rem);
+  aspect-ratio: 3 / 4;
+  rotate: -7.4deg;
 }
 
 .home-community-photo--crowd-two {
-  top: 3%;
-  right: clamp(-3rem, 2vw, 2rem);
-  width: clamp(10rem, 15vw, 15rem);
-  aspect-ratio: 4 / 5;
-  rotate: 3deg;
+  top: clamp(3.5rem, 6vh, 5rem);
+  right: clamp(4.5rem, 8vw, 8rem);
+  width: clamp(10.5rem, 14.2vw, 14.2rem);
+  aspect-ratio: 5 / 6;
+  rotate: -3.6deg;
 }
 
 .home-community-photo--crowd-three {
-  bottom: clamp(1.5rem, 4vh, 3rem);
-  left: clamp(1rem, 8vw, 8rem);
-  width: clamp(10rem, 15vw, 15rem);
-  aspect-ratio: 4 / 5;
-  rotate: -3deg;
+  bottom: clamp(4.5rem, 8vh, 6rem);
+  left: clamp(0.5rem, 9.5vw, 9.5rem);
+  width: clamp(11rem, 17vw, 17rem);
+  aspect-ratio: 5 / 6;
+  rotate: -5.6deg;
 }
 
 .home-community-photo--church-two {
-  top: calc(50% - clamp(5rem, 7.5vw, 7.5rem));
-  left: clamp(-3rem, 2vw, 2rem);
-  width: clamp(10rem, 15vw, 15rem);
+  top: calc(50% - clamp(3rem, 4.5vw, 4.5rem));
+  left: clamp(3rem, 4vw, 4rem);
+  width: clamp(9rem, 12.5vw, 12.5rem);
   aspect-ratio: 4 / 5;
-  rotate: -3deg;
+  rotate: 2.6deg;
 }
 
 .home-community-photo--church-three {
-  top: calc(50% - clamp(5rem, 7.5vw, 7.5rem));
-  right: clamp(-3rem, 2vw, 2rem);
-  width: clamp(10rem, 15vw, 15rem);
-  aspect-ratio: 4 / 5;
-  rotate: 3deg;
+  top: calc(50% - clamp(3.5rem, 5vw, 5rem));
+  right: clamp(3.5rem, 4vw, 4rem);
+  width: clamp(11rem, 16vw, 16rem);
+  aspect-ratio: 3 / 4;
+  rotate: 8.4deg;
 }
 
 .home-community-photo--church-four {
-  right: clamp(1rem, 8vw, 8rem);
-  bottom: clamp(1.5rem, 4vh, 3rem);
-  width: clamp(10rem, 15vw, 15rem);
-  aspect-ratio: 4 / 5;
-  rotate: 3deg;
+  right: clamp(5rem, 11vw, 11rem);
+  bottom: clamp(4.5rem, 7vh, 5.5rem);
+  width: clamp(8.8rem, 11.2vw, 11.2rem);
+  aspect-ratio: 3 / 4;
+  rotate: -5.2deg;
 }
 
 .home-community-inner {
@@ -5257,7 +5257,7 @@ body.has-open-shop-cart-drawer {
 .has-home-reveal .home-community.is-home-visible .home-community-photo {
   opacity: 0.88;
   scale: 1;
-  translate: 0 0;
+  translate: var(--community-photo-final-translate, 0 0);
 }
 
 .has-home-reveal .home-community-photo:nth-child(2) {
@@ -5525,8 +5525,8 @@ body.has-open-shop-cart-drawer {
     grid-template-columns: repeat(6, 1fr);
     align-items: end;
     gap: 0.45rem;
-    height: 10.5rem;
-    padding: 1.5rem 0.75rem 0;
+    height: 12.5rem;
+    padding: 3rem 1.75rem 0;
   }
 
   .home-community-photo {
@@ -5537,37 +5537,49 @@ body.has-open-shop-cart-drawer {
   }
 
   .home-community-photo--church {
-    align-self: center;
-    rotate: -3deg;
+    align-self: end;
+    aspect-ratio: 3 / 4;
+    --community-photo-final-translate: -0.2rem -0.9rem;
+    rotate: -7.4deg;
   }
 
   .home-community-photo--crowd-two {
     align-self: center;
-    rotate: 3deg;
+    aspect-ratio: 5 / 7;
+    --community-photo-final-translate: 0.3rem 0.7rem;
+    rotate: -3.6deg;
   }
 
   .home-community-photo--crowd-three {
-    align-self: center;
-    rotate: -3deg;
+    align-self: end;
+    aspect-ratio: 5 / 7;
+    --community-photo-final-translate: -0.1rem -1.3rem;
+    rotate: -5.6deg;
   }
 
   .home-community-photo--church-two {
     align-self: center;
-    rotate: 3deg;
+    aspect-ratio: 2 / 3;
+    --community-photo-final-translate: 0.1rem 0.8rem;
+    rotate: 2.6deg;
   }
 
   .home-community-photo--church-three {
-    align-self: center;
-    rotate: -3deg;
+    align-self: end;
+    aspect-ratio: 3 / 5;
+    --community-photo-final-translate: 0.1rem -0.8rem;
+    rotate: 8.4deg;
   }
 
   .home-community-photo--church-four {
     align-self: center;
-    rotate: 3deg;
+    aspect-ratio: 3 / 4;
+    --community-photo-final-translate: -0.25rem 1.2rem;
+    rotate: -5.2deg;
   }
 
   .home-community-inner {
-    padding-top: 12.5rem;
+    padding-top: 14.25rem;
     padding-bottom: 1rem;
   }
 }
@@ -5644,7 +5656,7 @@ body.has-open-shop-cart-drawer {
   .has-home-reveal .home-community-photo {
     opacity: 0.88;
     scale: 1;
-    translate: 0 0;
+    translate: var(--community-photo-final-translate, 0 0);
     transition: none;
   }
 
