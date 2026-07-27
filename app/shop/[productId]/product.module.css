@@ -73,6 +73,10 @@
   transition-delay: 0s;
 }
 
+.imagePreload {
+  pointer-events: none;
+}
+
 .imagePlaceholder {
   background: linear-gradient(180deg, #ececec 0%, #e2e2e2 100%);
 }

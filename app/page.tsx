@@ -6,6 +6,7 @@ import EventMusicDivider from "./components/EventMusicDivider";
 import FeaturedVideo from "./components/FeaturedVideo";
 import HomeEvents from "./components/HomeEvents";
 import HomeReveal from "./components/HomeReveal";
+import ScrollHomeToTop from "./components/ScrollHomeToTop";
 import SiteHeader from "./components/SiteHeader";
 import { getUpcomingEvents } from "./lib/events";
 import { getFeaturedProducts } from "./lib/featuredProducts";
@@ -48,6 +49,7 @@ export default async function Home() {
 
   return (
     <div className="site-shell editorial-home-shell">
+      <ScrollHomeToTop />
       <HomeReveal />
       <SiteHeader variant="home" />
 
