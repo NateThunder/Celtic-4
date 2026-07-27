@@ -4427,8 +4427,23 @@ body.has-open-shop-cart-drawer {
 
 /* Live merchandise */
 .home-merch {
+  --merch-scroll-progress: 0;
+  --merch-stack-offset-left: 112%;
+  --merch-stack-offset-right: -112%;
+  --merch-rotate-left: -11deg;
+  --merch-rotate-middle: 4deg;
+  --merch-rotate-right: 11deg;
+  --merch-stack-rise: 6rem;
+  --merch-stack-scale: 0.8;
+  --merch-stack-opacity: 0.42;
+  --merch-heading-clip: 100%;
+  --merch-heading-rise: 3.5rem;
+  --merch-heading-opacity: 0.08;
+  --merch-image-shift: 1rem;
+  --merch-image-scale: 1.06;
   background: var(--home-ink);
   color: #fff;
+  overflow: hidden;
 }
 
 .home-merch-inner {
@@ -4445,6 +4460,7 @@ body.has-open-shop-cart-drawer {
   margin-bottom: clamp(3rem, 5vw, 5rem);
   padding-bottom: 2rem;
   border-bottom: 1px solid var(--home-rule-light);
+  opacity: 1;
 }
 
 .home-merch-heading .home-section-kicker {
@@ -4454,6 +4470,30 @@ body.has-open-shop-cart-drawer {
 .home-merch-heading h2 {
   max-width: 10ch;
   color: #fff;
+}
+
+.home-merch-title-letters {
+  display: inline;
+}
+
+.home-merch-title-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.home-merch-title-letter {
+  display: inline-block;
+  opacity: 1;
+  transform:
+    translate3d(var(--merch-letter-x), var(--merch-letter-y), 0)
+    rotate(var(--merch-letter-rotate))
+    scale(0.82);
+  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1) var(--merch-letter-delay);
+  will-change: transform;
+}
+
+.home-merch-inner.is-home-visible .home-merch-title-letter {
+  transform: translate3d(0, 0, 0) rotate(0) scale(1);
 }
 
 .home-merch-heading .home-outline-link {
@@ -4467,6 +4507,42 @@ body.has-open-shop-cart-drawer {
   margin: 0;
   padding: 0;
   list-style: none;
+  perspective: 1200px;
+}
+
+.home-merch-grid > li {
+  --merch-stack-x: 0%;
+  --merch-stack-rotate: 0deg;
+  position: relative;
+  z-index: 2;
+  opacity: var(--merch-stack-opacity);
+  transform:
+    translate3d(
+      var(--merch-stack-x),
+      var(--merch-stack-rise),
+      0
+    )
+    rotate(var(--merch-stack-rotate))
+    scale(var(--merch-stack-scale));
+  transform-origin: 50% 85%;
+  will-change: transform, opacity;
+}
+
+.home-merch-grid > li:nth-child(1) {
+  --merch-stack-x: var(--merch-stack-offset-left);
+  --merch-stack-rotate: var(--merch-rotate-left);
+  z-index: 1;
+}
+
+.home-merch-grid > li:nth-child(2) {
+  --merch-stack-rotate: var(--merch-rotate-middle);
+  z-index: 3;
+}
+
+.home-merch-grid > li:nth-child(3) {
+  --merch-stack-x: var(--merch-stack-offset-right);
+  --merch-stack-rotate: var(--merch-rotate-right);
+  z-index: 2;
 }
 
 .home-merch-product {
@@ -4485,13 +4561,19 @@ body.has-open-shop-cart-drawer {
 
 .home-merch-image img {
   object-fit: cover;
+  transform:
+    translateY(var(--merch-image-shift))
+    scale(var(--merch-image-scale));
   transition: transform 650ms cubic-bezier(0.2, 0.72, 0, 1), filter 350ms ease;
+  will-change: transform;
 }
 
 .home-merch-product:hover .home-merch-image img,
 .home-merch-product:focus-visible .home-merch-image img {
   filter: saturate(1.08);
-  transform: scale(1.03);
+  transform:
+    translateY(var(--merch-image-shift))
+    scale(calc(var(--merch-image-scale) + 0.03));
 }
 
 .home-merch-meta {
@@ -4554,7 +4636,8 @@ body.has-open-shop-cart-drawer {
 /* Community + compact footer */
 .home-community {
   position: relative;
-  min-height: 140vh;
+  min-height: 100vh;
+  min-height: 100svh;
   overflow: hidden;
   border-top: 1px solid var(--home-rule-light);
   background: #11110f;
@@ -4589,26 +4672,50 @@ body.has-open-shop-cart-drawer {
 }
 
 .home-community-photo--church {
-  top: 8%;
-  left: clamp(-4rem, 2vw, 2rem);
-  width: clamp(12rem, 21vw, 22rem);
+  top: 3%;
+  left: clamp(-3rem, 2vw, 2rem);
+  width: clamp(10rem, 15vw, 15rem);
   aspect-ratio: 4 / 5;
-  rotate: -5deg;
+  rotate: -3deg;
 }
 
 .home-community-photo--crowd-two {
-  top: 18%;
-  right: clamp(-5rem, 1vw, 1rem);
-  width: clamp(11rem, 18vw, 19rem);
-  aspect-ratio: 2 / 3;
-  rotate: 4deg;
+  top: 3%;
+  right: clamp(-3rem, 2vw, 2rem);
+  width: clamp(10rem, 15vw, 15rem);
+  aspect-ratio: 4 / 5;
+  rotate: 3deg;
 }
 
 .home-community-photo--crowd-three {
-  bottom: 5%;
-  left: clamp(-3rem, 5vw, 6rem);
-  width: clamp(10rem, 16vw, 17rem);
-  aspect-ratio: 2 / 3;
+  bottom: clamp(1.5rem, 4vh, 3rem);
+  left: clamp(1rem, 8vw, 8rem);
+  width: clamp(10rem, 15vw, 15rem);
+  aspect-ratio: 4 / 5;
+  rotate: -3deg;
+}
+
+.home-community-photo--church-two {
+  top: calc(50% - clamp(5rem, 7.5vw, 7.5rem));
+  left: clamp(-3rem, 2vw, 2rem);
+  width: clamp(10rem, 15vw, 15rem);
+  aspect-ratio: 4 / 5;
+  rotate: -3deg;
+}
+
+.home-community-photo--church-three {
+  top: calc(50% - clamp(5rem, 7.5vw, 7.5rem));
+  right: clamp(-3rem, 2vw, 2rem);
+  width: clamp(10rem, 15vw, 15rem);
+  aspect-ratio: 4 / 5;
+  rotate: 3deg;
+}
+
+.home-community-photo--church-four {
+  right: clamp(1rem, 8vw, 8rem);
+  bottom: clamp(1.5rem, 4vh, 3rem);
+  width: clamp(10rem, 15vw, 15rem);
+  aspect-ratio: 4 / 5;
   rotate: 3deg;
 }
 
@@ -4617,7 +4724,8 @@ body.has-open-shop-cart-drawer {
   z-index: 1;
   width: min(720px, 100%);
   margin: 0 auto;
-  padding: clamp(4.5rem, 7vw, 6.5rem) clamp(1.1rem, 4vw, 3rem);
+  padding: clamp(4.5rem, 7vw, 6.5rem) clamp(1.1rem, 4vw, 3rem)
+    clamp(1rem, 2vh, 1.5rem);
   text-align: center;
 }
 
@@ -5127,13 +5235,45 @@ body.has-open-shop-cart-drawer {
 }
 
 .has-home-reveal .home-community-photo {
-  --community-photo-opacity: 0.06;
-  --community-photo-scale: 0.72;
-  --community-photo-translate: 7rem;
-  opacity: var(--community-photo-opacity);
-  scale: var(--community-photo-scale);
-  translate: 0 var(--community-photo-translate);
+  opacity: 0.06;
+  scale: 0.72;
+  translate: 0 7rem;
+  transition:
+    opacity 700ms ease,
+    scale 850ms cubic-bezier(0.22, 1, 0.36, 1),
+    translate 850ms cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, scale, translate;
+}
+
+.has-home-reveal .home-community-photo--crowd-three,
+.has-home-reveal .home-community-photo--church-four {
+  translate: 0 -7rem;
+}
+
+.has-home-reveal .home-community.is-home-visible .home-community-photo {
+  opacity: 0.88;
+  scale: 1;
+  translate: 0 0;
+}
+
+.has-home-reveal .home-community-photo:nth-child(2) {
+  transition-delay: 90ms;
+}
+
+.has-home-reveal .home-community-photo:nth-child(3) {
+  transition-delay: 180ms;
+}
+
+.has-home-reveal .home-community-photo:nth-child(4) {
+  transition-delay: 270ms;
+}
+
+.has-home-reveal .home-community-photo:nth-child(5) {
+  transition-delay: 360ms;
+}
+
+.has-home-reveal .home-community-photo:nth-child(6) {
+  transition-delay: 450ms;
 }
 
 @keyframes home-hero-drift {
@@ -5310,6 +5450,10 @@ body.has-open-shop-cart-drawer {
     padding-bottom: 2.25rem;
   }
 
+  .editorial-home-shell .home-about-background {
+    height: 100%;
+  }
+
   .home-about-copy h2,
   .home-merch-heading h2 {
     font-size: clamp(3.8rem, 18vw, 6rem);
@@ -5338,6 +5482,17 @@ body.has-open-shop-cart-drawer {
     gap: 2.5rem;
   }
 
+  .home-merch-heading {
+    clip-path: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .home-merch-grid > li {
+    opacity: 1;
+    transform: none;
+  }
+
   .home-merch-image {
     aspect-ratio: 1 / 1;
   }
@@ -5355,14 +5510,15 @@ body.has-open-shop-cart-drawer {
   }
 
   .home-community {
-    min-height: 140vh;
+    min-height: 100vh;
+    min-height: 100svh;
   }
 
   .home-community-photos {
     position: absolute;
     inset: 0;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     align-items: end;
     gap: 0.45rem;
     height: 10.5rem;
@@ -5377,23 +5533,38 @@ body.has-open-shop-cart-drawer {
   }
 
   .home-community-photo--church {
-    align-self: start;
-    rotate: -4deg;
+    align-self: center;
+    rotate: -3deg;
   }
 
   .home-community-photo--crowd-two {
-    translate: 0 0.8rem;
-    rotate: 2deg;
+    align-self: center;
+    rotate: 3deg;
   }
 
   .home-community-photo--crowd-three {
-    align-self: start;
-    rotate: 4deg;
+    align-self: center;
+    rotate: -3deg;
+  }
+
+  .home-community-photo--church-two {
+    align-self: center;
+    rotate: 3deg;
+  }
+
+  .home-community-photo--church-three {
+    align-self: center;
+    rotate: -3deg;
+  }
+
+  .home-community-photo--church-four {
+    align-self: center;
+    rotate: 3deg;
   }
 
   .home-community-inner {
     padding-top: 12.5rem;
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
   }
 }
 
@@ -5451,6 +5622,21 @@ body.has-open-shop-cart-drawer {
     transition: none;
   }
 
+  .home-merch-heading,
+  .home-merch-grid > li {
+    clip-path: none;
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .home-merch-title-letter {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+
   .has-home-reveal .home-community-photo {
     opacity: 0.88;
     scale: 1;
@@ -5462,6 +5648,7 @@ body.has-open-shop-cart-drawer {
   .editorial-home-shell .event-card-poster,
   .home-music-albums .album-card,
   .home-merch-image img {
+    transform: none;
     transition: none;
   }
 }

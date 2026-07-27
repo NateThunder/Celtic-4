@@ -11,6 +11,7 @@ type AlbumLink = {
 };
 
 type Album = {
+  id: string;
   title: string;
   year: string;
   coverSrc: string;
@@ -20,6 +21,7 @@ type Album = {
 
 const ALBUMS: Album[] = [
   {
+    id: "harvest",
     title: "Harvest",
     year: "2025",
     coverSrc: "/Harvest.webp",
@@ -43,6 +45,7 @@ const ALBUMS: Album[] = [
     ],
   },
   {
+    id: "come-behold",
     title: "Come Behold: Christmas Collaborations",
     year: "2022",
     coverSrc: "/COME%20BEHOLD.webp",
@@ -66,6 +69,7 @@ const ALBUMS: Album[] = [
     ],
   },
   {
+    id: "morningtide",
     title: "Morningtide",
     year: "2021",
     coverSrc: "/MORNINGTIDE.webp",
@@ -89,6 +93,7 @@ const ALBUMS: Album[] = [
     ],
   },
   {
+    id: "homeward",
     title: "Homeward",
     year: "2019",
     coverSrc: "/HOMEWARD.jpeg",
@@ -148,7 +153,11 @@ export default function MusicAlbumTimeline() {
   return (
     <div className={styles.timeline} aria-label="Celtic Worship albums in reverse chronological order">
       {ALBUMS.map((album, index) => (
-        <article key={`${album.title}-${album.year}`} className={styles.albumSection}>
+        <article
+          id={album.id}
+          key={`${album.title}-${album.year}`}
+          className={styles.albumSection}
+        >
           <div className={styles.albumLayout}>
             <div className={styles.coverShell}>
               <Image

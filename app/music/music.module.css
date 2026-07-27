@@ -111,6 +111,7 @@
 .albumSection {
   display: grid;
   gap: 0;
+  scroll-margin-top: 7rem;
 }
 
 .albumLayout {

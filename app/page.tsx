@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import AlbumStack from "./components/AlbumStack";
 import EventMusicDivider from "./components/EventMusicDivider";
 import FeaturedVideo from "./components/FeaturedVideo";
@@ -10,6 +11,7 @@ import { getUpcomingEvents } from "./lib/events";
 import { getFeaturedProducts } from "./lib/featuredProducts";
 
 const FEATURED_VIDEO_ID = "3zGhq1ZKbjg";
+const MERCH_TITLE = "Take the music home.";
 const FEATURED_VIDEOS = [
   { videoId: FEATURED_VIDEO_ID, title: "I Need Thee" },
   { videoId: "cXFQuxZF61Q", title: "When I Survey" },
@@ -139,10 +141,44 @@ export default async function Home() {
         </section>
 
         <section className="home-merch" aria-labelledby="home-merch-title">
-          <div className="home-merch-inner" data-home-reveal>
+          <div className="home-merch-inner" data-merch-reveal>
             <div className="home-merch-heading">
               <p className="home-section-kicker">Celtic Worship store</p>
-              <h2 id="home-merch-title">Take the music home.</h2>
+              <h2 id="home-merch-title" aria-label={MERCH_TITLE}>
+                <span className="home-merch-title-letters" aria-hidden="true">
+                  {MERCH_TITLE.split(" ").map((word, wordIndex, words) => {
+                    const wordStart = words
+                      .slice(0, wordIndex)
+                      .reduce((length, previousWord) => length + previousWord.length + 1, 0);
+
+                    return (
+                      <span className="home-merch-title-word" key={word}>
+                        {Array.from(word).map((character, characterIndex) => {
+                          const index = wordStart + characterIndex;
+                          const direction = index % 2 === 0 ? -1 : 1;
+                          const letterStyle = {
+                            "--merch-letter-x": `${direction * (34 + (index % 5) * 13)}px`,
+                            "--merch-letter-y": `${((index % 3) - 1) * 42}px`,
+                            "--merch-letter-rotate": `${direction * (5 + (index % 4) * 2.5)}deg`,
+                            "--merch-letter-delay": `${index * 18}ms`,
+                          } as CSSProperties;
+
+                          return (
+                            <span
+                              className="home-merch-title-letter"
+                              key={`${character}-${index}`}
+                              style={letterStyle}
+                            >
+                              {character}
+                            </span>
+                          );
+                        })}
+                        {wordIndex < words.length - 1 ? "\u00a0" : null}
+                      </span>
+                    );
+                  })}
+                </span>
+              </h2>
               <Link className="home-outline-link home-outline-link--light" href="/shop">
                 Shop all
               </Link>
@@ -196,6 +232,15 @@ export default async function Home() {
               </div>
               <div className="home-community-photo home-community-photo--crowd-three">
                 <Image src="/photos/Crowd3.png" alt="" fill sizes="(max-width: 760px) 31vw, 22vw" />
+              </div>
+              <div className="home-community-photo home-community-photo--church-two">
+                <Image src="/photos/Church2.png" alt="" fill sizes="(max-width: 760px) 31vw, 18vw" />
+              </div>
+              <div className="home-community-photo home-community-photo--church-three">
+                <Image src="/photos/Church3.png" alt="" fill sizes="(max-width: 760px) 31vw, 20vw" />
+              </div>
+              <div className="home-community-photo home-community-photo--church-four">
+                <Image src="/photos/church4.png" alt="" fill sizes="(max-width: 760px) 31vw, 17vw" />
               </div>
             </div>
             <div className="home-community-inner" data-home-reveal>

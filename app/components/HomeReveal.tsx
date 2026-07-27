@@ -8,14 +8,70 @@ export default function HomeReveal() {
     const targets = Array.from(
       document.querySelectorAll<HTMLElement>("[data-home-reveal], [data-home-collage]"),
     );
+    const merchReveal = document.querySelector<HTMLElement>("[data-merch-reveal]");
+    if (merchReveal) targets.push(merchReveal);
     const community = document.querySelector<HTMLElement>("[data-community-reveal]");
     const communityPhotos = community
       ? Array.from(community.querySelectorAll<HTMLElement>(".home-community-photo"))
       : [];
+    const merch = document.querySelector<HTMLElement>(".home-merch");
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let scrollFrame = 0;
+
+    const updateMerchScroll = () => {
+      scrollFrame = 0;
+      if (!merch) return;
+
+      const bounds = merch.getBoundingClientRect();
+      const animationStart = window.innerHeight * 0.92;
+      const animationDistance = window.innerHeight * 0.44;
+      const progress = Math.min(
+        1,
+        Math.max(0, (animationStart - bounds.top) / animationDistance),
+      );
+      const inverse = 1 - progress;
+      merch.style.setProperty("--merch-scroll-progress", progress.toFixed(3));
+      merch.style.setProperty("--merch-stack-offset-left", `${(inverse * 112).toFixed(2)}%`);
+      merch.style.setProperty("--merch-stack-offset-right", `${(inverse * -112).toFixed(2)}%`);
+      merch.style.setProperty("--merch-rotate-left", `${(inverse * -11).toFixed(2)}deg`);
+      merch.style.setProperty("--merch-rotate-middle", `${(inverse * 4).toFixed(2)}deg`);
+      merch.style.setProperty("--merch-rotate-right", `${(inverse * 11).toFixed(2)}deg`);
+      merch.style.setProperty("--merch-stack-rise", `${(inverse * 6).toFixed(3)}rem`);
+      merch.style.setProperty("--merch-stack-scale", (0.8 + progress * 0.2).toFixed(3));
+      merch.style.setProperty("--merch-stack-opacity", (0.42 + progress * 0.58).toFixed(3));
+      merch.style.setProperty("--merch-heading-clip", `${(inverse * 100).toFixed(2)}%`);
+      merch.style.setProperty("--merch-heading-rise", `${(inverse * 3.5).toFixed(3)}rem`);
+      merch.style.setProperty("--merch-heading-opacity", (0.08 + progress * 0.92).toFixed(3));
+      merch.style.setProperty("--merch-image-shift", `${((0.5 - progress) * 2).toFixed(3)}rem`);
+      merch.style.setProperty("--merch-image-scale", (1.06 + progress * 0.025).toFixed(3));
+    };
+
+    const requestMerchScrollUpdate = () => {
+      if (scrollFrame) return;
+      scrollFrame = window.requestAnimationFrame(updateMerchScroll);
+    };
+
+    community?.classList.remove("is-home-visible");
+    communityPhotos.forEach((photo) => {
+      photo.style.removeProperty("--community-photo-opacity");
+      photo.style.removeProperty("--community-photo-scale");
+      photo.style.removeProperty("--community-photo-translate");
+    });
+
+    if (merch && !prefersReducedMotion) {
+      updateMerchScroll();
+      window.addEventListener("scroll", requestMerchScrollUpdate, { passive: true });
+      window.addEventListener("resize", requestMerchScrollUpdate);
+    }
 
     if (!("IntersectionObserver" in window)) {
       targets.forEach((target) => target.classList.add("is-home-visible"));
+      community?.classList.add("is-home-visible");
       return () => {
+        window.removeEventListener("scroll", requestMerchScrollUpdate);
+        window.removeEventListener("resize", requestMerchScrollUpdate);
+        if (scrollFrame) window.cancelAnimationFrame(scrollFrame);
+        merch?.removeAttribute("style");
         document.documentElement.classList.remove("has-home-reveal");
       };
     }
@@ -35,59 +91,14 @@ export default function HomeReveal() {
     );
 
     targets.forEach((target) => observer.observe(target));
-
-    let animationFrame = 0;
-
-    const updateCommunityPhotos = () => {
-      animationFrame = 0;
-      if (!community) return;
-
-      const bounds = community.getBoundingClientRect();
-      const revealStart = window.innerHeight * 0.82;
-      const revealDistance = Math.max(
-        window.innerHeight,
-        bounds.height - window.innerHeight * 0.45,
-      );
-      const sectionProgress = Math.min(
-        1,
-        Math.max(0, (revealStart - bounds.top) / revealDistance),
-      );
-
-      communityPhotos.forEach((photo, index) => {
-        const staggerStart = index * 0.2;
-        const photoProgress = Math.min(
-          1,
-          Math.max(0, (sectionProgress - staggerStart) / 0.55),
-        );
-        photo.style.setProperty(
-          "--community-photo-opacity",
-          (0.06 + photoProgress * 0.82).toFixed(3),
-        );
-        photo.style.setProperty(
-          "--community-photo-scale",
-          (0.72 + photoProgress * 0.28).toFixed(3),
-        );
-        photo.style.setProperty(
-          "--community-photo-translate",
-          `${((1 - photoProgress) * 7).toFixed(3)}rem`,
-        );
-      });
-    };
-
-    const requestCommunityUpdate = () => {
-      if (animationFrame) return;
-      animationFrame = window.requestAnimationFrame(updateCommunityPhotos);
-    };
-
-    updateCommunityPhotos();
-    window.addEventListener("scroll", requestCommunityUpdate, { passive: true });
-    window.addEventListener("resize", requestCommunityUpdate);
+    if (community) observer.observe(community);
 
     return () => {
       observer.disconnect();
-      window.removeEventListener("scroll", requestCommunityUpdate);
-      window.removeEventListener("resize", requestCommunityUpdate);
-      if (animationFrame) window.cancelAnimationFrame(animationFrame);
+      window.removeEventListener("scroll", requestMerchScrollUpdate);
+      window.removeEventListener("resize", requestMerchScrollUpdate);
+      if (scrollFrame) window.cancelAnimationFrame(scrollFrame);
+      merch?.removeAttribute("style");
       document.documentElement.classList.remove("has-home-reveal");
     };
   }, []);

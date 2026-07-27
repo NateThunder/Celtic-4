@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef } from "react";
 
 export default function AlbumStack() {
@@ -57,10 +58,10 @@ export default function AlbumStack() {
       aria-label="Celtic Worship albums"
       role="group"
     >
-      <figure
+      <Link
+        href="/music#homeward"
         className="album-card album-homeward"
         aria-label="Homeward album"
-        tabIndex={0}
       >
         <Image
           src="/HOMEWARD.jpeg"
@@ -68,11 +69,11 @@ export default function AlbumStack() {
           width={320}
           height={320}
         />
-      </figure>
-      <figure
+      </Link>
+      <Link
+        href="/music#morningtide"
         className="album-card album-morningtide"
         aria-label="Morningtide album"
-        tabIndex={0}
       >
         <Image
           src="/MORNINGTIDE.webp"
@@ -80,11 +81,11 @@ export default function AlbumStack() {
           width={320}
           height={320}
         />
-      </figure>
-      <figure
+      </Link>
+      <Link
+        href="/music#come-behold"
         className="album-card album-come-behold"
         aria-label="Come Behold album"
-        tabIndex={0}
       >
         <Image
           src="/COME%20BEHOLD.webp"
@@ -92,11 +93,11 @@ export default function AlbumStack() {
           width={320}
           height={320}
         />
-      </figure>
-      <figure
+      </Link>
+      <Link
+        href="/music#harvest"
         className="album-card album-harvest"
         aria-label="Harvest album"
-        tabIndex={0}
       >
         <Image
           src="/Harvest.webp"
@@ -104,7 +105,7 @@ export default function AlbumStack() {
           width={320}
           height={320}
         />
-      </figure>
+      </Link>
     </div>
   );
 }
