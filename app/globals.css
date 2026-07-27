@@ -4929,10 +4929,14 @@ body.has-open-shop-cart-drawer {
 
   .editorial-home-shell .featured-video-editorial-inner {
     width: min(
-      clamp(44rem, 48vw, 92rem),
-      calc(177.78svh - 32rem)
+      clamp(48rem, 64vw, 76rem),
+      calc(177.78svh - 24rem)
     );
     gap: clamp(0.75rem, 1.8svh, 1.4rem);
+  }
+
+  .editorial-home-shell .featured-video-copy {
+    transform: translateY(clamp(-1.25rem, -2svh, -0.75rem));
   }
 
   .editorial-home-shell .featured-video-title-row {
@@ -5052,8 +5056,8 @@ body.has-open-shop-cart-drawer {
 
   .editorial-home-shell .featured-video-editorial-inner {
     width: min(
-      clamp(42rem, 62vw, 60rem),
-      calc(177.78svh - 18rem)
+      clamp(44rem, 72vw, 72rem),
+      calc(177.78svh - 14rem)
     );
     gap: clamp(0.6rem, 1.5vh, 0.85rem);
   }

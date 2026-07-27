@@ -86,15 +86,25 @@ function ProductImageGalleryContent({
 
   return (
     <>
-      <Image
-        key={activeImage.src}
-        className={styles.image}
-        src={activeImage.src}
-        alt={activeImage.alt || fallbackAlt}
-        width={1080}
-        height={1080}
-        priority={priority}
-      />
+      <div className={styles.galleryImages}>
+        {validImages.map((image, index) => {
+          const isActive = index === activeIndex;
+
+          return (
+            <Image
+              key={image.src}
+              className={`${styles.image} ${isActive ? styles.imageActive : ""}`}
+              src={image.src}
+              alt={isActive ? image.alt || fallbackAlt : ""}
+              width={1080}
+              height={1080}
+              priority={priority && index === 0}
+              loading={priority && index === 0 ? undefined : "eager"}
+              aria-hidden={!isActive}
+            />
+          );
+        })}
+      </div>
 
       <p className={styles.galleryStatus} aria-live="polite">
         Image {activeIndex + 1} of {validImages.length}
