@@ -1,43 +1,1182 @@
+/*
+  /about — dark, light, dark.
+
+  Ported from the `about-U-final.html` reference. That file grew by appending
+  override blocks; everything here is the flattened end state of that cascade.
+
+  Motion contract: every "hidden until revealed" state lives in the single
+  `prefers-reduced-motion: no-preference` block at the foot of this file, so
+  with reduced motion on the page renders fully visible and nothing animates.
+*/
+
+/* This page lays its own ink canvas from the header to the footer, so the
+   site's 2.2 MB paper texture is never visible behind it — and should not be
+   fetched. Route-scoped: only /about links this stylesheet. */
+:global(html body) {
+  background-image: none;
+  background-color: #070605;
+}
+
 .page {
-  min-height: 100vh;
-  min-height: 100dvh;
-  background-color: var(--background);
-  background-image: var(--paper-surface-dark);
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: cover;
-  background-attachment: fixed;
-  color: #fff;
-  padding: clamp(5.6rem, 10vw, 7.2rem) clamp(1rem, 4vw, 2rem) clamp(2.2rem, 5vw, 3.8rem);
+  --ink: #070605;
+  --paper: #f2efe9;
+  --sandstone: #9a8470;
+  --tungsten: #b5803c;
+  --amber: #c97b12;
+
+  --display: var(--font-anton), Impact, sans-serif;
+  --body: var(--font-eb-garamond), Georgia, "Times New Roman", serif;
+
+  --t1: 12px;
+  --t2: 23px;
+  --t4: 44px;
+  --s2: 110px;
+  --s3: 150px;
+  --s4: 200px;
+
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--body);
+  font-size: var(--t2);
+  line-height: 1.66;
 }
 
-.inner {
-  width: min(860px, 100%);
+.page *,
+.page *::before,
+.page *::after {
+  box-sizing: border-box;
+}
+
+.w {
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 60px;
 }
 
-.kicker {
-  margin: 0;
-  color: rgba(255, 255, 255, 0.72);
+.tag {
+  display: block;
+  font-family: var(--display);
+  font-size: var(--t1);
+  letter-spacing: 0.24em;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: 0.78rem;
-  font-weight: 700;
+  color: var(--tungsten);
+}
+
+.tagAmber {
+  color: var(--amber);
+}
+
+/* ---------------------------------------------------------------- hero --- */
+
+/* 200vh wrapper: the sticky stage ends with it, so it cannot come back. */
+.heroWrap {
+  position: relative;
+  height: 200vh;
+  z-index: 0;
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 560px;
+  overflow: hidden;
+  background: #0d0b08;
+  z-index: 0;
+}
+
+.rack {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.st {
+  position: relative;
+  overflow: hidden;
+  background: #0d0b08;
+  will-change: transform, opacity;
+}
+
+/* Bleed frame: reproduces the reference's `inset:-4%; width:108%` crop. */
+.stFrame {
+  position: absolute;
+  inset: -4%;
+}
+
+.st img {
+  object-fit: cover;
+  transition: filter 0.5s ease;
+}
+
+.who {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  padding: 20px 12px 26px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  background: linear-gradient(to top, rgba(7, 6, 5, 0.94), transparent);
+}
+
+.who b {
+  display: block;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+}
+
+.who span {
+  display: block;
+  margin-top: 5px;
+  font-family: var(--display);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--amber);
+}
+
+.rack:hover .st img {
+  filter: brightness(0.4) saturate(0.65);
+}
+
+/* Beats `.rack:hover .st img` above, which would otherwise dim the strip you
+   are actually pointing at along with the rest. */
+.rack:hover .st:hover img {
+  filter: brightness(1.05);
+}
+
+.st:hover .who {
+  opacity: 1;
+  transform: none;
+}
+
+.seam {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.seamLine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: rgba(7, 6, 5, 0.92);
+}
+
+.over {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 60px var(--s2);
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(7, 6, 5, 0.92) 2%, transparent 44%);
+}
+
+.overIn {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .title {
-  margin: 0.3rem 0 0;
-  font-family: var(--font-anton), Impact, sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.015em;
-  font-size: clamp(1.7rem, 4.6vw, 3.2rem);
-  line-height: 1;
+  font-family: var(--body);
+  font-weight: 400;
+  font-size: clamp(40px, 5.4vw, 76px);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  max-width: 15ch;
+  margin: 18px 0 0;
 }
 
-.copy {
-  margin: 1rem 0 0;
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 70ch;
-  font-size: clamp(0.95rem, 1.35vw, 1.15rem);
-  line-height: 1.6;
+.title em {
+  font-style: italic;
+  color: var(--greige);
+}
+
+.hint {
+  margin-top: 24px;
+  font-family: var(--display);
+  font-size: var(--t1);
+  letter-spacing: 0.2em;
+  color: rgba(242, 239, 233, 0.5);
+}
+
+/* The body rides up over the second half of the hero wrapper. */
+.up {
+  position: relative;
+  z-index: 1;
+  margin-top: -100vh;
+  background: var(--ink);
+}
+
+/* --------------------------------------------------------------- greige --- */
+
+.light {
+  background: var(--greige);
+  color: #241f1b;
+}
+
+.light .tag {
+  color: #7a5417;
+}
+
+.light p {
+  color: #332c26;
+}
+
+.light h2 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: var(--t4);
+  line-height: 1;
+  color: var(--ink);
+  margin: 16px 0 26px;
+}
+
+.rule {
+  border: 0;
+  height: 1px;
+  background: #8a7f70;
+  opacity: 0.6;
+  width: 100%;
+}
+
+.roster {
+  padding: var(--s3) 0 var(--s4);
+}
+
+.names {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 34px;
+  align-items: baseline;
+  margin-top: 30px;
+}
+
+.nm {
+  font-family: var(--display);
+  font-size: clamp(40px, 5.6vw, 88px);
+  line-height: 1.02;
+  color: var(--ink);
+}
+
+.instr {
+  font-family: var(--display);
+  font-size: var(--t1);
+  letter-spacing: 0.2em;
+  color: var(--sandstone);
+}
+
+/* ---------------------------------------------------- editorial spreads --- */
+
+.ed {
+  display: grid;
+  grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+  gap: 64px;
+  padding: var(--s3) 0;
+  align-items: center;
+}
+
+.ed:not(.rt) {
+  align-items: start;
+}
+
+.ed.rt {
+  grid-template-columns: minmax(0, 1.16fr) minmax(0, 0.84fr);
+  align-items: center;
+}
+
+.col {
+  max-width: 32ch;
+}
+
+.ed:not(.rt) .col {
+  padding-top: 4vh;
+}
+
+.ed.rt .col {
+  margin-left: auto;
+  padding-left: 6%;
+  max-width: 30ch;
+}
+
+.ed .col h2 {
+  font-size: clamp(58px, 7.2vw, 108px);
+  line-height: 0.96;
+  letter-spacing: -0.005em;
+  margin: 22px 0 34px;
+}
+
+.ed:not(.rt) .col h2 {
+  font-size: clamp(64px, 8.4vw, 132px);
+}
+
+.ed.rt .col h2 {
+  font-size: clamp(62px, 8vw, 126px);
+}
+
+.ed .col h2.big {
+  font-size: clamp(62px, 8.6vw, 140px);
+  line-height: 0.92;
+  margin: 20px 0 34px;
+}
+
+.ed:not(.rt) .col h2.big {
+  font-size: clamp(66px, 9vw, 146px);
+}
+
+.ed p {
+  font-size: 24px;
+  line-height: 1.62;
+  margin-bottom: 1.4em;
+}
+
+.ed:not(.rt) .col p,
+.ed.rt .col p {
+  font-size: 26px;
+  line-height: 1.58;
+}
+
+/* --- cut-out pairs -------------------------------------------------- */
+
+.cut {
+  position: relative;
+  margin: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  min-height: 80vh;
+}
+
+.cut .lead {
+  position: relative;
+  z-index: 2;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: 74vh;
+  object-fit: contain;
+}
+
+.cut .partner {
+  position: absolute;
+  bottom: 0;
+  z-index: 1;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: 52vh;
+  object-fit: contain;
+  filter: saturate(0.88) brightness(0.94)
+    drop-shadow(0 18px 30px rgba(36, 31, 27, 0.26));
+}
+
+.ed:not(.rt) .cut .lead {
+  margin-left: 24%;
+}
+
+.ed:not(.rt) .cut .partner {
+  left: -11%;
+  bottom: 0;
+  max-height: 48vh;
+  z-index: 1;
+}
+
+.ed.rt .cut .lead {
+  margin-left: 22%;
+  max-height: 76vh;
+  z-index: 2;
+}
+
+.ed.rt .cut .partner {
+  left: 0;
+  bottom: 0;
+  max-height: 40vh;
+}
+
+.ed.rt .cut .partner:not(.p3) {
+  z-index: 1;
+}
+
+/* Third player set back and clear of both faces. */
+.ed.rt .cut .partner.p3 {
+  left: -6%;
+  top: auto;
+  bottom: 0;
+  z-index: 0;
+  max-height: 44vh;
+  filter: saturate(0.82) brightness(0.92)
+    drop-shadow(0 16px 26px rgba(36, 31, 27, 0.22));
+}
+
+/* --- the record plate, and the vinyl that slides out of it ---------- */
+
+.plate {
+  margin: 0;
+  max-width: 460px;
+}
+
+.plate img {
+  width: 100%;
+  height: auto;
+  display: block;
+  will-change: transform;
+}
+
+.plate figcaption {
+  margin-top: 14px;
+  font-family: var(--display);
+  font-size: var(--t1);
+  letter-spacing: 0.18em;
+  color: var(--sandstone);
+}
+
+.vinyl {
+  position: relative;
+  overflow: visible;
+}
+
+.vinyl img {
+  position: relative;
+  z-index: 1;
+}
+
+.disc {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 88%;
+  padding-bottom: 88%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    #1a1613 0 17%,
+    #0d0b09 17.6% 19%,
+    #171310 19.6% 100%
+  );
+  box-shadow: 0 18px 40px rgba(36, 31, 27, 0.42);
+  z-index: 0;
+  /* Scroll-position driven, never transitioned, so it reverses on the way up. */
+  transition: none;
+  opacity: 1;
+  transform: translate(56%, 6%) rotate(150deg);
+}
+
+.disc::after {
+  content: "";
+  position: absolute;
+  inset: 39%;
+  border-radius: 50%;
+  background: var(--tungsten);
+}
+
+/* --- photographs ghosting into the greige --------------------------- */
+
+.gh {
+  position: relative;
+  --gh-opacity: 0.62;
+}
+
+.gh::before {
+  content: "";
+  position: absolute;
+  top: -6%;
+  bottom: -6%;
+  left: calc(50% - 50vw);
+  width: 100vw;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--gh);
+  background-size: cover;
+  background-position: center 38%;
+  opacity: var(--gh-opacity);
+  /* Type always sits on flat greige; the photo only surfaces away from it. */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.18) 26%,
+    rgba(0, 0, 0, 0.7) 58%,
+    #000 84%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.18) 26%,
+    rgba(0, 0, 0, 0.7) 58%,
+    #000 84%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+.gh.rt::before {
+  -webkit-mask-image: linear-gradient(
+    to left,
+    transparent 0%,
+    rgba(0, 0, 0, 0.18) 26%,
+    rgba(0, 0, 0, 0.7) 58%,
+    #000 84%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  mask-image: linear-gradient(
+    to left,
+    transparent 0%,
+    rgba(0, 0, 0, 0.18) 26%,
+    rgba(0, 0, 0, 0.7) 58%,
+    #000 84%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+}
+
+.gh > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* -------------------------------------------------------- the triptych --- */
+
+/* The greige pours straight down into the ink: no black gap between them. */
+.band {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr minmax(520px, 700px) 1fr;
+  align-items: center;
+  gap: 0;
+  padding: 0 48px 160px;
+  min-height: 0;
+  background: linear-gradient(
+    to bottom,
+    var(--greige) 0%,
+    #cdc5b9 4%,
+    #b4ab9e 9%,
+    #877f74 15%,
+    #575047 21%,
+    #2a251f 29%,
+    var(--ink) 38%,
+    var(--ink) 100%
+  );
+}
+
+.bandIn {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: none;
+  padding: 40px 30px 20px;
+}
+
+.bandIn::before {
+  content: "";
+  position: absolute;
+  inset: -6% -14%;
+  z-index: -1;
+  background-image: url("/photos/about/backgrounds/harvest-quote-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: 0.4;
+  filter: saturate(0.72);
+  -webkit-mask-image: radial-gradient(
+    74% 76% at 50% 50%,
+    #000 10%,
+    rgba(0, 0, 0, 0.5) 50%,
+    transparent 84%
+  );
+  mask-image: radial-gradient(
+    74% 76% at 50% 50%,
+    #000 10%,
+    rgba(0, 0, 0, 0.5) 50%,
+    transparent 84%
+  );
+}
+
+.ln {
+  display: block;
+  font-family: var(--body);
+  font-style: italic;
+  font-size: clamp(32px, 3.5vw, 52px);
+  line-height: 1.2;
+  color: var(--paper);
+}
+
+.band cite {
+  display: block;
+  margin-top: 30px;
+  font-family: var(--display);
+  font-size: var(--t1);
+  letter-spacing: 0.24em;
+  font-style: normal;
+  color: var(--sandstone);
+}
+
+/* The scene plates start at the top edge and rise out of the cream. */
+.sc {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  max-width: 430px;
+  width: 100%;
+  justify-self: center;
+  align-self: start;
+}
+
+.sc img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(1) contrast(1.42) brightness(1.02);
+  -webkit-mask-image: radial-gradient(
+      134% 126% at var(--mx) 56%,
+      #000 58%,
+      rgba(0, 0, 0, 0.78) 82%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.22) 8%,
+      rgba(0, 0, 0, 0.68) 18%,
+      #000 32%
+    );
+  mask-image: radial-gradient(
+      134% 126% at var(--mx) 56%,
+      #000 58%,
+      rgba(0, 0, 0, 0.78) 82%,
+      transparent 100%
+    ),
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(0, 0, 0, 0.22) 8%,
+      rgba(0, 0, 0, 0.68) 18%,
+      #000 32%
+    );
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+.sc.l {
+  --mx: 44%;
+}
+
+.sc.r {
+  --mx: 56%;
+}
+
+.sc.l img {
+  object-position: 58% 50%;
+}
+
+.sc.r img {
+  object-position: 46% 44%;
+  filter: grayscale(1) contrast(1.34) brightness(1.5);
+}
+
+.sc::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--tungsten);
+  mix-blend-mode: color;
+  opacity: 0.17;
+  pointer-events: none;
+}
+
+/* ----------------------------------------------------------- the exits --- */
+
+/* The black between the triptych and the shop carries an ember bed. */
+.dark {
+  position: relative;
+  background: linear-gradient(
+    to bottom,
+    var(--ink) 0%,
+    #0e0c0a 30%,
+    #151109 70%,
+    #1c1710 100%
+  );
+  color: var(--paper);
+}
+
+.dark::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 62vh;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("/photos/about/backgrounds/embers-bg.jpg");
+  background-size: cover;
+  background-position: center 30%;
+  opacity: 0.44;
+  mix-blend-mode: screen;
+  filter: sepia(0.14) brightness(1.02);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    rgba(0, 0, 0, 0.55) 46%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    rgba(0, 0, 0, 0.55) 46%,
+    transparent 100%
+  );
+}
+
+.dark > * {
+  position: relative;
+  z-index: 1;
+}
+
+.exit {
+  padding: var(--s3) 0;
+}
+
+.exit h2 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(44px, 5.6vw, 86px);
+  line-height: 0.98;
+  margin: 16px 0 24px;
+  max-width: 14ch;
+}
+
+.exit p {
+  color: rgba(242, 239, 233, 0.8);
+  font-size: var(--t2);
+  max-width: 36ch;
+  margin-bottom: 34px;
+}
+
+.btn {
+  display: inline-block;
+  font-family: var(--display);
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  padding: 18px 34px;
+  border: 1px solid var(--paper);
+  color: var(--paper);
+  text-decoration: none;
+  margin-right: 12px;
+  transition: background 0.3s, color 0.3s;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.btn.fill {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #140e06;
+}
+
+.btn.fill:hover,
+.btn.fill:focus-visible {
+  background: var(--paper);
+  border-color: var(--paper);
+}
+
+.exitGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: 50px;
+  align-items: end;
+}
+
+.exitPeople {
+  position: relative;
+  min-height: 400px;
+}
+
+.exitPeople img {
+  position: absolute;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: 340px;
+  filter: drop-shadow(0 26px 44px rgba(0, 0, 0, 0.6));
+  transform: none;
+  transition: none;
+}
+
+.exitPeople .q1 {
+  left: -6%;
+  z-index: 1;
+  max-height: 320px;
+}
+
+.exitPeople .q2 {
+  left: 26%;
+  z-index: 2;
+  max-height: 345px;
+}
+
+.exitPeople .q3 {
+  right: -14%;
+  z-index: 3;
+  max-height: 290px;
+}
+
+/* ---------------------------------------------------------- responsive --- */
+
+@media (max-width: 1100px) {
+  .band {
+    grid-template-columns: 1fr minmax(0, 1fr) 1fr;
+  }
+
+  .sc {
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 900px) {
+  .page {
+    --t2: 19px;
+    --t4: 32px;
+    --s3: 96px;
+    --s4: 120px;
+  }
+
+  .w {
+    padding: 0 28px;
+  }
+
+  /* No sticky hero on small screens: the stage simply scrolls past. */
+  .heroWrap {
+    height: auto;
+  }
+
+  .stage {
+    position: relative;
+    height: 80vh;
+  }
+
+  .up {
+    margin-top: 0;
+  }
+
+  .rack {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+
+  /* No hover on touch, so every strip names its player outright. */
+  .who {
+    opacity: 1;
+    transform: none;
+    padding: 12px 6px 14px;
+  }
+
+  /* Sits the title block between the two rows of names rather than across
+     them, matches the `.w` gutter, and lifts the scrim off the bottom row so
+     those names keep their own backing gradient. */
+  .over {
+    padding: 0 28px 92px;
+    background: linear-gradient(
+      to top,
+      transparent 0%,
+      rgba(7, 6, 5, 0.86) 14%,
+      rgba(7, 6, 5, 0.72) 42%,
+      transparent 74%
+    );
+  }
+
+  /* There is no hover to prompt for; every strip is already labelled. */
+  .hint {
+    display: none;
+  }
+
+  .rack:hover .st img,
+  .rack:hover .st:hover img {
+    filter: none;
+  }
+
+  /* Seams are cut for a seven-column rack; at four columns they'd fall
+     between nothing. */
+  .seam {
+    display: none;
+  }
+
+  .ed,
+  .ed.rt {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding: var(--s2) 0;
+  }
+
+  .ed p,
+  .ed:not(.rt) .col p,
+  .ed.rt .col p {
+    font-size: 19px;
+  }
+
+  .ed.rt .col {
+    padding-left: 0;
+  }
+
+  .cut {
+    min-height: 48vh;
+  }
+
+  .cut .lead {
+    max-height: 46vh;
+  }
+
+  .ed:not(.rt) .cut .lead,
+  .ed.rt .cut .lead {
+    margin-left: 18%;
+  }
+
+  .cut .partner {
+    max-height: 34vh;
+  }
+
+  .ed:not(.rt) .cut .partner {
+    left: -6%;
+    max-height: 32vh;
+  }
+
+  .ed.rt .cut .partner.p3 {
+    left: -4%;
+    max-height: 28vh;
+  }
+
+  .band {
+    grid-template-columns: 1fr;
+    padding: 0 26px 90px;
+    gap: 26px;
+    background: linear-gradient(
+      to bottom,
+      var(--greige) 0%,
+      #8e867b 5%,
+      var(--ink) 16%,
+      var(--ink) 100%
+    );
+  }
+
+  .bandIn {
+    padding: 30px 0;
+  }
+
+  .sc {
+    aspect-ratio: 16 / 10;
+    max-height: 230px;
+    max-width: 100%;
+    margin-top: 10px;
+  }
+
+  .dark::before {
+    height: 40vh;
+    opacity: 0.38;
+  }
+
+  .exitGrid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .exitPeople {
+    min-height: 300px;
+  }
+
+  .exitPeople img {
+    max-height: 230px;
+  }
+
+  .exitPeople .q2 {
+    left: 22%;
+  }
+
+  .exitPeople .q3 {
+    right: -16%;
+  }
+}
+
+@media (max-width: 900px) {
+  .gh {
+    --gh-opacity: 0.34;
+  }
+
+  .gh::before,
+  .gh.rt::before {
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 55%);
+    mask-image: linear-gradient(to bottom, transparent 0%, #000 55%);
+  }
+}
+
+/* ------------------------------------------------------------- motion ---
+   Everything below only exists when motion is welcome. With reduced motion
+   on, none of these initial states apply: the page paints fully visible and
+   the JS never starts a rAF loop or a photo cycle.                        */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Strips assemble from off-centre; JS owns transform and opacity. */
+  .st {
+    opacity: 0;
+  }
+
+  .rv {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+
+  .rv.on {
+    opacity: 1;
+    transform: none;
+  }
+
+  .rule {
+    width: 0;
+    transition: width 1.2s ease;
+  }
+
+  .rule.on {
+    width: 100%;
+  }
+
+  .nm {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .instr {
+    opacity: 0;
+    transition: opacity 0.7s ease;
+  }
+
+  .names.on .nm,
+  .names.on .instr {
+    opacity: 1;
+    transform: none;
+  }
+
+  .ed .col > * {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+
+  .ed.on .col > * {
+    opacity: 1;
+    transform: none;
+  }
+
+  .ed.on .col > *:nth-child(2) {
+    transition-delay: 0.1s;
+  }
+
+  .ed.on .col > *:nth-child(3) {
+    transition-delay: 0.2s;
+  }
+
+  .ed.on .col > *:nth-child(4) {
+    transition-delay: 0.3s;
+  }
+
+  .cut .lead,
+  .cut .partner {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .ed.on .cut .lead {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.16s;
+  }
+
+  .ed.on .cut .partner {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.34s;
+  }
+
+  .ed.on .cut .partner.p3 {
+    transition-delay: 0.5s;
+  }
+
+  /* Scroll-position driven: JS owns opacity and transform from here. */
+  .disc {
+    opacity: 0;
+    transform: translate(6%, 6%) rotate(0deg);
+  }
+
+  .gh::before {
+    opacity: 0;
+    transition: opacity 1.6s ease;
+  }
+
+  .gh.on::before {
+    opacity: var(--gh-opacity);
+  }
+
+  .ln {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 1s cubic-bezier(0.2, 0.7, 0.2, 1),
+      transform 1s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  .band.on .ln {
+    opacity: 1;
+    transform: none;
+    transition-delay: 0.3s;
+  }
+
+  .band.on .ln:nth-child(2) {
+    transition-delay: 0.22s;
+  }
+
+  .band cite {
+    opacity: 0;
+    transition: opacity 1s ease 0.74s;
+  }
+
+  .band.on cite {
+    opacity: 1;
+  }
+
+  .sc {
+    opacity: 0;
+    transform: scale(1.04);
+    transition: opacity 1.3s ease, transform 1.6s ease;
+  }
+
+  .band.on .sc {
+    opacity: 1;
+    transform: none;
+  }
+
+  .band.on .sc.r {
+    transition-delay: 0.14s;
+  }
+
+  /* Scroll-position driven: JS owns opacity from here. */
+  .exitPeople img {
+    opacity: 0;
+  }
 }
