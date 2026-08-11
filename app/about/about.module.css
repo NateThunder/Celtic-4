@@ -99,13 +99,16 @@
   will-change: transform, opacity;
 }
 
-/* Bleed frame: reproduces the reference's `inset:-4%; width:108%` crop. */
-.stFrame {
+/* Exactly the reference's crop: the photo bleeds 4% past the panel on every
+   side, and object-position (set per photo, inline) picks what stays in frame. */
+.st img {
   position: absolute;
   inset: -4%;
-}
-
-.st img {
+  width: 108%;
+  height: 108%;
+  /* Tailwind preflight caps every img at max-width:100%, which would clamp the
+     horizontal bleed back to the panel and shift the crop. */
+  max-width: none;
   object-fit: cover;
   transition: filter 0.5s ease;
 }

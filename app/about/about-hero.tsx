@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { MEMBERS } from "./about-data";
 import styles from "./about.module.css";
@@ -47,11 +46,33 @@ export default function AboutHero() {
   const [frameIndexes, setFrameIndexes] = useState<number[]>(() =>
     MEMBERS.map(() => 0),
   );
-  // The first frame of each strip is the LCP candidate; every later frame is lazy.
+  // The frame on screen at load is the LCP candidate and asks for high fetch
+  // priority; once the rack has cycled, the preloader below has already warmed
+  // everything, so there is nothing left to prioritise.
   const [hasCycled, setHasCycled] = useState(false);
 
   const stripRefs = useRef<(HTMLDivElement | null)[]>([]);
   const seamRef = useRef<HTMLDivElement | null>(null);
+
+  // Fetch *and* decode every frame of every cycle up front, so a swap is a src
+  // change against a warm cache rather than a network hop mid-transition. A
+  // cached-but-undecoded frame still hitches, hence the decode().
+  useEffect(() => {
+    const warmed = MEMBERS.flatMap((member) =>
+      member.frames.map((frame) => {
+        const image = new window.Image();
+        image.decoding = "async";
+        image.src = frame.src;
+        void image.decode().catch(() => {});
+        return image;
+      }),
+    );
+
+    return () => {
+      // Drop the references; anything still in flight is abandoned with them.
+      warmed.length = 0;
+    };
+  }, []);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -158,17 +179,18 @@ export default function AboutHero() {
                   stripRefs.current[i] = node;
                 }}
               >
-                <div className={styles.stFrame}>
-                  <Image
-                    src={frame.src}
-                    alt={`${member.name} — ${member.instrument}`}
-                    fill
-                    sizes="(max-width: 900px) 25vw, 15vw"
-                    priority={!hasCycled}
-                    draggable={false}
-                    style={{ objectPosition: frame.position }}
-                  />
-                </div>
+                {/* Raw file, not next/image: these are pre-cropped 90–150 KB
+                    strips, and the optimiser was serving a 216px-wide variant
+                    that then had to scale 6.75x to fill a 972px-tall panel. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={frame.src}
+                  alt={`${member.name} — ${member.instrument}`}
+                  draggable={false}
+                  decoding="async"
+                  fetchPriority={hasCycled ? "auto" : "high"}
+                  style={{ objectPosition: frame.position }}
+                />
                 <div className={styles.who}>
                   <b>{member.name.toUpperCase()}</b>
                   <span>{member.instrument.toUpperCase()}</span>
