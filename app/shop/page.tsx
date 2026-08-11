@@ -429,10 +429,12 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
       <main className={styles.page}>
         <ShopCollage
           baseOpacity={0.03}
-          peakOpacity={0.62}
+          peakOpacity={0.30}
           maxBlur={10}
           focusWindow={0.36}
-          curve={0.62}
+          response={0.62}
+          plateScale={1.30}
+          greigeTint={0.50}
         />
         <section className={styles.shell}>
           <header className={styles.header}>

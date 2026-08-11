@@ -23,8 +23,6 @@
   border-radius: 2px;
   background: #d1c9be;
   mix-blend-mode: color;
-  /* Per-plate override via the `t` value in LAYOUT. Pale objects already shot on
-     greige use a lower tint so they don't dissolve into the cream page. */
   opacity: var(--plate-tint, 0.5);
 }
 
