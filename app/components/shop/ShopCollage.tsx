@@ -78,12 +78,12 @@ const smoothstep = (t: number) => t * t * (3 - 2 * t);
 
 export default function ShopCollage({
   baseOpacity = 0.03,
-  peakOpacity = 0.30,
+  peakOpacity = 0.16,
   maxBlur = 10,
   focusWindow = 0.36,
   response = 0.62,
-  plateScale = 1.30,
-  greigeTint = 0.50,
+  plateScale = 1.00,
+  greigeTint = 0.62,
 }: ShopCollageProps) {
   const rootRef = useRef<HTMLDivElement>(null);
 
