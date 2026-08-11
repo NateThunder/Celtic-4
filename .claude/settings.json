@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s --max-time 8 \"https://rest.bandsintown.com/artists/id_849462/events?app_id=js_celticworship.co.uk\")",
+      "Bash(curl -s --max-time 10 \"https://rest.bandsintown.com/artists/id_849462/events?app_id=js_celticworship.co.uk\")",
+      "Bash(python3 -c ' *)",
+      "Bash(lsof -i :3000 -sTCP:LISTEN -t)"
+    ]
+  }
+}

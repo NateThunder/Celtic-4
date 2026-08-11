@@ -4,6 +4,7 @@ import { WOO_BASE_URL } from "../lib/woo";
 import AddToCartButton from "../components/shop/AddToCartButton";
 import EqualHeightCardGrid from "../components/shop/EqualHeightCardGrid";
 import ExpandableDescription from "../components/shop/ExpandableDescription";
+import ShopCollage from "../components/shop/ShopCollage";
 import SiteHeader from "../components/SiteHeader";
 import styles from "./shop.module.css";
 
@@ -288,7 +289,7 @@ function renderProductCard(item: ProductCardItem) {
             src={image.src}
             alt={image.alt || item.product.name}
             width={720}
-            height={720}
+            height={900}
           />
         ) : (
           <div className={`${styles.cardImage} ${styles.cardImagePlaceholder}`} />
@@ -426,6 +427,15 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
     <div className="site-shell">
       <SiteHeader />
       <main className={styles.page}>
+        <ShopCollage
+          baseOpacity={0.03}
+          peakOpacity={0.16}
+          maxBlur={10}
+          focusWindow={0.36}
+          response={0.62}
+          plateScale={1.00}
+          greigeTint={0.62}
+        />
         <section className={styles.shell}>
           <header className={styles.header}>
             <h1 className={styles.title}>Shop</h1>

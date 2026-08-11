@@ -7,6 +7,7 @@ import EqualHeightCardGrid from "../../components/shop/EqualHeightCardGrid";
 import ExpandableDescription from "../../components/shop/ExpandableDescription";
 import { WOO_BASE_URL } from "../../lib/woo";
 import ProductImageGallery from "./ProductImageGallery";
+import ScrollToProductTop from "./ScrollToProductTop";
 import VariableProductSelector, {
   type VariableProductVariation,
   type VariableProductVariationAttribute,
@@ -230,7 +231,7 @@ function renderRecommendedProductCard(product: WooStoreProduct) {
 
   return (
     <li key={product.id} className={styles.recommendationCard}>
-      <Link className={styles.recommendationImageLink} href={`/shop/${product.id}`}>
+      <Link className={styles.recommendationImageLink} href={`/shop/${product.id}`} scroll>
         {image?.src ? (
           <Image
             className={styles.recommendationImage}
@@ -238,6 +239,7 @@ function renderRecommendedProductCard(product: WooStoreProduct) {
             alt={image.alt || product.name}
             width={720}
             height={720}
+            loading="eager"
           />
         ) : (
           <div className={`${styles.recommendationImage} ${styles.imagePlaceholder}`} />
@@ -253,7 +255,7 @@ function renderRecommendedProductCard(product: WooStoreProduct) {
 
         <div className={styles.recommendationActions}>
           {hasVariableOptions ? (
-            <Link className={styles.recommendationOptionsLink} href={`/shop/${product.id}`}>
+            <Link className={styles.recommendationOptionsLink} href={`/shop/${product.id}`} scroll>
               View Options
             </Link>
           ) : (
@@ -269,7 +271,7 @@ function renderRecommendedProductCard(product: WooStoreProduct) {
               }}
             />
           )}
-          <Link className={styles.recommendationLink} href={`/shop/${product.id}`}>
+          <Link className={styles.recommendationLink} href={`/shop/${product.id}`} scroll>
             View Product
           </Link>
         </div>
@@ -304,6 +306,7 @@ export default async function ShopProductPage({ params }: ShopProductPageProps) 
 
   return (
     <div className="site-shell">
+      <ScrollToProductTop productId={product.id} />
       <SiteHeader />
       <main className={styles.page}>
         <section className={styles.shell}>

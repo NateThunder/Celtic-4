@@ -11,6 +11,7 @@ export type ProductImageGalleryImage = {
 
 type ProductImageGalleryProps = {
   images?: ProductImageGalleryImage[];
+  preloadImages?: ProductImageGalleryImage[];
   fallbackAlt: string;
   priority?: boolean;
   resetKey?: string;
@@ -34,17 +35,23 @@ function getValidImages(images?: ProductImageGalleryImage[]): ProductImageGaller
 
 export default function ProductImageGallery({
   images,
+  preloadImages,
   fallbackAlt,
   priority = false,
   resetKey,
 }: ProductImageGalleryProps) {
   const validImages = useMemo(() => getValidImages(images), [images]);
+  const validPreloadImages = useMemo(() => {
+    const displayedSources = new Set(validImages.map((image) => image.src));
+    return getValidImages(preloadImages).filter((image) => !displayedSources.has(image.src));
+  }, [preloadImages, validImages]);
   const imageSignature = validImages.map((image) => image.src).join("|");
 
   return (
     <ProductImageGalleryContent
       key={`${resetKey ?? "gallery"}:${imageSignature}`}
       validImages={validImages}
+      validPreloadImages={validPreloadImages}
       fallbackAlt={fallbackAlt}
       priority={priority}
     />
@@ -53,12 +60,14 @@ export default function ProductImageGallery({
 
 type ProductImageGalleryContentProps = {
   validImages: ProductImageGalleryImage[];
+  validPreloadImages: ProductImageGalleryImage[];
   fallbackAlt: string;
   priority: boolean;
 };
 
 function ProductImageGalleryContent({
   validImages,
+  validPreloadImages,
   fallbackAlt,
   priority,
 }: ProductImageGalleryContentProps) {
@@ -86,15 +95,37 @@ function ProductImageGalleryContent({
 
   return (
     <>
-      <Image
-        key={activeImage.src}
-        className={styles.image}
-        src={activeImage.src}
-        alt={activeImage.alt || fallbackAlt}
-        width={1080}
-        height={1080}
-        priority={priority}
-      />
+      <div className={styles.galleryImages}>
+        {validImages.map((image, index) => {
+          const isActive = index === activeIndex;
+
+          return (
+            <Image
+              key={image.src}
+              className={`${styles.image} ${isActive ? styles.imageActive : ""}`}
+              src={image.src}
+              alt={isActive ? image.alt || fallbackAlt : ""}
+              width={1080}
+              height={1080}
+              priority={priority && index === 0}
+              loading={priority && index === 0 ? undefined : "eager"}
+              aria-hidden={!isActive}
+            />
+          );
+        })}
+        {validPreloadImages.map((image) => (
+          <Image
+            key={`preload:${image.src}`}
+            className={`${styles.image} ${styles.imagePreload}`}
+            src={image.src}
+            alt=""
+            width={1080}
+            height={1080}
+            loading="eager"
+            aria-hidden
+          />
+        ))}
+      </div>
 
       <p className={styles.galleryStatus} aria-live="polite">
         Image {activeIndex + 1} of {validImages.length}
