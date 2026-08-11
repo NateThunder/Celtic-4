@@ -29,6 +29,11 @@
   --display: var(--font-anton), Impact, sans-serif;
   --body: var(--font-eb-garamond), Georgia, "Times New Roman", serif;
 
+  /* How far each greige section rides up over the one before it. Same idea as
+     the homepage's --events-overlap: tune the interleave from this one number,
+     larger = each panel covers more of its predecessor. */
+  --about-overlap: 120px;
+
   --t1: 12px;
   --t2: 23px;
   --t4: 44px;
@@ -298,6 +303,16 @@
    own padding for clearance; this one has to make its own. */
 .rule:last-child {
   margin-bottom: clamp(44px, 5vw, 76px);
+}
+
+/* One panel per editorial section, full width so it covers its predecessor
+   edge to edge — including the full-bleed ghost photograph behind it. Opaque
+   greige and its own stacking context are what make the cover read; the lift
+   itself is the negative margin in the motion block below. */
+.lift {
+  position: relative;
+  isolation: isolate;
+  background: var(--greige);
 }
 
 .roster {
@@ -895,6 +910,8 @@
     --t4: 32px;
     --s3: 96px;
     --s4: 120px;
+    /* Sections are shorter here, so the interleave scales back with them. */
+    --about-overlap: 68px;
   }
 
   .w {
@@ -1083,6 +1100,22 @@
    the JS never starts a rAF loop or a photo cycle.                        */
 
 @media (prefers-reduced-motion: no-preference) {
+  /* Section interleave. Each panel rides up over the one before it and casts a
+     soft edge onto it, so the sections read as stacked rather than butted. A
+     lift and a cover — nothing here moves at a different rate to the page.
+     With reduced motion the panels simply sit end to end. */
+  .lift {
+    margin-top: calc(-1 * var(--about-overlap));
+    box-shadow: 0 -26px 44px -22px rgba(36, 31, 27, 0.34);
+  }
+
+  /* The greige riding over the hero is the same move, one storey up: the
+     stage is already sticky and `.up` already pulls back over it, so this
+     only adds the leading edge. */
+  .light {
+    box-shadow: 0 -30px 60px -24px rgba(7, 6, 5, 0.72);
+  }
+
   /* Strips assemble from off-centre; JS owns transform and opacity. */
   .st {
     opacity: 0;

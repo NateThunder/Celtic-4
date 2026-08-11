@@ -180,12 +180,17 @@ export default function AboutBody({ footer }: AboutBodyProps) {
               ))}
             </div>
           </div>
+        </div>
 
-          <hr className={`${styles.rule} ${styles.rv}`} data-reveal />
+        {/* Each section below is its own full-width panel so it can ride up
+            over the one before it and cover it opaquely, edge to edge. */}
+        <section className={styles.lift}>
+          <div className={styles.w}>
+            <hr className={`${styles.rule} ${styles.rv}`} data-reveal />
 
-          <div
-            className={`${styles.ed} ${styles.rv} ${styles.gh}`}
-            data-reveal
+            <div
+              className={`${styles.ed} ${styles.rv} ${styles.gh}`}
+              data-reveal
             style={
               {
                 "--gh": `url("${ABOUT_PHOTOS}/ghosts/ghost-ayr-balcony.jpg")`,
@@ -222,20 +227,24 @@ export default function AboutBody({ footer }: AboutBodyProps) {
                 height={1634}
                 sizes="(max-width: 900px) 60vw, 30vw"
               />
-            </figure>
+              </figure>
+            </div>
           </div>
+        </section>
 
-          <hr className={`${styles.rule} ${styles.rv}`} data-reveal />
+        <section className={styles.lift}>
+          <div className={styles.w}>
+            <hr className={`${styles.rule} ${styles.rv}`} data-reveal />
 
-          <div
-            className={`${styles.ed} ${styles.rt} ${styles.rv} ${styles.gh}`}
-            data-reveal
-            style={
-              {
-                "--gh": `url("${ABOUT_PHOTOS}/ghosts/ghost-new-irish-hall.jpg")`,
-              } as CSSProperties
-            }
-          >
+            <div
+              className={`${styles.ed} ${styles.rt} ${styles.rv} ${styles.gh}`}
+              data-reveal
+              style={
+                {
+                  "--gh": `url("${ABOUT_PHOTOS}/ghosts/ghost-new-irish-hall.jpg")`,
+                } as CSSProperties
+              }
+            >
             <figure className={styles.cut}>
               <Image
                 className={styles.partner}
@@ -262,11 +271,15 @@ export default function AboutBody({ footer }: AboutBodyProps) {
                 Europe, and numerous television and radio appearances.
               </p>
             </div>
+            </div>
           </div>
+        </section>
 
-          <hr className={`${styles.rule} ${styles.rv}`} data-reveal />
+        <section className={styles.lift}>
+          <div className={styles.w}>
+            <hr className={`${styles.rule} ${styles.rv}`} data-reveal />
 
-          <div className={`${styles.ed} ${styles.rv}`} data-reveal>
+            <div className={`${styles.ed} ${styles.rv}`} data-reveal>
             <div className={styles.col}>
               <span className={styles.tag}>The fourth record</span>
               <h2>Harvest.</h2>
@@ -288,10 +301,11 @@ export default function AboutBody({ footer }: AboutBodyProps) {
               />
               <figcaption>HARVEST &middot; OUT NOW</figcaption>
             </figure>
-          </div>
+            </div>
 
-          <hr className={`${styles.rule} ${styles.rv}`} data-reveal />
-        </div>
+            <hr className={`${styles.rule} ${styles.rv}`} data-reveal />
+          </div>
+        </section>
       </div>
 
       <section className={styles.band} data-reveal>
