@@ -69,7 +69,10 @@ const musicGroupJsonLd = {
 export default function AboutPage() {
   return (
     <div className={`site-shell ${ebGaramond.variable}`}>
-      <SiteHeader />
+      {/* Overlay variant so the nav sits transparent over the collage and the
+          strips run full-bleed to the top, as in the reference. It goes opaque
+          on scroll. Scoped to this page — every other route keeps the default. */}
+      <SiteHeader variant="home" />
       <script
         type="application/ld+json"
         // Static, author-controlled object — no user input reaches this string.
