@@ -261,6 +261,11 @@
 .light {
   background: var(--greige);
   color: #241f1b;
+  /* The disc is a circle drawn on a rotated square, so its bounding box sticks
+     out past the circle you can actually see and drags the document scroll
+     width with it. Clip, not hidden: clip creates no scrollport, so the hero's
+     sticky behaviour is untouched. */
+  overflow-x: clip;
 }
 
 .light .tag {
@@ -286,6 +291,13 @@
   background: #8a7f70;
   opacity: 0.6;
   width: 100%;
+}
+
+/* The closing rule butts straight onto the triptych, whose photographs start
+   flush at the top edge of their section. Everything above it has the section's
+   own padding for clearance; this one has to make its own. */
+.rule:last-child {
+  margin-bottom: clamp(44px, 5vw, 76px);
 }
 
 .roster {
@@ -429,31 +441,18 @@
   z-index: 1;
 }
 
+/* A pair, so the lead no longer has to clear a third figure on the left. */
 .ed.rt .cut .lead {
-  margin-left: 22%;
+  margin-left: 13%;
   max-height: 76vh;
   z-index: 2;
 }
 
 .ed.rt .cut .partner {
-  left: 0;
+  left: 3%;
   bottom: 0;
-  max-height: 40vh;
-}
-
-.ed.rt .cut .partner:not(.p3) {
-  z-index: 1;
-}
-
-/* Third player set back and clear of both faces. */
-.ed.rt .cut .partner.p3 {
-  left: -6%;
-  top: auto;
-  bottom: 0;
-  z-index: 0;
   max-height: 44vh;
-  filter: saturate(0.82) brightness(0.92)
-    drop-shadow(0 16px 26px rgba(36, 31, 27, 0.22));
+  z-index: 1;
 }
 
 /* --- the record plate, and the vinyl that slides out of it ---------- */
@@ -489,6 +488,10 @@
 }
 
 .disc {
+  /* How far the record slides clear of the sleeve, as a percentage of its own
+     width. Read by the scroll loop, so the narrow-screen value below keeps the
+     whole thing on screen. */
+  --disc-travel: 50;
   position: absolute;
   top: 0;
   left: 0;
@@ -506,7 +509,7 @@
   /* Scroll-position driven, never transitioned, so it reverses on the way up. */
   transition: none;
   opacity: 1;
-  transform: translate(56%, 6%) rotate(150deg);
+  transform: translate(calc(6% + var(--disc-travel) * 1%), 6%) rotate(150deg);
 }
 
 .disc::after {
@@ -527,8 +530,10 @@
 .gh::before {
   content: "";
   position: absolute;
-  top: -6%;
-  bottom: -6%;
+  /* Inset rather than bled past the section, so the photograph stops short of
+     the hairline rules that sit on the section boundaries. */
+  top: 2.5%;
+  bottom: 2.5%;
   left: calc(50% - 50vw);
   width: 100vw;
   z-index: 0;
@@ -992,14 +997,21 @@
     max-height: 34vh;
   }
 
+  /* Narrow screens: shorten the sleeve and the slide so the disc clears its
+     full travel without pushing past the gutter. */
+  .plate {
+    /* min(), not a bare percentage: this rule replaces the 460px cap above, and
+       78% of a 900px-wide column would make the sleeve larger than on desktop. */
+    max-width: min(460px, 78%);
+  }
+
+  .disc {
+    --disc-travel: 40;
+  }
+
   .ed:not(.rt) .cut .partner {
     left: -6%;
     max-height: 32vh;
-  }
-
-  .ed.rt .cut .partner.p3 {
-    left: -4%;
-    max-height: 28vh;
   }
 
   .band {
@@ -1153,10 +1165,6 @@
     opacity: 1;
     transform: none;
     transition-delay: 0.34s;
-  }
-
-  .ed.on .cut .partner.p3 {
-    transition-delay: 0.5s;
   }
 
   /* Scroll-position driven: JS owns opacity and transform from here. */

@@ -61,6 +61,20 @@ export default function AboutBody({ footer }: AboutBodyProps) {
       const disc = root.querySelector<HTMLElement>("[data-vinyl-disc]");
       let rafId = 0;
 
+      // How far the record slides, in percent of its own width. The stylesheet
+      // owns the number so narrow screens can shorten the travel; re-read on
+      // resize rather than per frame, which would force a style recalc.
+      let discTravel = 50;
+      const readDiscTravel = () => {
+        if (!disc) return;
+        const parsed = Number.parseFloat(
+          getComputedStyle(disc).getPropertyValue("--disc-travel"),
+        );
+        if (Number.isFinite(parsed)) discTravel = parsed;
+      };
+      readDiscTravel();
+      window.addEventListener("resize", readDiscTravel);
+
       const frame = () => {
         const viewportHeight = window.innerHeight;
 
@@ -96,9 +110,9 @@ export default function AboutBody({ footer }: AboutBodyProps) {
               1,
             );
             disc.style.opacity = out.toFixed(3);
-            disc.style.transform = `translate(${(6 + 50 * out).toFixed(1)}%,6%) rotate(${(
-              150 * out
-            ).toFixed(0)}deg)`;
+            disc.style.transform = `translate(${(6 + discTravel * out).toFixed(
+              1,
+            )}%,6%) rotate(${(150 * out).toFixed(0)}deg)`;
           }
         }
 
@@ -109,6 +123,7 @@ export default function AboutBody({ footer }: AboutBodyProps) {
 
       stopMotion = () => {
         window.cancelAnimationFrame(rafId);
+        window.removeEventListener("resize", readDiscTravel);
         // Hand the elements back to the stylesheet.
         [...plates, ...exitFigures].forEach((el) => {
           el.style.transform = "";
@@ -229,14 +244,6 @@ export default function AboutBody({ footer }: AboutBodyProps) {
                 width={520}
                 height={768}
                 sizes="(max-width: 900px) 40vw, 20vw"
-              />
-              <Image
-                className={`${styles.partner} ${styles.p3}`}
-                src={`${ABOUT_PHOTOS}/cutouts/ifedade-thomas-partner.webp`}
-                alt="Ifedade Thomas"
-                width={740}
-                height={1371}
-                sizes="(max-width: 900px) 35vw, 18vw"
               />
               <Image
                 className={styles.lead}
