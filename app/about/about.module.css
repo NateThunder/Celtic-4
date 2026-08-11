@@ -23,6 +23,8 @@
   --sandstone: #9a8470;
   --tungsten: #b5803c;
   --amber: #c97b12;
+  /* --amber raised for type that sits on a photograph rather than on ink. */
+  --amber-lit: #e9a63f;
 
   --display: var(--font-anton), Impact, sans-serif;
   --body: var(--font-eb-garamond), Georgia, "Times New Roman", serif;
@@ -113,36 +115,65 @@
   transition: filter 0.5s ease;
 }
 
+/* The stage scrim lives here, per strip, rather than on `.over`. Each `.st` is
+   its own stacking context (the rack animates transform on it), so anything
+   painted on `.over` sits above the whole strip — including its name plate, no
+   matter what z-index the plate carries. Inside the strip the plate can finally
+   out-rank it. At rest the seven tile into exactly the gradient `.over` used to
+   carry, so the hero looks unchanged. */
+.st::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(7, 6, 5, 0.92) 2%, transparent 44%);
+}
+
+/* The strip you are reading is the one the rack lifts to brightness(1.05), so
+   the plate has to hold a name over a *lit* photo, not a dimmed one: taller
+   box, deeper ramp, and a shadow on the type itself as the last line of
+   defence over a blown-out highlight. */
 .who {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   z-index: 3;
-  padding: 20px 12px 26px;
+  padding: 44px 10px 24px;
   text-align: center;
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.4s ease, transform 0.4s ease;
-  background: linear-gradient(to top, rgba(7, 6, 5, 0.94), transparent);
+  background: linear-gradient(
+    to top,
+    rgba(7, 6, 5, 0.97) 0%,
+    rgba(7, 6, 5, 0.93) 40%,
+    rgba(7, 6, 5, 0.68) 70%,
+    transparent 100%
+  );
 }
 
 .who b {
   display: block;
   font-family: var(--display);
   font-weight: 400;
-  font-size: 15px;
+  /* Tracks the strip, which is always a seventh of the viewport. */
+  font-size: clamp(15px, 1.45vw, 23px);
   letter-spacing: 0.04em;
-  line-height: 1.15;
+  line-height: 1.1;
+  color: var(--paper);
+  text-shadow: 0 1px 2px rgba(7, 6, 5, 0.92), 0 2px 18px rgba(7, 6, 5, 0.75);
 }
 
 .who span {
   display: block;
-  margin-top: 5px;
+  margin-top: 7px;
   font-family: var(--display);
-  font-size: 9px;
+  font-size: clamp(9px, 0.78vw, 12px);
   letter-spacing: 0.18em;
-  color: var(--amber);
+  color: var(--amber-lit);
+  text-shadow: 0 1px 2px rgba(7, 6, 5, 0.92), 0 2px 14px rgba(7, 6, 5, 0.7);
 }
 
 .rack:hover .st img {
@@ -185,7 +216,7 @@
   justify-content: flex-end;
   padding: 0 60px var(--s2);
   pointer-events: none;
-  background: linear-gradient(to top, rgba(7, 6, 5, 0.92) 2%, transparent 44%);
+  /* No scrim of its own — `.st::after` carries it, below the name plates. */
 }
 
 .overIn {
@@ -882,6 +913,12 @@
   .rack {
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(2, 1fr);
+  }
+
+  /* The rack is 4x2 here, so a per-strip scrim would draw a dark band across
+     the middle of the collage. `.over` keeps its own tuned gradient instead. */
+  .st::after {
+    display: none;
   }
 
   /* No hover on touch, so every strip names its player outright. */
