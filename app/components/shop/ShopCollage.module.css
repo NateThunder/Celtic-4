@@ -1,0 +1,53 @@
+/* Brand tokens — match the values already in the Celtic-4 theme */
+.collage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.plate {
+  position: absolute;
+  background-size: cover;
+  background-position: center;
+  border-radius: 2px;
+  will-change: opacity, filter, transform;
+}
+
+/* Pushes every photo toward the locked greige so nothing fights the cream page */
+.plate::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
+  background: #d1c9be;
+  mix-blend-mode: color;
+  opacity: var(--plate-tint, 0.5);
+}
+
+/* Keeps the top and bottom of the page pure Paper, so the layer never
+   collides with the sticky header or the footer */
+.veil {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    #f2efe9 0%,
+    rgba(242, 239, 233, 0) 14%,
+    rgba(242, 239, 233, 0) 86%,
+    #f2efe9 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plate {
+    transition: none;
+  }
+}
+
+/* Full effect on mobile — every plate stays. Blur is the expensive part of this
+   layer, so the component scales maxBlur down below 700px rather than dropping
+   plates. Do not add a display:none rule here. */
