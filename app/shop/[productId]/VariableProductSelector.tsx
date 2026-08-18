@@ -283,6 +283,14 @@ export default function VariableProductSelector({
     selectedColourValue,
   );
   const productImages = collectGalleryImages(product.images);
+  const preloadImages = useMemo(
+    () =>
+      collectGalleryImages([
+        ...(product.images ?? []),
+        ...variations.flatMap((variation) => variation.images ?? []),
+      ]),
+    [product.images, variations],
+  );
   const productColourImages = collectProductImagesByOptionValue(product.images, selectedColourValue);
   const galleryImages = selectedVariationImages.length > 1
     ? selectedVariationImages
@@ -370,6 +378,7 @@ export default function VariableProductSelector({
       <div className={styles.imageWrap}>
         <ProductImageGallery
           images={galleryImages}
+          preloadImages={preloadImages}
           fallbackAlt={product.name}
           priority
           resetKey={galleryResetKey}

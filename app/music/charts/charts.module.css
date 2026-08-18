@@ -1,12 +1,8 @@
 .page {
+  --editorial-paper: #f2efe9;
   min-height: 100vh;
   min-height: 100dvh;
-  background-color: var(--editorial-paper);
-  background-image:
-    linear-gradient(rgba(234, 223, 205, 0.91), rgba(234, 223, 205, 0.91)),
-    var(--paper-background);
-  background-repeat: repeat;
-  background-size: auto, 760px auto;
+  background: #f2efe9;
   color: var(--editorial-ink);
   padding: clamp(6rem, 8vw, 7.5rem) clamp(1.15rem, 4vw, 3.9rem)
     clamp(2.5rem, 5vw, 4.2rem);
@@ -732,14 +728,10 @@
 }
 
 .detailPage {
+  --editorial-paper: #f2efe9;
   min-height: 100vh;
   min-height: 100dvh;
-  background-color: var(--editorial-paper);
-  background-image:
-    linear-gradient(rgba(234, 223, 205, 0.91), rgba(234, 223, 205, 0.91)),
-    var(--paper-background);
-  background-repeat: repeat;
-  background-size: auto, 760px auto;
+  background: #f2efe9;
   color: var(--editorial-ink);
   padding: clamp(5.8rem, 8vw, 7.2rem) clamp(1.1rem, 4vw, 3.6rem)
     clamp(2.2rem, 5vw, 4rem);

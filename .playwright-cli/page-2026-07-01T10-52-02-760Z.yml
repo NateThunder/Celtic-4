@@ -1,0 +1,253 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "Skara Home" [ref=e5] [cursor=pointer]:
+          - /url: "#top"
+          - img "Skara logo" [ref=e6]
+        - button "Open menu" [ref=e7]
+      - generic:
+        - navigation:
+          - button: x
+          - link:
+            - /url: "#top"
+            - text: Home
+          - link:
+            - /url: "#the-band"
+            - text: The Band
+          - link:
+            - /url: "#media"
+            - text: Media
+          - link:
+            - /url: "#services"
+            - text: Services
+          - link:
+            - /url: "#faqs"
+            - text: FAQs
+          - link:
+            - /url: "#reviews"
+            - text: Reviews
+          - link:
+            - /url: "#contact"
+            - text: Contact
+          - link:
+            - /url: "#contact"
+            - text: Book Now
+    - main [ref=e11]:
+      - region "Hero banner video" [ref=e12]:
+        - generic [ref=e15]:
+          - paragraph [ref=e16]: Ceilidh Band . Scotland
+          - img "Skara Ceilidh Band" [ref=e17]
+          - paragraph [ref=e18]: High-energy ceilidh sets with a modern edge designed for packed dance floors.
+          - generic [ref=e19]:
+            - link "Book Now" [ref=e20] [cursor=pointer]:
+              - /url: "#contact"
+            - link "Media" [ref=e21] [cursor=pointer]:
+              - /url: "#media"
+          - paragraph [ref=e22]: Fiddle . Pipes . Guitar . Drums
+        - button "Unmute hero video" [ref=e23]:
+          - img [ref=e24]
+          - generic [ref=e28]: Sound Off
+      - region "The Band" [ref=e31]:
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - paragraph [ref=e34]: The Band
+            - heading "High-energy ceilidh music with authentic Scottish roots." [level=2] [ref=e35]
+            - generic [ref=e36]:
+              - paragraph [ref=e37]: Skara Ceilidh Band is a high-energy ceilidh band based in Scotland. This dynamic four-piece line-up of fiddle, pipes, guitar and drums delivers an authentic, lively, and professional performance at every event.
+              - paragraph [ref=e38]: Perfect for weddings, parties, corporate events, and festivals, Skara creates an unforgettable ceilidh experience for audiences of all ages and abilities across Scotland and worldwide.
+              - paragraph [ref=e39]: Individually, the band members tour internationally with leading artists including Nathan Evans & Saint PHNX, Skipinnish, and Norrie MacIver, and the line-up features finalists from the prestigious BBC Radio Scotland Young Traditional Musician of the Year.
+              - paragraph [ref=e40]: Blending traditional Scottish tunes with a powerful modern rhythm section, Skara's energetic live sound creates a vibrant dance-floor atmosphere and a truly memorable night.
+          - img "Skara Ceilidh Band members posing with their instruments" [ref=e42]
+      - region "Media section with latest YouTube videos" [ref=e45]:
+        - generic [ref=e46]:
+          - paragraph [ref=e47]: Media
+          - heading "Media" [level=2] [ref=e48]
+          - paragraph [ref=e49]: Skara Ceilidh Band performances from the official YouTube channel.
+          - generic [ref=e50]:
+            - 'article "Skara Ceilidh Band: Strip the Willow" [ref=e51]':
+              - 'button "Play Skara Ceilidh Band: Strip the Willow" [ref=e52] [cursor=pointer]':
+                - 'img "Skara Ceilidh Band: Strip the Willow" [ref=e53]'
+              - paragraph [ref=e54]: "Skara Ceilidh Band: Strip the Willow"
+            - 'article "Skara Ceilidh Band: Strathspeys & Reels" [ref=e55]':
+              - 'button "Play Skara Ceilidh Band: Strathspeys & Reels" [ref=e56] [cursor=pointer]':
+                - 'img "Skara Ceilidh Band: Strathspeys & Reels" [ref=e57]'
+              - paragraph [ref=e58]: "Skara Ceilidh Band: Strathspeys & Reels"
+            - 'article "Skara Ceilidh Band: Montage" [ref=e59]':
+              - 'button "Play Skara Ceilidh Band: Montage" [ref=e60] [cursor=pointer]':
+                - 'img "Skara Ceilidh Band: Montage" [ref=e61]'
+              - paragraph [ref=e62]: "Skara Ceilidh Band: Montage"
+      - region "Services" [ref=e65]:
+        - generic [ref=e66]:
+          - generic [ref=e67]:
+            - paragraph [ref=e68]: Services
+            - heading "Professional ceilidh packages for every event." [level=2] [ref=e69]
+            - paragraph [ref=e70]: From full ceilidh sets to background music, DJ/disco, and bagpiper options, we tailor each booking to your event.
+          - tablist "Professional service packages" [ref=e71]:
+            - tab "Ceilidhs Full ceilidh experience" [selected] [ref=e72] [cursor=pointer]:
+              - generic [ref=e75]: Ceilidhs
+              - generic [ref=e76]: Full ceilidh experience
+            - tab "Background Music Elegant acoustic atmosphere" [ref=e77] [cursor=pointer]:
+              - img [ref=e79]
+              - generic [ref=e80]: Background Music
+              - generic [ref=e81]: Elegant acoustic atmosphere
+            - tab "DJ / Disco Keep the party going" [ref=e82] [cursor=pointer]:
+              - img [ref=e84]
+              - generic [ref=e85]: DJ / Disco
+              - generic [ref=e86]: Keep the party going
+            - tab "Bagpiper Traditional Scottish pipes" [ref=e87] [cursor=pointer]:
+              - generic [ref=e90]: Bagpiper
+              - generic [ref=e91]: Traditional Scottish pipes
+          - tabpanel "Ceilidhs Full ceilidh experience" [ref=e93]:
+            - generic [ref=e94]:
+              - generic [ref=e95]:
+                - heading "Ceilidhs" [level=3] [ref=e96]:
+                  - generic [ref=e98]: Ceilidhs
+                - paragraph [ref=e99]: "Our professionalism, high energy, and lively sound help create a memorable event. Skara Ceilidh Band provides ceilidh music for events such as:"
+                - paragraph [ref=e100]: We are highly experienced in calling and teaching ceilidh dances, from complete beginners to international audiences.
+                - heading "Perfect For" [level=4] [ref=e101]
+                - list [ref=e102]:
+                  - listitem [ref=e103]:
+                    - img [ref=e104]
+                    - generic [ref=e106]: Weddings
+                  - listitem [ref=e107]:
+                    - img [ref=e108]
+                    - generic [ref=e110]: Corporate Events
+                  - listitem [ref=e111]:
+                    - img [ref=e112]
+                    - generic [ref=e114]: Ceilidhs
+                  - listitem [ref=e115]:
+                    - img [ref=e116]
+                    - generic [ref=e118]: Birthday Parties
+                  - listitem [ref=e119]:
+                    - img [ref=e120]
+                    - generic [ref=e122]: Student Events
+                  - listitem [ref=e123]:
+                    - img [ref=e124]
+                    - generic [ref=e126]: Private Functions
+              - complementary [ref=e127]:
+                - heading "Ceilidh Dances" [level=4] [ref=e128]
+                - list [ref=e129]:
+                  - listitem [ref=e130]: Boston Two Step
+                  - listitem [ref=e131]: Canadian Barn Dance
+                  - listitem [ref=e132]: Circassian Circle
+                  - listitem [ref=e133]: Cumberland Square Eight
+                  - listitem [ref=e134]: Dashing White Sergeant
+                  - listitem [ref=e135]: Eightsome Reel
+                  - listitem [ref=e136]: Flying Scotsman
+                  - listitem [ref=e137]: Gay Gordons
+                  - listitem [ref=e138]: Highland Schottische
+                  - listitem [ref=e139]: Hooligan's Jig
+                  - listitem [ref=e140]: Military Two Step
+                  - listitem [ref=e141]: Orcadian Strip The Willow
+                  - listitem [ref=e142]: Riverside Jig
+                  - listitem [ref=e143]: St. Bernard's Waltz
+                  - listitem [ref=e144]: Strip The Willow
+                  - listitem [ref=e145]: Virginia Reel
+      - region "Reviews" [ref=e148]:
+        - generic [ref=e149]:
+          - heading "What our clients say." [level=2] [ref=e150]
+          - generic "Client testimonials" [ref=e151]:
+            - button "Show previous testimonial" [ref=e152]:
+              - img [ref=e153]
+            - article [ref=e155]:
+              - img "Five star review" [ref=e156]:
+                - img [ref=e158]
+                - img [ref=e161]
+                - img [ref=e164]
+                - img [ref=e167]
+                - img [ref=e170]
+              - blockquote [ref=e172]:
+                - paragraph [ref=e173]: "\"Book this band - they are immense. We had the greatest fortune of having them at my daughter's wedding on Saturday and they did not let us down. Their high-energy music for the fast ceilidh dances was tempered with slow waltzes when needed to give everyone a breather. The dance floor was filled all night. Cannot recommend them highly enough.\""
+              - paragraph [ref=e174]: Alan Harrison
+              - generic "Testimonial navigation" [ref=e175]:
+                - button "Show testimonial 1" [ref=e176]
+                - button "Show testimonial 2" [ref=e177]
+                - button "Show testimonial 3" [ref=e178]
+            - button "Show next testimonial" [ref=e179]:
+              - img [ref=e180]
+      - region "Contact and FAQs" [ref=e184]:
+        - generic [ref=e185]:
+          - generic [ref=e186]:
+            - paragraph [ref=e187]: Contact
+            - heading "Check availability and request a tailored quote." [level=2] [ref=e188]
+            - paragraph [ref=e189]: Share your event details and preferred date. We will get back to you with package options and next steps.
+          - generic [ref=e190]:
+            - form "Contact form" [ref=e191]:
+              - generic [ref=e192]:
+                - generic [ref=e193]:
+                  - generic [ref=e194]: Date of Event
+                  - textbox "Date of Event" [ref=e195]
+                - generic [ref=e196]:
+                  - generic [ref=e197]: Name
+                  - textbox "Name" [ref=e198]:
+                    - /placeholder: Your name
+                - generic [ref=e199]:
+                  - generic [ref=e200]: Email
+                  - textbox "Email" [ref=e201]:
+                    - /placeholder: you@email.com
+                - generic [ref=e202]:
+                  - generic [ref=e203]: Phone
+                  - textbox "Phone" [ref=e204]:
+                    - /placeholder: +44 7...
+                - generic [ref=e205]:
+                  - generic [ref=e206]: Event Type
+                  - textbox "Event Type" [ref=e207]:
+                    - /placeholder: Wedding / party / corporate
+                - generic [ref=e208]:
+                  - generic [ref=e209]: Location
+                  - textbox "Location" [ref=e210]:
+                    - /placeholder: Town / venue
+                - generic [ref=e211]:
+                  - generic [ref=e212]: Message
+                  - textbox "Message" [ref=e213]:
+                    - /placeholder: Tell us about timings, guest count, and any special requests.
+              - generic [ref=e214]:
+                - button "Send Enquiry" [ref=e215]
+                - link "Or email info@skaraceilidh.com" [ref=e216] [cursor=pointer]:
+                  - /url: mailto:info@skaraceilidh.com
+            - complementary "Frequently asked questions" [ref=e217]:
+              - paragraph [ref=e218]: FAQs
+              - heading "Frequently asked questions." [level=3] [ref=e219]
+              - generic [ref=e220]:
+                - group [ref=e221]:
+                  - generic "What is the cost? +" [ref=e222] [cursor=pointer]
+                - group [ref=e223]:
+                  - generic "Are instructions for the ceilidh dances explained? +" [ref=e224] [cursor=pointer]
+                - group [ref=e225]:
+                  - generic "Does Skara Ceilidh Band perform outside Scotland? +" [ref=e226] [cursor=pointer]
+                - group [ref=e227]:
+                  - generic "Does the band bring their own sound and lighting equipment? +" [ref=e228] [cursor=pointer]
+                - group [ref=e229]:
+                  - generic "How long does it take to set up the equipment? +" [ref=e230] [cursor=pointer]
+                - group [ref=e231]:
+                  - generic "Is the line-up always the same? +" [ref=e232] [cursor=pointer]
+                - group [ref=e233]:
+                  - generic "Does the band have Public Liability Insurance? +" [ref=e234] [cursor=pointer]
+                - group [ref=e235]:
+                  - generic "What are the next steps to make a booking? +" [ref=e236] [cursor=pointer]
+    - contentinfo [ref=e237]:
+      - paragraph [ref=e238]: Skara Ceilidh Band
+      - paragraph [ref=e239]:
+        - text: For bookings and enquiries, email
+        - link "info@skaraceilidh.com" [ref=e240] [cursor=pointer]:
+          - /url: mailto:info@skaraceilidh.com
+      - generic [ref=e241]:
+        - link "Visit Skara on Facebook" [ref=e242] [cursor=pointer]:
+          - /url: https://www.facebook.com/skaraceilidhband
+          - img [ref=e243]
+        - link "Visit Skara on Instagram" [ref=e245] [cursor=pointer]:
+          - /url: https://www.instagram.com/skaraceilidhband/
+          - img [ref=e246]
+        - link "Visit Skara on YouTube" [ref=e248] [cursor=pointer]:
+          - /url: https://www.youtube.com/@skaraceilidhband2929
+          - img [ref=e249]
+  - alert [ref=e251]
+  - dialog "Analytics stay off until you say yes." [ref=e252]:
+    - generic [ref=e253]:
+      - paragraph [ref=e254]: Cookie settings
+      - heading "Analytics stay off until you say yes." [level=2] [ref=e255]
+      - paragraph [ref=e256]: We use necessary cookies for the admin login and optional analytics cookies to understand which pages and buttons help visitors. You can accept or reject analytics, and change this later.
+      - generic [ref=e257]:
+        - button "Reject analytics" [ref=e258]
+        - button "Accept analytics" [ref=e259]

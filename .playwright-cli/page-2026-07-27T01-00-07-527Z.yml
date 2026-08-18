@@ -1,0 +1,210 @@
+- generic [active] [ref=f1e1]:
+  - generic [ref=f1e2]:
+    - banner [ref=f1e3]:
+      - link "Celtic Worship" [ref=f1e4] [cursor=pointer]:
+        - /url: "#home"
+      - button "Toggle navigation menu" [ref=f1e6] [cursor=pointer]
+      - generic "Social links" [ref=f1e10]:
+        - link "Spotify" [ref=f1e11] [cursor=pointer]:
+          - /url: https://open.spotify.com/artist/0h2AQKpVBEEXQQ03KGf7ep?si=9eAa0Ik8Rmm2Nip-K8Y-Kg
+        - link "YouTube" [ref=f1e14] [cursor=pointer]:
+          - /url: https://www.youtube.com/CelticWorshipMusic
+        - link "Instagram" [ref=f1e17] [cursor=pointer]:
+          - /url: https://www.instagram.com/celtic_worship
+      - button "Close navigation menu"
+      - navigation "Main":
+        - link "Home":
+          - /url: "#home"
+        - link "Music":
+          - /url: /music
+        - link "Charts":
+          - /url: /music/charts
+        - link "Events":
+          - /url: /live-events
+        - link "Videos":
+          - /url: /videos
+        - link "Shop":
+          - /url: /shop
+        - link "About":
+          - /url: /about
+    - main [ref=f1e20]:
+      - region "Celtic Worship home" [ref=f1e21]:
+        - generic [ref=f1e23]:
+          - heading "Celtic Worship" [level=1] [ref=f1e24]:
+            - generic [ref=f1e25]: Celtic
+            - generic [ref=f1e26]: Worship
+          - paragraph [ref=f1e27]: Hymns · Sessions · Live
+          - link "Listen now" [ref=f1e28] [cursor=pointer]:
+            - /url: /music
+            - generic [ref=f1e30]: →
+      - region "Upcoming live events" [ref=f1e31]:
+        - generic [ref=f1e32]:
+          - generic [ref=f1e33]:
+            - heading "Upcoming Events" [level=2] [ref=f1e34]
+            - link "View All Events" [ref=f1e35] [cursor=pointer]:
+              - /url: /live-events
+          - generic [ref=f1e36]:
+            - img "Saint Luke's, Glasgow — 07 Aug 2026" [ref=f1e39]
+            - list "Upcoming gigs" [ref=f1e46]:
+              - listitem [ref=f1e47]:
+                - generic [ref=f1e48]: 07 Aug 2026
+                - generic [ref=f1e49]:
+                  - heading "Saint Luke's" [level=3] [ref=f1e50]
+                  - paragraph [ref=f1e51]: Glasgow
+                - link "Tickets" [ref=f1e52] [cursor=pointer]:
+                  - /url: https://www.bandsintown.com/t/108488330?app_id=js_celticworship.co.uk&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket
+              - listitem [ref=f1e53]:
+                - generic [ref=f1e54]: 08 Aug 2026
+                - generic [ref=f1e55]:
+                  - heading "Charlotte Chapel" [level=3] [ref=f1e56]
+                  - paragraph [ref=f1e57]: Edinburgh
+                - link "Tickets" [ref=f1e58] [cursor=pointer]:
+                  - /url: https://www.bandsintown.com/t/108488319?app_id=js_celticworship.co.uk&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket
+              - listitem [ref=f1e59]:
+                - generic [ref=f1e60]: 28 Aug 2026
+                - generic [ref=f1e61]:
+                  - heading "Big Church Festival 2026" [level=3] [ref=f1e62]
+                  - paragraph [ref=f1e63]: Steyning
+                - link "Tickets" [ref=f1e64] [cursor=pointer]:
+                  - /url: https://www.bandsintown.com/t/108038882?app_id=js_celticworship.co.uk&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket
+              - listitem [ref=f1e65]:
+                - generic [ref=f1e66]: 17 Dec 2026
+                - generic [ref=f1e67]:
+                  - heading "O2 Academy Glasgow" [level=3] [ref=f1e68]
+                  - paragraph [ref=f1e69]: Glasgow
+                - link "Tickets" [ref=f1e70] [cursor=pointer]:
+                  - /url: https://www.bandsintown.com/t/1039146958?app_id=js_celticworship.co.uk&came_from=267&utm_medium=api&utm_source=public_api&utm_campaign=ticket
+      - region [ref=f1e71]:
+        - generic [ref=f1e72]:
+          - heading "The Music" [level=2] [ref=f1e73]
+          - group "Celtic Worship albums" [ref=f1e75] [cursor=pointer]:
+            - figure "Homeward album" [ref=f1e76]:
+              - img "Celtic Worship Homeward album art" [ref=f1e77]
+            - figure "Morningtide album" [ref=f1e78]:
+              - img "Celtic Worship Morningtide album art" [ref=f1e79]
+            - figure "Come Behold album" [ref=f1e80]:
+              - img "Celtic Worship Come Behold album art" [ref=f1e81]
+            - figure "Harvest album" [ref=f1e82]:
+              - img "Celtic Worship Harvest album art" [ref=f1e83]
+          - link "Explore the music" [ref=f1e84] [cursor=pointer]:
+            - /url: /music
+      - region "Featured video" [ref=f1e86]:
+        - generic [ref=f1e87]:
+          - 'button "Play video: I Need Thee" [ref=f1e89] [cursor=pointer]'
+          - generic [ref=f1e92]:
+            - generic [ref=f1e93]:
+              - button "Show previous video" [ref=f1e94] [cursor=pointer]
+              - heading "I Need Thee" [level=2] [ref=f1e97]
+              - button "Show next video" [ref=f1e98] [cursor=pointer]
+            - paragraph [ref=f1e101]: A live expression of worship, rooted in the sounds of Scotland.
+            - link "Watch on YouTube" [ref=f1e102] [cursor=pointer]:
+              - /url: https://www.youtube.com/watch?v=3zGhq1ZKbjg
+      - region [ref=f1e103]:
+        - generic [ref=f1e104]:
+          - paragraph [ref=f1e105]: Celtic Worship
+          - heading "Songs for the church, through the sounds of Scotland." [level=2] [ref=f1e106]
+          - paragraph [ref=f1e107]: A Christ-centred collective writing and leading worship shaped by Scripture, tradition, and the music of our home.
+          - link "About the collective" [ref=f1e108] [cursor=pointer]:
+            - /url: /about
+      - region [ref=f1e109]:
+        - generic [ref=f1e110]:
+          - generic [ref=f1e111]:
+            - paragraph [ref=f1e112]: Celtic Worship store
+            - heading "Take the music home." [level=2] [ref=f1e113]:
+              - generic [ref=f1e114]:
+                - generic [ref=f1e115]:
+                  - generic [ref=f1e116]: T
+                  - generic [ref=f1e117]: a
+                  - generic [ref=f1e118]: k
+                  - generic [ref=f1e119]: e
+                - generic [ref=f1e120]:
+                  - generic [ref=f1e121]: t
+                  - generic [ref=f1e122]: h
+                  - generic [ref=f1e123]: e
+                - generic [ref=f1e124]:
+                  - generic [ref=f1e125]: m
+                  - generic [ref=f1e126]: u
+                  - generic [ref=f1e127]: s
+                  - generic [ref=f1e128]: i
+                  - generic [ref=f1e129]: c
+                - generic [ref=f1e130]:
+                  - generic [ref=f1e131]: h
+                  - generic [ref=f1e132]: o
+                  - generic [ref=f1e133]: m
+                  - generic [ref=f1e134]: e
+                  - generic [ref=f1e135]: .
+            - link "Shop all" [ref=f1e136] [cursor=pointer]:
+              - /url: /shop
+          - list [ref=f1e137]:
+            - listitem [ref=f1e138]:
+              - link "Strength for Today Sweatshirt Strength for Today Sweatshirt £30.00" [ref=f1e139] [cursor=pointer]:
+                - /url: /shop/1882
+                - img "Strength for Today Sweatshirt" [ref=f1e141]
+                - generic [ref=f1e142]:
+                  - strong [ref=f1e143]: Strength for Today Sweatshirt
+                  - generic [ref=f1e144]: £30.00
+            - listitem [ref=f1e145]:
+              - link "Celtic Worship Harvest Tote Bag Celtic Worship Harvest Tote Bag £12.00" [ref=f1e146] [cursor=pointer]:
+                - /url: /shop/1586
+                - img "Celtic Worship Harvest Tote Bag" [ref=f1e148]
+                - generic [ref=f1e149]:
+                  - strong [ref=f1e150]: Celtic Worship Harvest Tote Bag
+                  - generic [ref=f1e151]: £12.00
+            - listitem [ref=f1e152]:
+              - link "Celtic Worship Harvest Sweatshirt Celtic Worship Harvest Sweatshirt £30.00" [ref=f1e153] [cursor=pointer]:
+                - /url: /shop/1585
+                - img "Celtic Worship Harvest Sweatshirt" [ref=f1e155]
+                - generic [ref=f1e156]:
+                  - strong [ref=f1e157]: Celtic Worship Harvest Sweatshirt
+                  - generic [ref=f1e158]: £30.00
+      - region [ref=f1e159]:
+        - generic [ref=f1e161]:
+          - heading "Join Our Community" [level=2] [ref=f1e162]
+          - paragraph [ref=f1e163]: Sign up for music, events, and stories from Celtic Worship.
+          - generic [ref=f1e164]:
+            - generic [ref=f1e165]:
+              - generic [ref=f1e166]:
+                - generic [ref=f1e167]: First name
+                - textbox "First name" [disabled] [ref=f1e168]:
+                  - /placeholder: First name*
+              - generic [ref=f1e169]:
+                - generic [ref=f1e170]: Last name
+                - textbox "Last name" [disabled] [ref=f1e171]:
+                  - /placeholder: Last name*
+            - generic [ref=f1e172]:
+              - generic [ref=f1e173]: Email address
+              - textbox "Email address" [disabled] [ref=f1e174]:
+                - /placeholder: Email*
+            - button "Sign-up coming soon" [disabled] [ref=f1e175]
+            - generic [ref=f1e176]:
+              - checkbox "I agree to receive email updates from Celtic Worship." [disabled] [ref=f1e177]
+              - generic [ref=f1e178]: I agree to receive email updates from Celtic Worship.
+            - paragraph [ref=f1e179]: Mailing-list integration is coming soon.
+    - contentinfo [ref=f1e180]:
+      - link "Celtic Worship" [ref=f1e181] [cursor=pointer]:
+        - /url: "#home"
+      - navigation "Footer" [ref=f1e182]:
+        - link "Home" [ref=f1e183] [cursor=pointer]:
+          - /url: "#home"
+        - link "Music" [ref=f1e184] [cursor=pointer]:
+          - /url: /music
+        - link "Charts" [ref=f1e185] [cursor=pointer]:
+          - /url: /music/charts
+        - link "Events" [ref=f1e186] [cursor=pointer]:
+          - /url: /live-events
+        - link "Videos" [ref=f1e187] [cursor=pointer]:
+          - /url: /videos
+        - link "Shop" [ref=f1e188] [cursor=pointer]:
+          - /url: /shop
+        - link "About" [ref=f1e189] [cursor=pointer]:
+          - /url: /about
+      - generic "Social links" [ref=f1e190]:
+        - link "Spotify" [ref=f1e191] [cursor=pointer]:
+          - /url: https://open.spotify.com/artist/0h2AQKpVBEEXQQ03KGf7ep?si=9eAa0Ik8Rmm2Nip-K8Y-Kg
+        - link "YouTube" [ref=f1e192] [cursor=pointer]:
+          - /url: https://www.youtube.com/CelticWorshipMusic
+        - link "Instagram" [ref=f1e193] [cursor=pointer]:
+          - /url: https://www.instagram.com/celtic_worship
+      - paragraph [ref=f1e194]: © 2026 Celtic Worship. All rights reserved.
+  - button "Open Next.js Dev Tools" [ref=f1e200] [cursor=pointer]
+  - alert [ref=f1e204]
