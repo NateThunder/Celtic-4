@@ -5,7 +5,7 @@ import ChartsPageClient from "./ChartsPageClient";
 import styles from "./charts.module.css";
 
 export const metadata: Metadata = {
-  title: "Music Charts | Celtic Worship",
+  title: "Sheet Music | Celtic Worship",
   description: "Download chord charts, lyrics, lead sheets, piano sheets, and resource packs from Celtic Worship.",
 };
 
@@ -20,7 +20,7 @@ export default function MusicChartsPage() {
           <header className={styles.hero}>
             <div className={styles.heroCopy}>
               <h1 className={styles.title}>
-                <span>Charts</span>
+                <span>Sheet Music</span>
               </h1>
               <div className={styles.titleRule} aria-hidden="true" />
               <p className={styles.desktopIntro}>
@@ -28,7 +28,7 @@ export default function MusicChartsPage() {
                 Instant downloads to help equip you and your team in leading worship.
               </p>
               <p className={styles.mobileIntro}>
-                Charts, sheet music and resources for worship teams, musicians and the church.
+                Sheet music and resources for worship teams, musicians and the church.
               </p>
             </div>
           </header>

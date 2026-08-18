@@ -92,10 +92,10 @@ export default function ChartDetailPageClient({ resourceId, initialResourceType 
   const effectiveSelectedKey = keyOptions.includes(selectedKey) ? selectedKey : keyOptions[0] ?? "";
 
   return (
-    <section className={styles.detailShell} aria-label={`${title} chart details`}>
+    <section className={styles.detailShell} aria-label={`${title} sheet music details`}>
       <Link className={styles.detailBackLink} href="/music/charts">
         <Icon name="arrow" />
-        All Charts
+        All Sheet Music
       </Link>
 
       <article className={styles.detailPanel}>

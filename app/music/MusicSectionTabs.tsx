@@ -7,7 +7,7 @@ type MusicSectionTabsProps = {
 
 const TABS = [
   { key: "discography", label: "Discography", href: "/music" },
-  { key: "charts", label: "Charts", href: "/music/charts" },
+  { key: "charts", label: "Sheet Music", href: "/music/charts" },
 ] as const;
 
 export default function MusicSectionTabs({ active }: MusicSectionTabsProps) {

@@ -26,7 +26,7 @@ const FEATURED_VIDEOS = [
 const FOOTER_LINKS = [
   { label: "Home", href: "#home" },
   { label: "Music", href: "/music" },
-  { label: "Charts", href: "/music/charts" },
+  { label: "Sheet Music", href: "/music/charts" },
   { label: "Events", href: "/live-events" },
   { label: "Videos", href: "/videos" },
   { label: "Shop", href: "/shop" },
@@ -62,7 +62,11 @@ export default async function Home() {
               <span>Celtic</span>
               <span>Worship</span>
             </h1>
-            <p className="editorial-hero-tagline">Hymns · Sessions · Live</p>
+            <p className="editorial-hero-tagline">
+              A live expression of worship
+              <br />
+              rooted in the sound of Scotland
+            </p>
             <Link className="editorial-hero-cta" href="/music">
               <span>Listen now</span>
               <span className="editorial-hero-cta-arrow" aria-hidden="true">
@@ -95,7 +99,7 @@ export default async function Home() {
             variant="editorial"
             fallbackTitle="I Need Thee"
             eyebrow="Featured performance"
-            description="A live expression of worship, rooted in the sounds of Scotland."
+            description="Hymns, sessions & live"
             ctaLabel="Watch on YouTube"
             preferFallbackTitle
           />
@@ -203,7 +207,7 @@ export default async function Home() {
                 <div className="home-merch-fallback-art" aria-hidden="true">
                   <Image src="/Harvest.webp" alt="" fill sizes="240px" />
                 </div>
-                <p>Music, charts, and official Celtic Worship goods.</p>
+                <p>Music, sheet music, and official Celtic Worship goods.</p>
                 <Link href="/shop">Visit the store</Link>
               </div>
             )}
