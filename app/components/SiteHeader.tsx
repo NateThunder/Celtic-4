@@ -268,8 +268,8 @@ export default function SiteHeader({
 
     const updateNavbarVisibility = () => {
       const currentScrollY = getScrollY();
-      const usesImmediateScrolledState = ["/shop", "/music", "/music/charts"].includes(pathname);
-      setHeaderScrolled(currentScrollY > (usesImmediateScrolledState ? 0 : 24));
+      const usesTransparentTop = ["/shop", "/music", "/music/charts"].includes(pathname);
+      setHeaderScrolled(currentScrollY > (usesTransparentTop ? ALWAYS_SHOW_TOP_Y : 24));
       const isMobileViewport = window.innerWidth <= MOBILE_DRAWER_MAX_WIDTH;
 
       if (!isMobileViewport && isDrawerOpenRef.current) {

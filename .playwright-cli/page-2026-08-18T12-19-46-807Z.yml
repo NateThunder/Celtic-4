@@ -1,0 +1,89 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - link "Celtic Worship" [ref=e4] [cursor=pointer]:
+        - /url: /#home
+      - generic "Social links" [ref=e6]:
+        - link "Spotify" [ref=e7] [cursor=pointer]:
+          - /url: https://open.spotify.com/artist/0h2AQKpVBEEXQQ03KGf7ep?si=9eAa0Ik8Rmm2Nip-K8Y-Kg
+        - link "YouTube" [ref=e10] [cursor=pointer]:
+          - /url: https://www.youtube.com/CelticWorshipMusic
+        - link "Instagram" [ref=e13] [cursor=pointer]:
+          - /url: https://www.instagram.com/celtic_worship
+      - navigation "Main" [ref=e16]:
+        - link "Home" [ref=e17] [cursor=pointer]:
+          - /url: /#home
+        - link "Music" [ref=e18] [cursor=pointer]:
+          - /url: /music
+        - link "Sheet Music" [ref=e19] [cursor=pointer]:
+          - /url: /music/charts
+        - link "Events" [ref=e20] [cursor=pointer]:
+          - /url: /live-events
+        - link "Videos" [ref=e21] [cursor=pointer]:
+          - /url: /videos
+        - link "Shop" [ref=e22] [cursor=pointer]:
+          - /url: /shop
+        - link "About" [ref=e23] [cursor=pointer]:
+          - /url: /about
+    - main [ref=e24]:
+      - generic [ref=e25]:
+        - heading "Discography" [level=1] [ref=e27]
+        - navigation "Music section" [ref=e29]:
+          - link "Discography" [ref=e30] [cursor=pointer]:
+            - /url: /music
+          - link "Sheet Music" [ref=e31] [cursor=pointer]:
+            - /url: /music/charts
+        - generic "Celtic Worship albums in reverse chronological order" [ref=e32]:
+          - article [ref=e33]:
+            - generic [ref=e34]:
+              - img "Harvest album artwork" [ref=e36]
+              - generic [ref=e37]:
+                - paragraph [ref=e38]: "2025"
+                - heading "Harvest" [level=2] [ref=e39]
+                - generic "Harvest streaming links" [ref=e40]:
+                  - link "Listen on Spotify" [ref=e41] [cursor=pointer]:
+                    - /url: https://open.spotify.com/album/1wHT87ZTsVzWlHBPl068YZ
+                  - link "Listen on Apple Music" [ref=e49] [cursor=pointer]:
+                    - /url: https://music.apple.com/us/album/harvest/1843396548
+                  - link "Watch on YouTube" [ref=e54] [cursor=pointer]:
+                    - /url: https://www.youtube.com/playlist?list=OLAK5uy_l8_ItN9BtXWp2pnL6sTJjHMxzSsPbk3Nc
+          - article [ref=e61]:
+            - generic [ref=e62]:
+              - 'img "Come Behold: Christmas Collaborations album artwork" [ref=e64]'
+              - generic [ref=e65]:
+                - paragraph [ref=e66]: "2022"
+                - 'heading "Come Behold: Christmas Collaborations" [level=2] [ref=e67]'
+                - 'generic "Come Behold: Christmas Collaborations streaming links" [ref=e68]':
+                  - link "Listen on Spotify" [ref=e69] [cursor=pointer]:
+                    - /url: https://open.spotify.com/album/3LgIkLu8FiXrIdGoGi0wzC
+                  - link "Listen on Apple Music" [ref=e77] [cursor=pointer]:
+                    - /url: https://music.apple.com/us/album/come-behold-christmas-collaborations/1855892561
+                  - link "Watch on YouTube" [ref=e82] [cursor=pointer]:
+                    - /url: https://www.youtube.com/playlist?list=OLAK5uy_lSsRcOeye-R3aj2aTvNj6ZgV8mpzUxSnw
+          - article [ref=e89]:
+            - generic [ref=e90]:
+              - img "Morningtide album artwork" [ref=e92]
+              - generic [ref=e93]:
+                - paragraph [ref=e94]: "2021"
+                - heading "Morningtide" [level=2] [ref=e95]
+                - generic "Morningtide streaming links" [ref=e96]:
+                  - link "Listen on Spotify" [ref=e97] [cursor=pointer]:
+                    - /url: https://open.spotify.com/album/2eVE06iQg6hXInZ3T4Tl3U
+                  - link "Listen on Apple Music" [ref=e105] [cursor=pointer]:
+                    - /url: https://music.apple.com/us/album/morningtide/1813246088
+                  - link "Watch on YouTube" [ref=e110] [cursor=pointer]:
+                    - /url: https://www.youtube.com/playlist?list=OLAK5uy_lXKSwIEyECDMQsZ_gI3nj2VPE5lQSGVrc
+          - article [ref=e117]:
+            - generic [ref=e118]:
+              - img "Homeward album artwork" [ref=e120]
+              - generic [ref=e121]:
+                - paragraph [ref=e122]: "2019"
+                - heading "Homeward" [level=2] [ref=e123]
+                - generic "Homeward streaming links" [ref=e124]:
+                  - link "Listen on Spotify" [ref=e125] [cursor=pointer]:
+                    - /url: https://open.spotify.com/album/4v6piy6UMrtHFPVWFwNWAh
+                  - link "Listen on Apple Music" [ref=e133] [cursor=pointer]:
+                    - /url: https://music.apple.com/us/album/homeward/1755005048
+                  - link "Watch on YouTube" [ref=e138] [cursor=pointer]:
+                    - /url: https://www.youtube.com/playlist?list=OLAK5uy_mVje3QdFtaFd-u-5SmJEoBG_J-9iYUSR8
+  - button "Open Next.js Dev Tools" [ref=e149] [cursor=pointer]
