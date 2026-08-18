@@ -1251,14 +1251,10 @@ body {
 }
 
 .live-events-page {
+  --editorial-paper: #f2efe9;
   min-height: 100vh;
   min-height: 100dvh;
-  background-color: var(--editorial-paper);
-  background-image:
-    linear-gradient(rgba(234, 223, 205, 0.9), rgba(234, 223, 205, 0.9)),
-    var(--paper-background);
-  background-repeat: repeat;
-  background-size: auto, 760px auto;
+  background: #f2efe9;
   color: var(--editorial-ink);
 }
 
@@ -3128,6 +3124,56 @@ body.has-open-shop-cart-drawer {
   filter: saturate(0.72) contrast(1.1) brightness(0.88);
   transform-origin: center;
   animation: home-hero-drift 18s cubic-bezier(0.2, 0.72, 0, 1) both;
+}
+
+.editorial-home-shell .editorial-hero-sound {
+  position: absolute;
+  right: clamp(1.4rem, 3.5vw, 3.5rem);
+  bottom: clamp(1.5rem, 3.5vw, 3rem);
+  z-index: 4;
+  display: grid;
+  justify-items: center;
+  width: 6.5rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #efe6d7;
+  cursor: pointer;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.72));
+}
+
+.editorial-home-shell .editorial-hero-sound-label {
+  font-family: var(--font-bebas-neue), var(--font-anton), Impact, sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.editorial-home-shell .editorial-hero-sound-wave {
+  display: block;
+  width: 6.5rem;
+  height: 2rem;
+  margin-top: -0.15rem;
+  opacity: 0.9;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.editorial-home-shell .editorial-hero-sound-wave canvas {
+  display: block;
+  width: 100% !important;
+  height: 2rem !important;
+}
+
+.editorial-home-shell .editorial-hero-sound:hover .editorial-hero-sound-wave,
+.editorial-home-shell .editorial-hero-sound:focus-visible .editorial-hero-sound-wave {
+  opacity: 1;
+  transform: scaleX(1.06);
+}
+
+.editorial-home-shell .editorial-hero-sound:focus-visible {
+  outline: 1px solid rgba(239, 230, 215, 0.9);
+  outline-offset: 0.5rem;
 }
 
 .editorial-home-shell .editorial-hero-lockup {
@@ -5348,6 +5394,11 @@ body.has-open-shop-cart-drawer {
 
   .editorial-home-shell .editorial-hero-video {
     object-position: 58% center;
+  }
+
+  .editorial-home-shell .editorial-hero-sound {
+    right: 1rem;
+    bottom: max(1rem, env(safe-area-inset-bottom));
   }
 
   .editorial-home-shell .editorial-hero-lockup {

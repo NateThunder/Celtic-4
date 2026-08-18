@@ -6,6 +6,7 @@ import EventMusicDivider from "./components/EventMusicDivider";
 import FeaturedVideo from "./components/FeaturedVideo";
 import HomeEvents from "./components/HomeEvents";
 import HomeReveal from "./components/HomeReveal";
+import HeroVideo from "./components/HeroVideo";
 import ScrollHomeToTop from "./components/ScrollHomeToTop";
 import SiteHeader from "./components/SiteHeader";
 import { getUpcomingEvents } from "./lib/events";
@@ -55,17 +56,7 @@ export default async function Home() {
 
       <main className="editorial-home-page">
         <section id="home" className="editorial-hero" aria-label="Celtic Worship home">
-          <video
-            className="editorial-hero-video"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="metadata"
-            aria-hidden="true"
-          >
-            <source src="/Sequence%2001_1.mp4" type="video/mp4" />
-          </video>
+          <HeroVideo />
           <div className="editorial-hero-lockup">
             <h1 className="editorial-hero-title">
               <span>Celtic</span>
