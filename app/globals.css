@@ -7,6 +7,8 @@
   --editorial-gold: #c97b12;
   --editorial-paper: #eadfcd;
   --editorial-ink: #15130f;
+  /* Locked brand token — the greige of the merch shots. Do not re-tune. */
+  --greige: #D1C9BE;
   --upcoming-events-bg: #c97b12;
   --upcoming-events-blue: #1261c9;
   --upcoming-events-cream: #f7ead8;
