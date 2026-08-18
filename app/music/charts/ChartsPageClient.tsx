@@ -648,8 +648,8 @@ function CompactResourceBrowser({
   const hasResults = songs.length > 0 || albums.length > 0;
 
   return (
-    <section className={styles.compactBrowser} aria-label="Chart resources">
-      <div className={styles.compactResultStrip} aria-label="Available chart resources">
+    <section className={styles.compactBrowser} aria-label="Sheet music resources">
+      <div className={styles.compactResultStrip} aria-label="Available sheet music resources">
         {!hasResults ? <p className={styles.emptyState}>No resources match that search.</p> : null}
         {songs.map((song) => (
           <CompactSongCard key={song.id} song={song} />

@@ -4,7 +4,7 @@ import styles from "./siteFooter.module.css";
 const FOOTER_LINKS = [
   { label: "Home", href: "/#home" },
   { label: "Music", href: "/music" },
-  { label: "Charts", href: "/music/charts" },
+  { label: "Sheet Music", href: "/music/charts" },
   { label: "Events", href: "/live-events" },
   { label: "Videos", href: "/videos" },
   { label: "Shop", href: "/shop" },

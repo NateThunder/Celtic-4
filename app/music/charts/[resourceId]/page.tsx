@@ -30,7 +30,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
 
   if (!detail) {
     return {
-      title: "Chart Not Found | Celtic Worship",
+      title: "Sheet Music Not Found | Celtic Worship",
     };
   }
 

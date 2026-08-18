@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 const NAV_ITEMS = [
   { label: "Home", href: "#home" },
   { label: "Music", href: "/music" },
-  { label: "Charts", href: "/music/charts" },
+  { label: "Sheet Music", href: "/music/charts" },
   { label: "Events", href: "/live-events" },
   { label: "Videos", href: "/videos" },
   { label: "Shop", href: "/shop" },
@@ -268,7 +268,8 @@ export default function SiteHeader({
 
     const updateNavbarVisibility = () => {
       const currentScrollY = getScrollY();
-      setHeaderScrolled(currentScrollY > 24);
+      const usesTransparentTop = ["/shop", "/music", "/music/charts"].includes(pathname);
+      setHeaderScrolled(currentScrollY > (usesTransparentTop ? ALWAYS_SHOW_TOP_Y : 24));
       const isMobileViewport = window.innerWidth <= MOBILE_DRAWER_MAX_WIDTH;
 
       if (!isMobileViewport && isDrawerOpenRef.current) {
@@ -327,7 +328,7 @@ export default function SiteHeader({
       if (rafId !== null) window.cancelAnimationFrame(rafId);
       navScrollState.ticking = false;
     };
-  }, [variant]);
+  }, [pathname, variant]);
 
   useEffect(() => {
     if (pathname !== "/") return;
@@ -343,6 +344,7 @@ export default function SiteHeader({
   }, [pathname]);
 
   const isHomePath = pathname === "/";
+  const hasTransparentTop = ["/shop", "/music", "/music/charts"].includes(pathname);
 
   return (
     <header
@@ -351,7 +353,9 @@ export default function SiteHeader({
         isScrolled ? " is-scrolled" : ""
       } site-header--dark-links site-header--editorial-home${
         hideMobileSocials ? " site-header--hide-mobile-socials" : ""
-      } ${variant === "home" ? "site-header--home-overlay" : "site-header--inner"}`}
+      }${hasTransparentTop ? " site-header--transparent-top" : ""} ${
+        variant === "home" ? "site-header--home-overlay" : "site-header--inner"
+      }`}
     >
       <a
         className="brand editorial-brand"
