@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import SiriWave from "siriwave";
 
 const HERO_VIDEO_SRC =
-  "/Your%20Kindness%20(Official%20Music%20Video)%20%EF%BD%9C%20Celtic%20Worship_converted.mp4";
+  "/Your%20Kindness%20(Official%20Music%20Video)%20-%201m58s%20compressed.mp4";
 
 export default function HeroVideo() {
   const videoRef = useRef<HTMLVideoElement>(null);
