@@ -17,6 +17,7 @@ type WooStoreProduct = {
   name?: string;
   images?: WooStoreImage[];
   prices?: WooStorePrices;
+  categories?: Array<{ id?: number; name?: string; slug?: string }>;
 };
 
 export type FeaturedProduct = {
@@ -26,6 +27,11 @@ export type FeaturedProduct = {
   imageSrc: string;
   imageAlt: string;
   priceLabel: string;
+};
+
+export type ShopSectionProduct = FeaturedProduct & {
+  categoryName: string;
+  categorySlug: string;
 };
 
 function formatProductPrice(prices?: WooStorePrices): string {
@@ -82,6 +88,42 @@ export async function getFeaturedProducts(limit = 3): Promise<FeaturedProduct[]>
       .map(normalizeProduct)
       .filter((product): product is FeaturedProduct => product !== null)
       .slice(0, limit);
+  } catch {
+    return [];
+  }
+}
+
+export async function getShopSectionProducts(): Promise<ShopSectionProduct[]> {
+  try {
+    const endpoint = new URL("/wp-json/wc/store/v1/products", WOO_BASE_URL);
+    endpoint.searchParams.set("per_page", "100");
+    endpoint.searchParams.set("orderby", "date");
+    endpoint.searchParams.set("order", "desc");
+
+    const response = await fetch(endpoint.toString(), {
+      headers: { "User-Agent": "Mozilla/5.0 CelticWorshipWebsite/1.0" },
+      next: { revalidate: 300 },
+    });
+    if (!response.ok) return [];
+
+    const payload = (await response.json()) as unknown;
+    if (!Array.isArray(payload)) return [];
+
+    const selected = new Map<string, ShopSectionProduct>();
+    for (const rawProduct of payload as WooStoreProduct[]) {
+      const product = normalizeProduct(rawProduct);
+      if (!product) continue;
+
+      for (const category of rawProduct.categories ?? []) {
+        const slug = category.slug?.trim().toLowerCase();
+        const name = category.name?.trim();
+        if (!slug || slug === "vinyl" || !name || selected.has(slug)) continue;
+        selected.set(slug, { ...product, categoryName: name, categorySlug: slug });
+      }
+    }
+
+    const rank = (slug: string) => slug === "cd" ? 0 : 1;
+    return [...selected.values()].sort((a, b) => rank(a.categorySlug) - rank(b.categorySlug));
   } catch {
     return [];
   }

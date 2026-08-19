@@ -337,7 +337,7 @@ export default async function ShopProductPage({ params }: ShopProductPageProps) 
               <div className={styles.meta}>
                 <h1 className={styles.title}>{product.name}</h1>
                 <p className={styles.price}>{price}</p>
-                {description ? <p className={styles.description}>{description}</p> : null}
+                {description ? <ExpandableDescription text={description} variant="product" /> : null}
 
                 <div className={styles.actions}>
                   <AddToCartButton

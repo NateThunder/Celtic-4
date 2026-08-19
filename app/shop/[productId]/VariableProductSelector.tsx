@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import AddToCartButton from "../../components/shop/AddToCartButton";
+import ExpandableDescription from "../../components/shop/ExpandableDescription";
 import ProductImageGallery from "./ProductImageGallery";
 import styles from "./product.module.css";
 
@@ -388,7 +389,7 @@ export default function VariableProductSelector({
       <div className={styles.meta}>
         <h1 className={styles.title}>{product.name}</h1>
         <p className={styles.price}>{priceLabel}</p>
-        {description ? <p className={styles.description}>{description}</p> : null}
+        {description ? <ExpandableDescription text={description} variant="product" /> : null}
 
         <div className={styles.optionGroups}>
           {variableAttributes.map((attribute) => {
