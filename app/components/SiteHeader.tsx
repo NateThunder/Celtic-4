@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { label: "Videos", href: "/videos" },
   { label: "Shop", href: "/shop" },
   { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const EDITORIAL_HOME_SOCIALS = [

@@ -9,6 +9,7 @@ const FOOTER_LINKS = [
   { label: "Videos", href: "/videos" },
   { label: "Shop", href: "/shop" },
   { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const SOCIAL_LINKS = [

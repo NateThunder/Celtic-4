@@ -33,6 +33,39 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.toggleIcon,
+.toggleIconExpanded {
+  width: 0.65rem;
+  height: auto;
+  transition: transform 160ms ease;
+}
+
+.toggleIconExpanded {
+  transform: rotate(180deg);
+}
+
+.product {
+  margin-top: 0.25rem;
+}
+
+.product .copy {
+  color: #444;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.product .copyCollapsed {
+  -webkit-line-clamp: 5;
+  line-clamp: 5;
+}
+
+.product .toggle {
+  font-size: 0.74rem;
 }
 
 .toggle:hover,
