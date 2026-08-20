@@ -9,23 +9,132 @@ export type HeroFrame = {
 export type Member = {
   name: string;
   instrument: string;
+  signature: string;
   frames: HeroFrame[];
 };
 
-/** The seven, in hero-strip order (left to right). */
+export type TimelineMilestone = {
+  dateLabel: string;
+  dateTime: string;
+  title: string;
+  description: string;
+  image?: {
+    src: string;
+    alt: string;
+    kind: "cover" | "photo";
+    href?: string;
+  };
+  portrait?: "naomi-chris" | "david-mhairi";
+};
+
+export const TIMELINE_MILESTONES: TimelineMilestone[] = [
+  {
+    dateLabel: "Late 2016",
+    dateTime: "2016",
+    title: "Formation",
+    portrait: "naomi-chris",
+    description:
+      "Celtic Worship first came together to prepare for a live worship event during Glasgow’s Celtic Connections festival. The project was originally intended to be a one-off collaboration.",
+  },
+  {
+    dateLabel: "2017",
+    dateTime: "2017",
+    title: "First Performance",
+    description:
+      "The group performed their first live set during the festival. The response to the collaboration encouraged them to continue beyond the original event, establishing Celtic Worship as an ongoing collective.",
+    image: {
+      src: `${ABOUT_PHOTOS}/scenes/ayr-town-hall-audience.jpg`,
+      alt: "Audience at a Celtic Worship performance",
+      kind: "photo",
+    },
+  },
+  {
+    dateLabel: "March 2019",
+    dateTime: "2019-03",
+    title: "Homeward",
+    description:
+      "Celtic Worship released their debut studio album, Homeward. The record established their distinctive sound, bringing traditional Scottish instrumentation such as fiddle and bagpipes into contemporary Christian worship and reimagining well-known hymns and worship songs.",
+    image: {
+      src: "/HOMEWARD.jpeg",
+      alt: "Homeward album artwork",
+      kind: "cover",
+      href: "/music#homeward",
+    },
+  },
+  {
+    dateLabel: "January 2021",
+    dateTime: "2021-01",
+    title: "Growing International Audience",
+    portrait: "david-mhairi",
+    description:
+      "Their Scottish folk-inspired arrangement of In Christ Alone gained significant attention online, introducing Celtic Worship to a much wider international audience and becoming one of the group's best-known performances.",
+  },
+  {
+    dateLabel: "Late 2022",
+    dateTime: "2022",
+    title: "Come Behold: Christmas Collaborations",
+    description:
+      "The group released Come Behold: Christmas Collaborations, expanding their sound through a series of collaborations with musicians from across the folk and roots music world.",
+    image: {
+      src: "/COME%20BEHOLD.webp",
+      alt: "Come Behold: Christmas Collaborations album artwork",
+      kind: "cover",
+      href: "/music#come-behold",
+    },
+  },
+  {
+    dateLabel: "Late 2025",
+    dateTime: "2025",
+    title: "Harvest",
+    description:
+      "Celtic Worship released their fourth studio album, Harvest. Written and recorded at a farm in Morayshire, the album drew heavily on biblical imagery surrounding land, cultivation, seasons and harvest. This period also marked another step in the group's international development and representation.",
+    image: {
+      src: "/Harvest.webp",
+      alt: "Harvest album artwork",
+      kind: "cover",
+      href: "/music#harvest",
+    },
+  },
+  {
+    dateLabel: "17 December 2026",
+    dateTime: "2026-12-17",
+    title: "Glasgow Homecoming",
+    description:
+      "Celtic Worship are scheduled to headline a major homecoming concert at the O2 Academy Glasgow, marking one of the largest headline performances in the group's journey so far.",
+    image: {
+      src: `${ABOUT_PHOTOS}/ghosts/ghost-new-irish-hall.jpg`,
+      alt: "Celtic Worship performing in a large concert hall",
+      kind: "photo",
+    },
+  },
+];
+
+/** The collective, in hero-strip and roster order (left to right). */
 export const MEMBERS: Member[] = [
   {
-    name: "Mhairi Marwick",
-    instrument: "Fiddle",
+    name: "Naomi Stirrat",
+    instrument: "Vocals & Guitar",
+    signature: "/signatures/naomi.png",
     frames: [
-      { src: `${ABOUT_PHOTOS}/hero/mhairi-marwick-01.jpg`, position: "31% 28%" },
-      { src: `${ABOUT_PHOTOS}/hero/mhairi-marwick-02.jpg`, position: "50% 34%" },
-      { src: `${ABOUT_PHOTOS}/hero/mhairi-marwick-03.jpg`, position: "50% 26%" },
+      { src: `${ABOUT_PHOTOS}/hero/naomi-stirrat-01.jpg`, position: "52% 28%" },
+      { src: `${ABOUT_PHOTOS}/hero/naomi-stirrat-02.jpg`, position: "48% 26%" },
+      { src: `${ABOUT_PHOTOS}/hero/naomi-stirrat-03.jpg`, position: "48% 26%" },
+    ],
+  },
+  {
+    name: "David Hogg",
+    instrument: "Vocals & Guitar",
+    signature: "/signatures/david.png",
+    frames: [
+      { src: `${ABOUT_PHOTOS}/hero/david-hogg-01.jpg`, position: "34% 22%" },
+      { src: `${ABOUT_PHOTOS}/hero/david-hogg-02.jpg`, position: "52% 24%" },
+      { src: `${ABOUT_PHOTOS}/hero/david-hogg-03.jpg`, position: "60% 24%" },
     ],
   },
   {
     name: "Chris Amer",
     instrument: "Guitars",
+    signature: "/signatures/chris.png",
     frames: [
       { src: `${ABOUT_PHOTOS}/hero/chris-amer-01.jpg`, position: "44% 26%" },
       { src: `${ABOUT_PHOTOS}/hero/chris-amer-02.jpg`, position: "52% 26%" },
@@ -33,8 +142,19 @@ export const MEMBERS: Member[] = [
     ],
   },
   {
+    name: "Mhairi Marwick",
+    instrument: "Fiddle",
+    signature: "/signatures/Mhairi.png",
+    frames: [
+      { src: `${ABOUT_PHOTOS}/hero/mhairi-marwick-01.jpg`, position: "31% 28%" },
+      { src: `${ABOUT_PHOTOS}/hero/mhairi-marwick-02.jpg`, position: "50% 34%" },
+      { src: `${ABOUT_PHOTOS}/hero/mhairi-marwick-03.jpg`, position: "50% 26%" },
+    ],
+  },
+  {
     name: "Gus Stirrat",
     instrument: "Bass",
+    signature: "/signatures/gus.png",
     frames: [
       { src: `${ABOUT_PHOTOS}/hero/gus-stirrat-01.jpg`, position: "54% 26%" },
       { src: `${ABOUT_PHOTOS}/hero/gus-stirrat-02.jpg`, position: "40% 10%" },
@@ -43,35 +163,9 @@ export const MEMBERS: Member[] = [
     ],
   },
   {
-    name: "Naomi Stirrat",
-    instrument: "Vocals & Guitar",
-    frames: [
-      { src: `${ABOUT_PHOTOS}/hero/naomi-stirrat-01.jpg`, position: "52% 28%" },
-      { src: `${ABOUT_PHOTOS}/hero/naomi-stirrat-02.jpg`, position: "48% 26%" },
-      { src: `${ABOUT_PHOTOS}/hero/naomi-stirrat-03.jpg`, position: "48% 26%" },
-    ],
-  },
-  {
-    name: "Calum MacAskill",
-    instrument: "Pipes",
-    frames: [
-      { src: `${ABOUT_PHOTOS}/hero/calum-macaskill-01.jpg`, position: "50% 24%" },
-      { src: `${ABOUT_PHOTOS}/hero/calum-macaskill-02.jpg`, position: "54% 26%" },
-      { src: `${ABOUT_PHOTOS}/hero/calum-macaskill-03.jpg`, position: "40% 16%" },
-    ],
-  },
-  {
-    name: "David Hogg",
-    instrument: "Vocals & Guitar",
-    frames: [
-      { src: `${ABOUT_PHOTOS}/hero/david-hogg-01.jpg`, position: "34% 22%" },
-      { src: `${ABOUT_PHOTOS}/hero/david-hogg-02.jpg`, position: "52% 24%" },
-      { src: `${ABOUT_PHOTOS}/hero/david-hogg-03.jpg`, position: "60% 24%" },
-    ],
-  },
-  {
     name: "Ifedade Thomas",
     instrument: "Drums",
+    signature: "/signatures/dade.png",
     frames: [
       { src: `${ABOUT_PHOTOS}/hero/ifedade-thomas-01.jpg`, position: "50% 22%" },
       { src: `${ABOUT_PHOTOS}/hero/ifedade-thomas-02.jpg`, position: "62% 12%" },
