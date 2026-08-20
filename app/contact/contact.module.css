@@ -1,7 +1,9 @@
 .shell { background: #0e0c0b; }
 .stage { position: relative; isolation: isolate; display: flex; min-height: 100svh; overflow: hidden; color: #f2efe9; background: #0e0c0b; }
-.stage::before { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, #0e0c0b 0%, rgba(14,12,11,.72) 40%, rgba(14,12,11,.82) 70%, #0e0c0b 100%); content: ""; pointer-events: none; }
-.backdrop { position: absolute; inset: 0; z-index: -2; background: url("/photos/celtic-still-gold-v2.png") center 30% / cover no-repeat; opacity: .16; filter: grayscale(.3); animation: backgroundReveal 1.4s ease-out both, drift 30s ease-in-out infinite alternate; }
+.stage::before { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(14,12,11,.9) 0%, rgba(14,12,11,.4) 40%, rgba(14,12,11,.58) 70%, rgba(14,12,11,.92) 100%); content: ""; pointer-events: none; }
+.backdrop { position: absolute; inset: 0; z-index: -2; overflow: hidden; opacity: 0; }
+.backdropLoaded { animation: backgroundReveal 1.4s ease-out both; }
+.backdropImage { object-fit: cover; object-position: center 30%; filter: grayscale(.3); animation: drift 30s ease-in-out infinite alternate; }
 .stageInner { width: min(calc(100% - clamp(2.5rem,8vw,7rem)), 880px); margin: auto; padding-block: clamp(7rem,12vh,9rem) clamp(3rem,7vh,5rem); }
 .field > span { font-size: .62rem; font-weight: 800; letter-spacing: .26em; text-transform: uppercase; }
 .crate { min-width: 0; }
@@ -13,8 +15,8 @@
 .sleeve { position: relative; color: #f2efe9; }
 .twoColumns { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem,4vw,2.5rem); }
 .field { display: block; margin-bottom: 2rem; }
-.field > span { display: block; margin-bottom: .65rem; color: rgba(242,239,233,.52); letter-spacing: .22em; }
-.field input, .field select, .field textarea { width: 100%; padding: 0 0 .72rem; border: 0; border-bottom: 1px solid rgba(242,239,233,.25); border-radius: 0; outline: none; background: transparent; color: #f2efe9; font: 1.25rem/1.55 Georgia, "Times New Roman", serif; transition: border-color .2s; }
+.field > span { display: block; margin-bottom: .65rem; color: #f2efe9; letter-spacing: .22em; }
+.field input, .field select, .field textarea { width: 100%; padding: 0 0 .72rem; border: 0; border-bottom: 1px solid #f2efe9; border-radius: 0; outline: none; background: transparent; color: #f2efe9; font: 1.25rem/1.55 Georgia, "Times New Roman", serif; transition: border-color .2s; }
 .field select { cursor: pointer; }
 .field select option { background: #181512; color: #f2efe9; }
 .field textarea { min-height: 120px; resize: vertical; }
@@ -49,10 +51,10 @@
 .eventsLink:focus-visible { outline: 2px solid #c97b12; outline-offset: 6px; }
 .eventsCallout:hover .eventsImage { transform: scale(1.025); filter: saturate(1.06); }
 @keyframes drift { from { transform: scale(1.03); } to { transform: scale(1.09) translate3d(-1%,-1%,0); } }
-@keyframes backgroundReveal { from { opacity: 0; } to { opacity: .16; } }
+@keyframes backgroundReveal { from { opacity: 0; } to { opacity: .42; } }
 @media (max-width: 1000px) { .stage { min-height: 0; } }
 @media (max-width: 860px) { .destinationGrid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
 @media (max-width: 560px) { .stageInner { width: min(calc(100% - 2rem), 760px); padding-top: 6.5rem; } .twoColumns { grid-template-columns: 1fr; gap: 0; } }
 @media (max-width: 600px) { .whileHere { padding-inline: 1rem; } .whileHereHeader { align-items: flex-start; } .whileHereTitle { max-width: 8ch; font-size: clamp(2.5rem,13vw,3.8rem); } .shopLink { margin-top: .35rem; font-size: .68rem; } .destinationGrid { grid-template-columns: 1fr; gap: 2rem; } }
 @media (max-width: 600px) { .eventsCallout { min-height: 34rem; } .eventsShade { background: linear-gradient(0deg, rgba(14,12,11,.92) 0%, rgba(14,12,11,.45) 68%, rgba(14,12,11,.2) 100%); } .eventsContent { padding: 3rem 1.25rem; } .eventsTitle { font-size: clamp(2.4rem,11.2vw,3.6rem); } }
-@media (prefers-reduced-motion: reduce) { .backdrop { animation: none; } .field input, .field select, .field textarea, .submit, .destinationImage, .destinationName, .shopLink, .eventsImage, .eventsLink { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .backdropLoaded { animation: none; opacity: .42; } .backdropImage { animation: none; } .field input, .field select, .field textarea, .submit, .destinationImage, .destinationName, .shopLink, .eventsImage, .eventsLink { transition: none; } }

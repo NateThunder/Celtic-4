@@ -213,6 +213,11 @@
   --platform-accent: #1d7d3f;
 }
 
+.cd {
+  --platform-accent: var(--editorial-gold);
+  border-color: var(--editorial-gold);
+}
+
 .apple {
   --platform-accent: #55504a;
 }

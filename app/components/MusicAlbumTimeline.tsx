@@ -1,7 +1,7 @@
 import Image from "next/image";
 import styles from "../music/music.module.css";
 
-type Platform = "spotify" | "apple" | "youtube";
+type Platform = "cd" | "spotify" | "apple" | "youtube";
 
 type AlbumLink = {
   label: string;
@@ -28,6 +28,12 @@ const ALBUMS: Album[] = [
     coverAlt: "Harvest album artwork",
     links: [
       {
+        label: "Buy CD",
+        href: "/shop/565",
+        platform: "cd",
+        newTab: false,
+      },
+      {
         label: "Listen on Spotify",
         href: "https://open.spotify.com/album/1wHT87ZTsVzWlHBPl068YZ",
         platform: "spotify",
@@ -51,6 +57,12 @@ const ALBUMS: Album[] = [
     coverSrc: "/COME%20BEHOLD.webp",
     coverAlt: "Come Behold: Christmas Collaborations album artwork",
     links: [
+      {
+        label: "Buy CD",
+        href: "/shop/392",
+        platform: "cd",
+        newTab: false,
+      },
       {
         label: "Listen on Spotify",
         href: "https://open.spotify.com/album/3LgIkLu8FiXrIdGoGi0wzC",
@@ -76,6 +88,12 @@ const ALBUMS: Album[] = [
     coverAlt: "Morningtide album artwork",
     links: [
       {
+        label: "Buy CD",
+        href: "/shop/396",
+        platform: "cd",
+        newTab: false,
+      },
+      {
         label: "Listen on Spotify",
         href: "https://open.spotify.com/album/2eVE06iQg6hXInZ3T4Tl3U",
         platform: "spotify",
@@ -100,6 +118,12 @@ const ALBUMS: Album[] = [
     coverAlt: "Homeward album artwork",
     links: [
       {
+        label: "Buy CD",
+        href: "/shop/511",
+        platform: "cd",
+        newTab: false,
+      },
+      {
         label: "Listen on Spotify",
         href: "https://open.spotify.com/album/4v6piy6UMrtHFPVWFwNWAh",
         platform: "spotify",
@@ -119,6 +143,16 @@ const ALBUMS: Album[] = [
 ];
 
 function PlatformIcon({ platform }: { platform: Platform }) {
+  if (platform === "cd") {
+    return (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeWidth="1.7" />
+        <circle cx="12" cy="12" r="2.4" fill="none" stroke="currentColor" strokeWidth="1.7" />
+        <path d="M14 4.2 12.7 9.7M19.8 10.2l-5.5 1.2M16.9 18.4l-3.3-4.7M7.1 18.4l3.3-4.7" fill="none" stroke="currentColor" strokeWidth="1.15" strokeLinecap="round" />
+      </svg>
+    );
+  }
+
   if (platform === "spotify") {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true">
