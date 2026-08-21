@@ -105,6 +105,10 @@ export default function AboutBody({ footer }: AboutBodyProps) {
         discs.forEach((disc) => {
           const rect = disc.parentElement?.getBoundingClientRect();
           if (rect) {
+            const discY = Number.parseFloat(
+              getComputedStyle(disc).getPropertyValue("--disc-y"),
+            );
+            const verticalOffset = Number.isFinite(discY) ? discY : 6;
             const centreY = rect.top + rect.height * 0.5;
             const out = clamp(
               (viewportHeight * 1.02 - centreY) / (viewportHeight * 0.44),
@@ -114,7 +118,7 @@ export default function AboutBody({ footer }: AboutBodyProps) {
             disc.style.opacity = out.toFixed(3);
             disc.style.transform = `translate(${(6 + discTravel * out).toFixed(
               1,
-            )}%,6%) rotate(${(150 * out).toFixed(0)}deg)`;
+            )}%,${verticalOffset}%) rotate(${(150 * out).toFixed(0)}deg)`;
           }
         });
 
@@ -215,7 +219,24 @@ export default function AboutBody({ footer }: AboutBodyProps) {
                   data-reveal
                   key={`${milestone.dateTime}-${milestone.title}`}
                 >
-                  <span className={styles.timelineMarker} aria-hidden="true" />
+                  <span
+                    className={styles.timelineMarker}
+                    style={
+                      {
+                        "--marker-scale": milestone.markerScale ?? 1,
+                      } as CSSProperties
+                    }
+                    aria-hidden="true"
+                  >
+                    <Image
+                      src={milestone.markerIcon}
+                      alt=""
+                      width={96}
+                      height={96}
+                      sizes="52px"
+                      unoptimized
+                    />
+                  </span>
                   <div
                     className={`${styles.timelineEntry} ${
                       milestone.image || milestone.portrait

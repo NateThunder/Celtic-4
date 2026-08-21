@@ -438,18 +438,29 @@
 }
 
 .timeline::before {
-  content: "";
-  position: absolute;
-  top: 10px;
-  bottom: 12px;
-  left: 9px;
-  width: 2px;
-  background: color-mix(in srgb, var(--amber) 72%, transparent);
+  content: none;
 }
 
 .timelineMilestone {
   position: relative;
   padding-left: clamp(48px, 5vw, 72px);
+}
+
+.timelineMilestone::before {
+  content: "";
+  position: absolute;
+  top: 58px;
+  bottom: 0;
+  left: -5px;
+  width: 28px;
+  background-image: url("/instrument/line.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.timelineMilestone:not(:last-child)::before {
+  bottom: calc(20px - clamp(76px, 9vw, 132px));
 }
 
 .timelineMilestone + .timelineMilestone {
@@ -458,14 +469,24 @@
 
 .timelineMarker {
   position: absolute;
-  top: 6px;
-  left: 0;
-  width: 20px;
-  height: 20px;
-  border: 3px solid var(--greige);
-  border-radius: 50%;
-  background: var(--amber);
-  box-shadow: 0 0 0 1px var(--amber);
+  top: -10px;
+  left: -18px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 5px;
+}
+
+.timelineMarker img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transform: scale(var(--marker-scale, 1));
 }
 
 .timelineEntry {
@@ -570,6 +591,7 @@
 
 .timelineDisc {
   --disc-travel: 42;
+  --disc-y: 0;
   position: absolute;
   top: 4%;
   left: 0;
@@ -1132,7 +1154,10 @@
 
 .exitPeople {
   position: relative;
+  width: 100%;
+  max-width: 100%;
   min-height: 400px;
+  overflow: hidden;
 }
 
 .exitPeople img {
@@ -1140,29 +1165,31 @@
   bottom: 0;
   width: auto;
   height: auto;
-  max-width: none;
-  max-height: 340px;
+  max-width: 44%;
+  max-height: calc(100% - 16px);
+  object-fit: contain;
   filter: drop-shadow(0 26px 44px rgba(0, 0, 0, 0.6));
   transform: none;
   transition: none;
 }
 
 .exitPeople .q1 {
-  left: -6%;
+  left: 0;
   z-index: 1;
-  max-height: 320px;
+  max-height: calc(100% - 36px);
 }
 
 .exitPeople .q2 {
-  left: 26%;
+  left: 29%;
   z-index: 2;
-  max-height: 345px;
+  max-height: calc(100% - 12px);
 }
 
 .exitPeople .q3 {
-  right: -14%;
+  right: 0;
   z-index: 3;
-  max-height: 290px;
+  max-width: 40%;
+  max-height: calc(100% - 54px);
 }
 
 /* ---------------------------------------------------------- responsive --- */
@@ -1236,7 +1263,7 @@
   }
 
   .timeline::before {
-    left: 7px;
+    content: none;
   }
 
   .timelineMilestone {
@@ -1248,9 +1275,20 @@
   }
 
   .timelineMarker {
-    left: -2px;
-    width: 18px;
-    height: 18px;
+    top: -7px;
+    left: -15px;
+    width: 46px;
+    height: 46px;
+    padding: 4px;
+  }
+
+  .timelineMilestone::before {
+    top: 51px;
+    left: -6px;
+  }
+
+  .timelineMilestone:not(:last-child)::before {
+    bottom: -61px;
   }
 
   .timelineEntryIllustrated {
@@ -1418,7 +1456,8 @@
   }
 
   .exitPeople img {
-    max-height: 230px;
+    max-width: 46%;
+    max-height: calc(100% - 12px);
   }
 
   .exitPeople .q2 {
@@ -1426,7 +1465,8 @@
   }
 
   .exitPeople .q3 {
-    right: -16%;
+    right: 0;
+    max-width: 42%;
   }
 }
 
