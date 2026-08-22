@@ -165,7 +165,6 @@ export default function AboutBody({ footer }: AboutBodyProps) {
             <div className={styles.w}>
               <div className={styles.roster}>
                 <span className={`${styles.tag} ${styles.rv}`} data-reveal>
-                  The collective
                 </span>
                 <div className={styles.names} data-reveal>
                   {MEMBERS.map((member, i) => (
@@ -203,13 +202,20 @@ export default function AboutBody({ footer }: AboutBodyProps) {
         <section
           className={`${styles.timelinePanel} ${styles.timelineTakeover}`}
         >
-          <div className={styles.w}>
+          <div className={styles.storyDivider} aria-hidden="true">
+            <Image
+              src="/instrument/line.png"
+              alt=""
+              width={428}
+              height={1517}
+            />
+          </div>
+          <div className={`${styles.w} ${styles.timelineCard}`}>
             <header
               className={`${styles.timelineHeading} ${styles.rv}`}
               data-reveal
             >
-              <span className={styles.tag}>The journey</span>
-              <h2>Our story.</h2>
+              <h2>Our story</h2>
             </header>
 
             <ol className={styles.timeline}>
@@ -224,6 +230,7 @@ export default function AboutBody({ footer }: AboutBodyProps) {
                     style={
                       {
                         "--marker-scale": milestone.markerScale ?? 1,
+                        "--marker-offset-y": milestone.markerOffsetY ?? "-12%",
                       } as CSSProperties
                     }
                     aria-hidden="true"
@@ -329,7 +336,11 @@ export default function AboutBody({ footer }: AboutBodyProps) {
                         </Link>
                       ) : (
                         <figure
-                          className={`${styles.timelineMedia} ${styles.timelinePhoto}`}
+                          className={`${styles.timelineMedia} ${styles.timelinePhoto} ${
+                            milestone.image.fit === "contain"
+                              ? styles.timelineMediaContain
+                              : ""
+                          }`}
                         >
                           <Image
                             src={milestone.image.src}

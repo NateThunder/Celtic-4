@@ -20,10 +20,12 @@ export type TimelineMilestone = {
   description: string;
   markerIcon: string;
   markerScale?: number;
+  markerOffsetY?: string;
   image?: {
     src: string;
     alt: string;
     kind: "cover" | "photo";
+    fit?: "cover" | "contain";
     href?: string;
   };
   portrait?: "naomi-chris" | "david-mhairi";
@@ -35,7 +37,11 @@ export const TIMELINE_MILESTONES: TimelineMilestone[] = [
     dateTime: "2016",
     title: "Formation",
     markerIcon: "/instrument/Acoustic%20Guitar.png",
-    portrait: "naomi-chris",
+    image: {
+      src: "/photos/band%20field.png",
+      alt: "Celtic Worship band standing together in a field",
+      kind: "photo",
+    },
     description:
       "Celtic Worship first came together to prepare for a live worship event during Glasgow’s Celtic Connections festival. The project was originally intended to be a one-off collaboration.",
   },
@@ -47,9 +53,10 @@ export const TIMELINE_MILESTONES: TimelineMilestone[] = [
     description:
       "The group performed their first live set during the festival. The response to the collaboration encouraged them to continue beyond the original event, establishing Celtic Worship as an ongoing collective.",
     image: {
-      src: `${ABOUT_PHOTOS}/scenes/ayr-town-hall-audience.jpg`,
-      alt: "Audience at a Celtic Worship performance",
+      src: "/photos/crowd-bw.jpg",
+      alt: "Crowd gathered at a Celtic Worship event",
       kind: "photo",
+      fit: "contain",
     },
   },
   {
@@ -71,7 +78,11 @@ export const TIMELINE_MILESTONES: TimelineMilestone[] = [
     dateTime: "2021-01",
     title: "Growing International Audience",
     markerIcon: "/instrument/Whistle.png",
-    portrait: "david-mhairi",
+    image: {
+      src: "/photos/Band%20orchestra.png",
+      alt: "Celtic Worship performing with an orchestra",
+      kind: "photo",
+    },
     description:
       "Their Scottish folk-inspired arrangement of In Christ Alone gained significant attention online, introducing Celtic Worship to a much wider international audience and becoming one of the group's best-known performances.",
   },
@@ -125,8 +136,8 @@ export const TIMELINE_MILESTONES: TimelineMilestone[] = [
     description:
       "Celtic Worship are scheduled to headline a major homecoming concert at the O2 Academy Glasgow, marking one of the largest headline performances in the group's journey so far.",
     image: {
-      src: `${ABOUT_PHOTOS}/ghosts/ghost-new-irish-hall.jpg`,
-      alt: "Celtic Worship performing in a large concert hall",
+      src: "/photos/band%20sitting.png",
+      alt: "Celtic Worship band sitting together",
       kind: "photo",
     },
   },
