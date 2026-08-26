@@ -1,9 +1,5 @@
 .section {
-  background-color: #0f0e0b;
-  background-image:
-    linear-gradient(rgba(15, 14, 11, 0.9), rgba(15, 14, 11, 0.9)),
-    var(--charcoal-linen);
-  background-size: auto, 960px 540px;
+  background: transparent;
   padding: clamp(1rem, 2.5vw, 1.65rem) clamp(1.35rem, 5vw, 3rem)
     clamp(4rem, 7vw, 6rem);
 }
@@ -31,10 +27,21 @@
 }
 
 .tabList {
+  position: relative;
   display: flex;
   align-items: center;
   gap: clamp(1.1rem, 3vw, 2.4rem);
-  border-bottom: 1px solid rgba(201, 123, 18, 0.3);
+}
+
+.tabList::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -0.35rem;
+  left: 0;
+  height: 0.85rem;
+  background: url("/textures/orange line.png") center / 100% 100% no-repeat;
+  pointer-events: none;
 }
 
 .tabButton {
@@ -58,14 +65,7 @@
 }
 
 .tabButton::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 3px;
-  background: transparent;
-  transition: background-color 160ms ease;
+  content: none;
 }
 
 .tabButton span {
@@ -80,10 +80,6 @@
 .tabButton:focus-visible,
 .activeTab {
   color: #f3e8d7;
-}
-
-.activeTab::after {
-  background: var(--editorial-gold);
 }
 
 .tabButton:focus-visible {
@@ -112,27 +108,47 @@
 }
 
 .card {
+  --ink-frame-outset: clamp(3px, 0.3vw, 5px);
+  position: relative;
   min-width: 0;
-  border: 1px solid rgba(201, 123, 18, 0.28);
+  border: 0;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.045);
+  background: #000;
   color: #efe6d7;
   cursor: pointer;
   display: grid;
-  overflow: hidden;
+  overflow: visible;
   padding: 0;
   text-align: left;
   transition:
     background-color 160ms ease,
-    border-color 160ms ease,
     transform 160ms ease;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--ink-frame-outset) * -1);
+  z-index: 2;
+  box-sizing: border-box;
+  border: clamp(0.45rem, 1vw, 0.75rem) solid transparent;
+  border-image: url("/textures/ink box.png") 64 / 1 / 0 stretch;
+  filter: brightness(0) saturate(100%) invert(51%) sepia(96%) saturate(1055%)
+    hue-rotate(359deg) brightness(89%) contrast(91%);
+  opacity: 0.88;
+  pointer-events: none;
+  transition: opacity 160ms ease;
 }
 
 .card:hover,
 .card:focus-visible {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(201, 123, 18, 0.68);
+  background: #000;
   transform: translateY(-2px);
+}
+
+.card:hover::before,
+.card:focus-visible::before {
+  opacity: 0.96;
 }
 
 .card:focus-visible {
@@ -159,6 +175,7 @@
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 0;
   background:
     linear-gradient(180deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.52)),
     rgba(15, 14, 11, 0.12);
@@ -181,29 +198,33 @@
   aspect-ratio: 1;
   display: grid;
   place-items: center;
-  border: 2px solid rgba(239, 230, 215, 0.84);
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.56);
   transform: translate(-50%, -50%);
-  transition:
-    background-color 160ms ease,
-    border-color 160ms ease,
-    transform 160ms ease;
+  transition: transform 160ms ease;
+}
+
+.playMark::before {
+  content: "";
+  position: absolute;
+  inset: -8%;
+  background: var(--editorial-gold);
+  opacity: 0.88;
+  -webkit-mask: url("/instrument/CIRCLE.png") center / contain no-repeat;
+  mask: url("/instrument/CIRCLE.png") center / contain no-repeat;
 }
 
 .playMark svg {
+  position: relative;
+  z-index: 1;
   width: 42%;
   margin-left: 0.15rem;
 }
 
 .playMark path {
-  fill: #fff;
+  fill: var(--editorial-gold);
 }
 
 .card:hover .playMark,
 .card:focus-visible .playMark {
-  background: rgba(0, 0, 0, 0.7);
-  border-color: #fff;
   transform: translate(-50%, -50%) scale(1.04);
 }
 
@@ -211,6 +232,7 @@
   display: grid;
   gap: 0.55rem;
   min-width: 0;
+  background: #000;
   padding: 1rem;
 }
 

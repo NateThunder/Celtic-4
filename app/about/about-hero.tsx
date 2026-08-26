@@ -10,6 +10,8 @@ const ASSEMBLE_AMPLITUDE = 72; // px each strip travels in on load
 const EXIT_AMPLITUDE = 150; // px each strip travels out on scroll
 const STAGGER_SECONDS = 0.26;
 const ASSEMBLE_SECONDS = 1.7;
+const ASSEMBLY_COMPLETE_SECONDS =
+  ASSEMBLE_SECONDS + (STRIP_COUNT - 1) * STAGGER_SECONDS;
 const SEAM_HOLD_SECONDS = 3.1;
 const SEAM_FADE_SECONDS = 0.9;
 const CYCLE_SECONDS = 7;
@@ -53,6 +55,7 @@ export default function AboutHero() {
 
   const stripRefs = useRef<(HTMLDivElement | null)[]>([]);
   const seamRef = useRef<HTMLDivElement | null>(null);
+  const isMemberSelectedRef = useRef(false);
 
   // Fetch *and* decode every frame of every cycle up front, so a swap is a src
   // change against a warm cache rather than a network hop mid-transition. A
@@ -80,6 +83,7 @@ export default function AboutHero() {
 
     const startMotion = () => {
       let startedAt = performance.now();
+      let pausedAt: number | null = null;
       let scrollProgress = 0;
       let rafId = 0;
 
@@ -94,7 +98,20 @@ export default function AboutHero() {
       window.addEventListener("scroll", readScroll, { passive: true });
 
       const tick = (now: number) => {
-        const elapsed = (now - startedAt) / 1000;
+        const liveElapsed = (now - startedAt) / 1000;
+
+        if (
+          isMemberSelectedRef.current &&
+          liveElapsed >= ASSEMBLY_COMPLETE_SECONDS
+        ) {
+          pausedAt ??= now;
+        } else if (pausedAt !== null) {
+          startedAt += now - pausedAt;
+          pausedAt = null;
+        }
+
+        const motionTime = pausedAt ?? now;
+        const elapsed = (motionTime - startedAt) / 1000;
         const pullApart = scrollProgress * scrollProgress;
 
         stripRefs.current.forEach((strip, i) => {
@@ -168,13 +185,21 @@ export default function AboutHero() {
   return (
     <div className={styles.heroWrap}>
       <header className={styles.stage}>
-        <div className={styles.rack}>
+        <div
+          className={styles.rack}
+          onPointerLeave={() => {
+            isMemberSelectedRef.current = false;
+          }}
+        >
           {MEMBERS.map((member, i) => {
             const frame = member.frames[frameIndexes[i]];
             return (
               <div
                 key={member.name}
                 className={styles.st}
+                onPointerEnter={() => {
+                  isMemberSelectedRef.current = true;
+                }}
                 ref={(node) => {
                   stripRefs.current[i] = node;
                 }}
@@ -206,17 +231,6 @@ export default function AboutHero() {
           ))}
         </div>
 
-        <div className={styles.over}>
-          <div className={styles.overIn}>
-            <span className={`${styles.tag} ${styles.tagAmber}`}>
-              About the collective
-            </span>
-            <h1 className={styles.title}>
-              Seven players, one <em>sound</em> — psalms, hymns and new songs.
-            </h1>
-            <div className={styles.hint}>HOVER A PANEL TO MEET THE PLAYER</div>
-          </div>
-        </div>
       </header>
     </div>
   );

@@ -2,168 +2,38 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo, useRef, useState } from "react";
-import { FakeBundlePreview, FakeChordChart } from "./ChartPreviewMocks";
-import {
-  ALBUM_RESOURCE_PACKS,
-  MORNINGTIDE_ALBUM,
-  RESOURCE_FILTERS,
-  SONG_RESOURCES,
-  type AlbumResourcePack,
-  type ResourceFilter,
-  type ResourceProductLink,
-  type ResourceType,
-  type SongResource,
-} from "./chartsData";
-import {
-  DEFAULT_SONG_RESOURCE,
-  getAlbumProduct,
-  getChartResourceHref,
-  getSongProduct,
-} from "./chartResources";
+import { useMemo, useState } from "react";
+import AddToCartButton from "../../components/shop/AddToCartButton";
+import type { ShopCartItemInput } from "../../components/shop/ShopCartContext";
+import { ALBUM_RESOURCE_PACKS, type AlbumResourcePack } from "./chartsData";
 import styles from "./charts.module.css";
 
+export type SheetMusicPackageOption = {
+  label: string;
+  value: string;
+  variationId: number;
+  price: string;
+  attribute: string;
+};
+
+export type SheetMusicProduct = {
+  id: number;
+  name: string;
+  price: string;
+  imageUrl: string;
+  imageAlt: string;
+  packageOptions: SheetMusicPackageOption[];
+  productUrl: string;
+};
+
+type CatalogFilter = "All" | "Sheet Music" | "Album Resource Packs";
 type Selection =
-  | {
-      kind: "song";
-      id: string;
-      resourceType: Exclude<ResourceType, "Full Pack">;
-    }
-  | {
-      kind: "albumPack";
-      id: string;
-      resourceType: ResourceType;
-    };
+  | { kind: "product"; id: number }
+  | { kind: "album"; id: string };
 
-type SelectedPreview =
-  | {
-      kind: "song";
-      song: SongResource;
-      product: ResourceProductLink;
-      resourceType: Exclude<ResourceType, "Full Pack">;
-    }
-  | {
-      kind: "albumPack";
-      album: AlbumResourcePack;
-      product: ResourceProductLink;
-      resourceType: ResourceType;
-    };
+const FILTERS: CatalogFilter[] = ["All", "Sheet Music", "Album Resource Packs"];
 
-function normalize(value: string): string {
-  return value.trim().toLowerCase();
-}
-
-function hasSearchMatch(values: string[], searchTerm: string): boolean {
-  const query = normalize(searchTerm);
-  if (!query) return true;
-
-  return values.some((value) => normalize(value).includes(query));
-}
-
-function songMatchesFilter(song: SongResource, activeFilter: ResourceFilter): boolean {
-  return activeFilter === "All" || song.resourceTypes.includes(activeFilter as Exclude<ResourceType, "Full Pack">);
-}
-
-function albumMatchesFilter(album: AlbumResourcePack, activeFilter: ResourceFilter): boolean {
-  return activeFilter === "All" || album.resourceTypes.includes(activeFilter as ResourceType);
-}
-
-function songMatchesSearch(song: SongResource, searchTerm: string): boolean {
-  return hasSearchMatch(
-    [
-      song.songTitle,
-      song.artist,
-      song.album,
-      song.year,
-      song.albumDescription,
-      ...song.keys,
-      ...song.resourceTypes,
-    ],
-    searchTerm,
-  );
-}
-
-function albumMatchesSearch(album: AlbumResourcePack, searchTerm: string): boolean {
-  return hasSearchMatch(
-    [
-      album.title,
-      album.artist,
-      album.year,
-      album.description,
-      `${album.songCount} songs`,
-      ...album.keys,
-      ...album.resourceTypes,
-      ...album.songTitles,
-    ],
-    searchTerm,
-  );
-}
-
-function getInitialSelection(): Selection {
-  return {
-    kind: "song",
-    id: SONG_RESOURCES[0].id,
-    resourceType: DEFAULT_SONG_RESOURCE,
-  };
-}
-
-function getPreview(selection: Selection): SelectedPreview {
-  if (selection.kind === "song") {
-    const song = SONG_RESOURCES.find((item) => item.id === selection.id) ?? SONG_RESOURCES[0];
-    return {
-      kind: "song",
-      song,
-      product: getSongProduct(song, selection.resourceType),
-      resourceType: selection.resourceType,
-    };
-  }
-
-  const album = ALBUM_RESOURCE_PACKS.find((item) => item.id === selection.id) ?? ALBUM_RESOURCE_PACKS[0];
-  const product = getAlbumProduct(album, selection.resourceType) ?? getAlbumProduct(album, "Full Pack");
-
-  return {
-    kind: "albumPack",
-    album,
-    product: product as ResourceProductLink,
-    resourceType: selection.resourceType,
-  };
-}
-
-function Icon({ name }: { name: "download" | "document" | "team" | "secure" | "search" | "filter" | "cart" | "music" | "heart" | "help" }) {
-  if (name === "download") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 3v11m0 0 4-4m-4 4-4-4M5 18.5h14" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    );
-  }
-
-  if (name === "document") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M7 3.5h7l3 3V20H7V3.5Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-        <path d="M14 3.5v4h4M9.5 11h5M9.5 14h5M9.5 17h3" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-      </svg>
-    );
-  }
-
-  if (name === "team") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M8.5 10.2a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4Zm7 0a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4ZM3.8 19.5v-1.2c0-2.6 2.1-4.7 4.7-4.7s4.7 2.1 4.7 4.7v1.2M10.8 14.4a5.3 5.3 0 0 1 4.7-2.9c2.8 0 5 2.2 5 5v1" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
-      </svg>
-    );
-  }
-
-  if (name === "secure") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 3.2 5.5 5.6v5.5c0 4.1 2.6 7.7 6.5 9.2 3.9-1.5 6.5-5.1 6.5-9.2V5.6L12 3.2Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-        <path d="M9.5 12.1h5v4h-5v-4Zm1-1.6a1.5 1.5 0 0 1 3 0v1.6h-3v-1.6Z" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
-      </svg>
-    );
-  }
-
+function Icon({ name }: { name: "search" | "filter" | "cart" }) {
   if (name === "search") {
     return (
       <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -180,60 +50,44 @@ function Icon({ name }: { name: "download" | "document" | "team" | "secure" | "s
     );
   }
 
-  if (name === "cart") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M3.5 4h2l2.1 10.5c.1.5.5.8 1 .8h8.7c.5 0 .9-.3 1-.8l1.1-6.2H6.5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M9 20h.1M17 20h.1" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
-      </svg>
-    );
-  }
-
-  if (name === "music") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M9 18.5a2.7 2.7 0 1 1-1.6-2.5V5.2l10-1.7v11.8a2.7 2.7 0 1 1-1.6-2.5V8.1L9 9.2v9.3Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-      </svg>
-    );
-  }
-
-  if (name === "heart") {
-    return (
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 20s-7.5-4.4-8.7-9.5C2.6 7.3 4.6 5 7.3 5c1.6 0 3 .8 4.7 2.8C13.7 5.8 15.1 5 16.7 5c2.7 0 4.7 2.3 4 5.5C19.5 15.6 12 20 12 20Z" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
-      </svg>
-    );
-  }
-
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-5v.1M9.9 9.5A2.2 2.2 0 0 1 12 8c1.3 0 2.3.8 2.3 2 0 1.7-2.3 1.8-2.3 3.5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <path d="M3.5 4h2l2.1 10.5c.1.5.5.8 1 .8h8.7c.5 0 .9-.3 1-.8l1.1-6.2H6.5M9 20h.1M17 20h.1" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 
-function CategoryPills({
-  activeFilter,
-  onChange,
-}: {
-  activeFilter: ResourceFilter;
-  onChange: (filter: ResourceFilter) => void;
-}) {
-  return (
-    <div className={styles.categoryPills} role="list" aria-label="Filter resource type">
-      {RESOURCE_FILTERS.map((filter) => (
-        <button
-          key={filter}
-          className={`${styles.categoryPill}${activeFilter === filter ? ` ${styles.categoryPillActive}` : ""}`}
-          type="button"
-          onClick={() => onChange(filter)}
-          aria-pressed={activeFilter === filter}
-        >
-          {filter}
-        </button>
-      ))}
-    </div>
-  );
+function ProductImage({ product, className }: { product: SheetMusicProduct; className: string }) {
+  if (!product.imageUrl) return <span className={className} aria-hidden="true" />;
+  return <Image className={className} src={product.imageUrl} alt={product.imageAlt} width={320} height={320} />;
+}
+
+function getDefaultPackageOption(product: SheetMusicProduct) {
+  return product.packageOptions.find((option) => option.label.trim().toLowerCase() === "standard")
+    ?? product.packageOptions[0];
+}
+
+function getCartItem(product: SheetMusicProduct, option?: SheetMusicPackageOption): ShopCartItemInput {
+  if (!option) {
+    return {
+      id: product.id,
+      name: product.name,
+      href: product.productUrl,
+      price: product.price,
+      imageSrc: product.imageUrl || undefined,
+      imageAlt: product.imageAlt,
+    };
+  }
+
+  return {
+    id: option.variationId,
+    name: `${product.name} - ${option.label}`,
+    href: product.productUrl,
+    price: option.price,
+    imageSrc: product.imageUrl || undefined,
+    imageAlt: product.imageAlt,
+    variation: [{ attribute: option.attribute, value: option.value }],
+  };
 }
 
 function SearchAndFilters({
@@ -243,26 +97,22 @@ function SearchAndFilters({
   onFilterChange,
 }: {
   searchTerm: string;
-  activeFilter: ResourceFilter;
+  activeFilter: CatalogFilter;
   onSearchChange: (value: string) => void;
-  onFilterChange: (filter: ResourceFilter) => void;
+  onFilterChange: (filter: CatalogFilter) => void;
 }) {
   return (
     <section className={styles.controls} aria-label="Search and filter music resources">
-      <label className={styles.searchLabel} htmlFor="charts-search">
-        Search resources
-      </label>
+      <label className={styles.searchLabel} htmlFor="charts-search">Search resources</label>
       <div className={styles.searchInputWrap}>
-        <span className={styles.searchIcon} aria-hidden="true">
-          <Icon name="search" />
-        </span>
+        <span className={styles.searchIcon} aria-hidden="true"><Icon name="search" /></span>
         <input
           id="charts-search"
           className={styles.searchInput}
           type="search"
           value={searchTerm}
           onChange={(event) => onSearchChange(event.target.value)}
-          placeholder="Search songs..."
+          placeholder="Search sheet music..."
           autoComplete="off"
         />
       </div>
@@ -270,511 +120,239 @@ function SearchAndFilters({
         <Icon name="filter" />
         <span>Filters</span>
       </div>
-      <CategoryPills activeFilter={activeFilter} onChange={onFilterChange} />
+      <div className={styles.categoryPills} role="list" aria-label="Filter resource type">
+        {FILTERS.map((filter) => (
+          <button
+            key={filter}
+            className={`${styles.categoryPill}${activeFilter === filter ? ` ${styles.categoryPillActive}` : ""}`}
+            type="button"
+            onClick={() => onFilterChange(filter)}
+            aria-pressed={activeFilter === filter}
+          >
+            {filter}
+          </button>
+        ))}
+      </div>
     </section>
   );
 }
 
-function ResourceRow({
-  song,
-  selection,
-  onSelect,
-}: {
-  song: SongResource;
-  selection: Selection;
-  onSelect: (song: SongResource, resourceType: Exclude<ResourceType, "Full Pack">) => void;
-}) {
-  const activeResource =
-    selection.kind === "song" && selection.id === song.id ? selection.resourceType : DEFAULT_SONG_RESOURCE;
-  const product = getSongProduct(song, activeResource);
-
+function ProductRow({ product, active, onSelect }: { product: SheetMusicProduct; active: boolean; onSelect: () => void }) {
   return (
     <article className={styles.resourceRow}>
-      <Image
-        className={styles.rowArtwork}
-        src={song.imageUrl}
-        alt={`${song.album} album artwork`}
-        width={112}
-        height={112}
-      />
+      <ProductImage product={product} className={styles.rowArtwork} />
       <div className={styles.rowMeta}>
-        <h3>{song.songTitle}</h3>
-        <p>{song.artist}</p>
-        <span>Keys: {song.keys.join(", ")}</span>
+        <h3>{product.name}</h3>
+        <p>Celtic Worship</p>
+        <span>Digital sheet music</span>
       </div>
       <div className={styles.rowActions}>
-        {song.resourceTypes.map((resourceType) => (
-          <button
-            key={resourceType}
-            className={`${styles.resourceTypeButton}${
-              selection.kind === "song" && selection.id === song.id && selection.resourceType === resourceType
-                ? ` ${styles.resourceTypeButtonActive}`
-                : ""
-            }`}
-            type="button"
-            onClick={() => onSelect(song, resourceType)}
-          >
-            {resourceType}
-          </button>
-        ))}
+        <button className={`${styles.resourceTypeButton}${active ? ` ${styles.resourceTypeButtonActive}` : ""}`} type="button" onClick={onSelect}>
+          {product.packageOptions.length > 1 ? "Standard / Complete" : "Sheet music"}
+        </button>
       </div>
-      <a className={styles.priceButton} href={product.addToCartUrl} aria-label={`Add ${product.label} to cart`}>
-        {product.price}
-      </a>
+      <Link className={styles.priceButton} href={product.productUrl}>{product.price}</Link>
     </article>
   );
 }
 
-function AlbumPackRow({
-  album,
-  selection,
-  onSelect,
-}: {
-  album: AlbumResourcePack;
-  selection: Selection;
-  onSelect: (album: AlbumResourcePack, resourceType: ResourceType) => void;
-}) {
-  const activeResource =
-    selection.kind === "albumPack" && selection.id === album.id ? selection.resourceType : "Full Pack";
-  const product = getAlbumProduct(album, activeResource) ?? getAlbumProduct(album, "Full Pack");
-
+function AlbumRow({ album, active, onSelect }: { album: AlbumResourcePack; active: boolean; onSelect: () => void }) {
   return (
     <article className={styles.albumPackRow}>
-      <Image
-        className={styles.rowArtwork}
-        src={album.imageUrl}
-        alt={`${album.title} album artwork`}
-        width={112}
-        height={112}
-      />
+      <Image className={styles.rowArtwork} src={album.imageUrl} alt={`${album.title} album artwork`} width={112} height={112} />
       <div className={styles.rowMeta}>
         <h3>{album.title}</h3>
         <p>{album.artist}</p>
-        <span>
-          {album.songCount} songs · Keys: {album.keys.join(", ")}
-        </span>
+        <span>Album Resource Pack</span>
       </div>
       <div className={styles.rowActions}>
-        {album.resourceTypes.map((resourceType) => (
-          <button
-            key={resourceType}
-            className={`${styles.resourceTypeButton}${
-              selection.kind === "albumPack" && selection.id === album.id && selection.resourceType === resourceType
-                ? ` ${styles.resourceTypeButtonActive}`
-                : ""
-            }`}
-            type="button"
-            onClick={() => onSelect(album, resourceType)}
-          >
-            {resourceType}
-          </button>
-        ))}
+        <button className={`${styles.resourceTypeButton}${active ? ` ${styles.resourceTypeButtonActive}` : ""}`} type="button" onClick={onSelect}>
+          Coming soon
+        </button>
       </div>
-      {product ? (
-        <a className={styles.priceButton} href={product.addToCartUrl} aria-label={`Add ${product.label} to cart`}>
-          {product.price}
-        </a>
-      ) : null}
     </article>
   );
 }
 
-function ResourceList({
-  songs,
-  albums,
-  selection,
-  onSelectSong,
-  onSelectAlbum,
-}: {
-  songs: SongResource[];
-  albums: AlbumResourcePack[];
-  selection: Selection;
-  onSelectSong: (song: SongResource, resourceType: Exclude<ResourceType, "Full Pack">) => void;
-  onSelectAlbum: (album: AlbumResourcePack, resourceType: ResourceType) => void;
-}) {
-  const hasResults = songs.length > 0 || albums.length > 0;
+function ProductPreview({ product }: { product: SheetMusicProduct }) {
+  const defaultOption = getDefaultPackageOption(product);
+  const [selectedPackage, setSelectedPackage] = useState(defaultOption?.value ?? "");
+  const selectedOption = product.packageOptions.find((option) => option.value === selectedPackage) ?? defaultOption;
+  const price = selectedOption?.price ?? product.price;
 
   return (
-    <section className={styles.listPanel} aria-label="Available music resources">
-      <div className={styles.albumHeader}>
-        <Image
-          className={styles.albumHeaderImage}
-          src={MORNINGTIDE_ALBUM.imageUrl}
-          alt={`${MORNINGTIDE_ALBUM.title} album artwork`}
-          width={112}
-          height={112}
-        />
-        <div>
-          <h2>
-            {MORNINGTIDE_ALBUM.title} <span>({MORNINGTIDE_ALBUM.year})</span>
-          </h2>
-          <p>{MORNINGTIDE_ALBUM.description}</p>
-        </div>
-        <a href="/music" className={styles.albumHeaderLink}>
-          View Album <span aria-hidden="true">-&gt;</span>
-        </a>
-      </div>
-
-      {!hasResults ? (
-        <p className={styles.emptyState}>No resources match that search.</p>
-      ) : null}
-
-      {songs.length > 0 ? (
-        <div className={styles.resourceRows}>
-          {songs.map((song) => (
-            <ResourceRow key={song.id} song={song} selection={selection} onSelect={onSelectSong} />
-          ))}
-        </div>
-      ) : null}
-
-      {albums.length > 0 ? (
-        <div className={styles.albumPackSection}>
-          <div className={styles.albumPackHeader}>
-            <h2>Album Resource Packs</h2>
-            <p>Bundles for churches and teams.</p>
-          </div>
-          <div className={styles.resourceRows}>
-            {albums.map((album) => (
-              <AlbumPackRow key={album.id} album={album} selection={selection} onSelect={onSelectAlbum} />
-            ))}
-          </div>
-        </div>
-      ) : null}
-    </section>
-  );
-}
-
-function FeaturedProductPreview({
-  preview,
-  selectedKey,
-  onKeyChange,
-  onResourceChange,
-}: {
-  preview: SelectedPreview;
-  selectedKey: string;
-  onKeyChange: (key: string) => void;
-  onResourceChange: (resourceType: ResourceType) => void;
-}) {
-  const isSong = preview.kind === "song";
-  const title = isSong ? preview.song.songTitle : preview.album.title;
-  const subtitle = isSong ? `${preview.resourceType} PDF` : `${preview.resourceType} Bundle`;
-  const artist = isSong ? preview.song.artist : preview.album.artist;
-  const artwork = isSong ? preview.song.imageUrl : preview.album.imageUrl;
-  const albumTitle = isSong ? preview.song.album : preview.album.title;
-  const resourceOptions = isSong ? preview.song.resourceTypes : preview.album.resourceTypes;
-  const keyOptions = isSong ? preview.song.keys : preview.album.keys;
-
-  return (
-    <aside className={styles.previewPanel} aria-label="Selected resource preview">
-      <div className={styles.breadcrumb}>
-        Home / Music / {albumTitle} / {isSong ? `${title} / ` : ""}{preview.resourceType}
-      </div>
+    <aside className={styles.previewPanel} aria-label="Selected sheet music preview">
+      <div className={styles.breadcrumb}>Home / Music / Sheet Music / {product.name}</div>
       <div className={styles.previewTop}>
-        <Image className={styles.previewArtwork} src={artwork} alt={`${albumTitle} artwork`} width={260} height={260} />
+        <ProductImage product={product} className={styles.previewArtwork} />
         <div className={styles.previewMeta}>
-          <p className={styles.previewLabel}>{albumTitle}</p>
-          <h2>
-            {title}
-            <span>{subtitle}</span>
-          </h2>
-          <p>{artist}</p>
-
-          <div className={styles.previewControls}>
-            <label>
-              Key
-              <select value={selectedKey} onChange={(event) => onKeyChange(event.target.value)}>
-                {keyOptions.map((key) => (
-                  <option key={key} value={key}>
-                    {key}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Resource
-              <select value={preview.resourceType} onChange={(event) => onResourceChange(event.target.value as ResourceType)}>
-                {resourceOptions.map((resourceType) => (
-                  <option key={resourceType} value={resourceType}>
-                    {resourceType}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label>
-              Parts
-              <select defaultValue="All Parts">
-                <option>All Parts</option>
-                <option>Worship Leader</option>
-                <option>Band</option>
-              </select>
-            </label>
-          </div>
+          <p className={styles.previewLabel}>Available now</p>
+          <h2>{product.name}<span>Digital Sheet Music</span></h2>
+          <p>Celtic Worship</p>
+          {product.packageOptions.length > 1 ? (
+            <div className={styles.previewControls}>
+              <label>
+                Package
+                <select value={selectedOption?.value ?? ""} onChange={(event) => setSelectedPackage(event.target.value)}>
+                  {product.packageOptions.map((option) => (
+                    <option key={option.variationId} value={option.value}>{option.label}</option>
+                  ))}
+                </select>
+              </label>
+            </div>
+          ) : null}
         </div>
         <div className={styles.previewPurchase}>
-          <strong>{preview.product.price}</strong>
-          <a href={preview.product.addToCartUrl}>
-            <Icon name="cart" />
-            Add to Cart
-          </a>
-          <span>Secure Checkout</span>
-          <span>Instant Download</span>
-          <span>{preview.product.downloadType}</span>
+          <strong>{price}</strong>
+          <AddToCartButton className={styles.previewAddButton} item={getCartItem(product, selectedOption)} />
+          <span>Secure checkout</span>
+          <span>Instant download</span>
         </div>
       </div>
-
-      {isSong ? (
-        <FakeChordChart title={preview.song.songTitle} selectedKey={selectedKey} />
-      ) : (
-        <FakeBundlePreview album={preview.album} />
-      )}
     </aside>
   );
 }
 
-export function MobileResourceCard({ album }: { album: AlbumResourcePack }) {
-  const fullPack = getAlbumProduct(album, "Full Pack");
+function AlbumPreview({ album }: { album: AlbumResourcePack }) {
+  return (
+    <aside className={styles.previewPanel} aria-label="Album Resource Pack preview">
+      <div className={styles.breadcrumb}>Home / Music / Album Resource Packs / {album.title}</div>
+      <div className={styles.previewTop}>
+        <Image className={styles.previewArtwork} src={album.imageUrl} alt={`${album.title} album artwork`} width={260} height={260} />
+        <div className={styles.previewMeta}>
+          <p className={styles.previewLabel}>Coming soon</p>
+          <h2>{album.title}<span>Album Resource Pack</span></h2>
+          <p>{album.artist}</p>
+        </div>
+        <div className={styles.previewPurchase}>
+          <strong>Coming soon</strong>
+          <span>Complete album resources</span>
+          <span>For churches and teams</span>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+function CompactProductCard({ product }: { product: SheetMusicProduct }) {
+  const defaultOption = getDefaultPackageOption(product);
+  const [selectedPackage, setSelectedPackage] = useState(defaultOption?.value ?? "");
+  const selectedOption = product.packageOptions.find((option) => option.value === selectedPackage) ?? defaultOption;
+  const price = selectedOption?.price ?? product.price;
 
   return (
-    <article className={styles.mobileCard}>
-      <Image className={styles.mobileCardImage} src={album.imageUrl} alt={`${album.title} album artwork`} width={320} height={320} />
-      <div className={styles.mobileCardMeta}>
-        <p>{album.year}</p>
+    <article className={styles.compactResourceCard}>
+      <Link className={styles.compactResourceImageLink} href={product.productUrl}>
+        <ProductImage product={product} className={styles.compactResourceImage} />
+      </Link>
+      <div className={styles.compactResourceMeta}>
+        <p>{price}</p>
+        <h2><Link href={product.productUrl}>{product.name}</Link></h2>
+        <span>Celtic Worship</span>
+        <p className={styles.compactResourceDetails}>Digital sheet music</p>
+        {product.packageOptions.length > 1 ? (
+          <label className={styles.compactPackageSelect}>
+            Package
+            <select value={selectedOption?.value ?? ""} onChange={(event) => setSelectedPackage(event.target.value)}>
+              {product.packageOptions.map((option) => (
+                <option key={option.variationId} value={option.value}>{option.label}</option>
+              ))}
+            </select>
+          </label>
+        ) : null}
+        <div className={styles.compactResourceActions}>
+          <AddToCartButton className={styles.compactAddButton} item={getCartItem(product, selectedOption)} />
+        </div>
+      </div>
+    </article>
+  );
+}
+
+function CompactAlbumCard({ album }: { album: AlbumResourcePack }) {
+  return (
+    <article className={styles.compactResourceCard}>
+      <Image className={styles.compactResourceImage} src={album.imageUrl} alt={`${album.title} album artwork`} width={160} height={160} />
+      <div className={styles.compactResourceMeta}>
+        <p>Coming soon</p>
         <h2>{album.title}</h2>
         <span>{album.artist}</span>
-        <p className={styles.mobileCardCopy}>{album.description}</p>
-        <p className={styles.mobileCardDetails}>
-          {album.songCount} songs · Keys: {album.keys.join(", ")}
-        </p>
-        <div className={styles.mobileCardActions}>
-          {album.resourceTypes.map((resourceType) => {
-            const product = getAlbumProduct(album, resourceType);
-            if (!product) return null;
-
-            return (
-              <a
-                key={resourceType}
-                className={`${styles.mobileCardButton}${resourceType === "Full Pack" ? ` ${styles.mobileCardButtonPrimary}` : ""}`}
-                href={resourceType === "Full Pack" && fullPack ? fullPack.addToCartUrl : product.addToCartUrl}
-              >
-                {resourceType}
-              </a>
-            );
-          })}
-        </div>
+        <p className={styles.compactResourceDetails}>Album Resource Pack</p>
       </div>
     </article>
   );
 }
 
-function CompactSongCard({ song }: { song: SongResource }) {
-  return (
-    <article className={styles.compactResourceCard}>
-      <Link className={styles.compactResourceImageLink} href={getChartResourceHref(song.id, DEFAULT_SONG_RESOURCE)}>
-        <Image
-          className={styles.compactResourceImage}
-          src={song.imageUrl}
-          alt={`${song.album} album artwork`}
-          width={160}
-          height={160}
-        />
-      </Link>
-      <div className={styles.compactResourceMeta}>
-        <p>{song.album}</p>
-        <h2>
-          <Link href={getChartResourceHref(song.id, DEFAULT_SONG_RESOURCE)}>{song.songTitle}</Link>
-        </h2>
-        <span>{song.artist}</span>
-        <p className={styles.compactResourceDetails}>Keys: {song.keys.join(", ")}</p>
-        <div className={styles.compactResourceActions}>
-          {song.resourceTypes.map((resourceType) => (
-            <Link
-              key={resourceType}
-              className={styles.compactResourceButton}
-              href={getChartResourceHref(song.id, resourceType)}
-            >
-              {resourceType}
-            </Link>
-          ))}
-        </div>
-      </div>
-    </article>
-  );
-}
-
-function CompactAlbumPackCard({ album }: { album: AlbumResourcePack }) {
-  return (
-    <article className={styles.compactResourceCard}>
-      <Link className={styles.compactResourceImageLink} href={getChartResourceHref(album.id, "Full Pack")}>
-        <Image
-          className={styles.compactResourceImage}
-          src={album.imageUrl}
-          alt={`${album.title} album artwork`}
-          width={160}
-          height={160}
-        />
-      </Link>
-      <div className={styles.compactResourceMeta}>
-        <p>{album.year}</p>
-        <h2>
-          <Link href={getChartResourceHref(album.id, "Full Pack")}>{album.title}</Link>
-        </h2>
-        <span>{album.artist}</span>
-        <p className={styles.compactResourceDetails}>
-          {album.songCount} songs Â· Keys: {album.keys.join(", ")}
-        </p>
-        <div className={styles.compactResourceActions}>
-          {album.resourceTypes.map((resourceType) => (
-            <Link
-              key={resourceType}
-              className={styles.compactResourceButton}
-              href={getChartResourceHref(album.id, resourceType)}
-            >
-              {resourceType}
-            </Link>
-          ))}
-        </div>
-      </div>
-    </article>
-  );
-}
-
-function CompactResourceBrowser({
-  songs,
-  albums,
-}: {
-  songs: SongResource[];
-  albums: AlbumResourcePack[];
-}) {
-  const hasResults = songs.length > 0 || albums.length > 0;
-
-  return (
-    <section className={styles.compactBrowser} aria-label="Sheet music resources">
-      <div className={styles.compactResultStrip} aria-label="Available sheet music resources">
-        {!hasResults ? <p className={styles.emptyState}>No resources match that search.</p> : null}
-        {songs.map((song) => (
-          <CompactSongCard key={song.id} song={song} />
-        ))}
-        {albums.map((album) => (
-          <CompactAlbumPackCard key={album.id} album={album} />
-        ))}
-      </div>
-
-    </section>
-  );
-}
-
-export default function ChartsPageClient() {
+export default function ChartsPageClient({ products, loadError }: { products: SheetMusicProduct[]; loadError: boolean }) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [activeFilter, setActiveFilter] = useState<ResourceFilter>("All");
-  const [selection, setSelection] = useState<Selection>(getInitialSelection);
-  const [selectedKey, setSelectedKey] = useState(SONG_RESOURCES[0].keys[1] ?? SONG_RESOURCES[0].keys[0]);
-  const contentGridRef = useRef<HTMLDivElement>(null);
-
-  const filteredSongs = useMemo(
-    () =>
-      SONG_RESOURCES.filter(
-        (song) => activeFilter !== "Full Pack" && songMatchesFilter(song, activeFilter) && songMatchesSearch(song, searchTerm),
-      ),
-    [activeFilter, searchTerm],
+  const [activeFilter, setActiveFilter] = useState<CatalogFilter>("All");
+  const [selection, setSelection] = useState<Selection>(() =>
+    products[0] ? { kind: "product", id: products[0].id } : { kind: "album", id: ALBUM_RESOURCE_PACKS[0].id },
   );
 
+  const query = searchTerm.trim().toLowerCase();
+  const filteredProducts = useMemo(
+    () => activeFilter === "Album Resource Packs" ? [] : products.filter((product) => product.name.toLowerCase().includes(query)),
+    [activeFilter, products, query],
+  );
   const filteredAlbums = useMemo(
-    () =>
-      ALBUM_RESOURCE_PACKS.filter(
-        (album) => albumMatchesFilter(album, activeFilter) && albumMatchesSearch(album, searchTerm),
-      ),
-    [activeFilter, searchTerm],
+    () => activeFilter === "Sheet Music" ? [] : ALBUM_RESOURCE_PACKS.filter((album) => album.title.toLowerCase().includes(query)),
+    [activeFilter, query],
   );
 
-  const preview = getPreview(selection);
-  const selectedKeyOptions = preview.kind === "song" ? preview.song.keys : preview.album.keys;
-  const effectiveSelectedKey = selectedKeyOptions.includes(selectedKey)
-    ? selectedKey
-    : selectedKeyOptions[0] ?? "";
-
-  const handleFilterChange = (nextFilter: ResourceFilter) => {
-    setActiveFilter(nextFilter);
-
-    if (nextFilter === "Full Pack") {
-      setSelection({ kind: "albumPack", id: ALBUM_RESOURCE_PACKS[0].id, resourceType: "Full Pack" });
-      return;
-    }
-
-    if (nextFilter !== "All") {
-      const nextSong = SONG_RESOURCES.find((song) =>
-        song.resourceTypes.includes(nextFilter as Exclude<ResourceType, "Full Pack">),
-      );
-      if (nextSong) {
-        setSelection({
-          kind: "song",
-          id: nextSong.id,
-          resourceType: nextFilter as Exclude<ResourceType, "Full Pack">,
-        });
-      }
-    }
-  };
-
-  const handlePreviewResourceChange = (resourceType: ResourceType) => {
-    if (selection.kind === "song") {
-      if (resourceType === "Full Pack") return;
-      setSelection({ ...selection, resourceType });
-      return;
-    }
-
-    setSelection({ ...selection, resourceType });
-  };
-
-  const scrollDesktopPreviewIntoView = () => {
-    if (typeof window === "undefined" || !contentGridRef.current) return;
-    if (!window.matchMedia("(min-width: 901px)").matches) return;
-
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const targetY = contentGridRef.current.getBoundingClientRect().top + window.scrollY - 28;
-
-    window.requestAnimationFrame(() => {
-      window.scrollTo({
-        top: Math.max(0, targetY),
-        behavior: prefersReducedMotion ? "auto" : "smooth",
-      });
-    });
-  };
-
-  const handleSongSelect = (song: SongResource, resourceType: Exclude<ResourceType, "Full Pack">) => {
-    setSelection({ kind: "song", id: song.id, resourceType });
-    scrollDesktopPreviewIntoView();
-  };
-
-  const handleAlbumSelect = (album: AlbumResourcePack, resourceType: ResourceType) => {
-    setSelection({ kind: "albumPack", id: album.id, resourceType });
-    scrollDesktopPreviewIntoView();
-  };
+  const selectedProduct = selection.kind === "product" ? products.find((product) => product.id === selection.id) : undefined;
+  const selectedAlbum = selection.kind === "album" ? ALBUM_RESOURCE_PACKS.find((album) => album.id === selection.id) : undefined;
 
   return (
     <>
-      <SearchAndFilters
-        searchTerm={searchTerm}
-        activeFilter={activeFilter}
-        onSearchChange={setSearchTerm}
-        onFilterChange={handleFilterChange}
-      />
+      <SearchAndFilters searchTerm={searchTerm} activeFilter={activeFilter} onSearchChange={setSearchTerm} onFilterChange={setActiveFilter} />
 
-      <div className={styles.contentGrid} ref={contentGridRef}>
-        <ResourceList
-          songs={filteredSongs}
-          albums={filteredAlbums}
-          selection={selection}
-          onSelectSong={handleSongSelect}
-          onSelectAlbum={handleAlbumSelect}
-        />
-        <FeaturedProductPreview
-          preview={preview}
-          selectedKey={effectiveSelectedKey}
-          onKeyChange={setSelectedKey}
-          onResourceChange={handlePreviewResourceChange}
-        />
+      {loadError ? <p className={styles.emptyState}>The shop is unavailable right now. Please try again shortly.</p> : null}
+
+      <div className={styles.contentGrid}>
+        <section className={styles.listPanel} aria-label="Available music resources">
+          <div className={styles.albumHeader}>
+            {products[0] ? <ProductImage product={products[0]} className={styles.albumHeaderImage} /> : <span className={styles.albumHeaderImage} />}
+            <div>
+              <h2>Available Sheet Music <span>({products.length})</span></h2>
+              <p>Products currently available from the Celtic Worship WooCommerce shop.</p>
+            </div>
+            <Link href="/shop" className={styles.albumHeaderLink}>View Shop <span aria-hidden="true">-&gt;</span></Link>
+          </div>
+
+          {filteredProducts.length === 0 && filteredAlbums.length === 0 ? <p className={styles.emptyState}>No resources match that search.</p> : null}
+          {filteredProducts.length > 0 ? (
+            <div className={styles.resourceRows}>
+              {filteredProducts.map((product) => (
+                <ProductRow key={product.id} product={product} active={selection.kind === "product" && selection.id === product.id} onSelect={() => setSelection({ kind: "product", id: product.id })} />
+              ))}
+            </div>
+          ) : null}
+
+          {filteredAlbums.length > 0 ? (
+            <div className={styles.albumPackSection}>
+              <div className={styles.albumPackHeader}>
+                <h2>Album Resource Packs</h2>
+                <p>Coming soon</p>
+              </div>
+              <div className={styles.resourceRows}>
+                {filteredAlbums.map((album) => (
+                  <AlbumRow key={album.id} album={album} active={selection.kind === "album" && selection.id === album.id} onSelect={() => setSelection({ kind: "album", id: album.id })} />
+                ))}
+              </div>
+            </div>
+          ) : null}
+        </section>
+
+        {selectedProduct ? <ProductPreview key={selectedProduct.id} product={selectedProduct} /> : null}
+        {selectedAlbum ? <AlbumPreview album={selectedAlbum} /> : null}
       </div>
 
-      <CompactResourceBrowser songs={filteredSongs} albums={filteredAlbums} />
+      <section className={styles.compactBrowser} aria-label="Sheet music resources">
+        <div className={styles.compactResultStrip}>
+          {filteredProducts.map((product) => <CompactProductCard key={product.id} product={product} />)}
+          {filteredAlbums.map((album) => <CompactAlbumCard key={album.id} album={album} />)}
+        </div>
+      </section>
     </>
   );
 }

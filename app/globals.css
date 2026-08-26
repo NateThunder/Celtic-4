@@ -1277,6 +1277,9 @@ body {
     var(--charcoal-linen);
   background-size: auto, 960px 540px;
   border-bottom: 1px solid rgba(21, 19, 15, 0.18);
+  touch-action: pan-y;
+  user-select: none;
+  cursor: grab;
 }
 
 .live-events-poster-backdrop-wrap,
@@ -1312,7 +1315,7 @@ body {
   z-index: 3;
   opacity: 1;
   pointer-events: auto;
-  transform: translateX(-50%) scale(1);
+  transform: translateX(calc(-50% + var(--live-events-drag-x, 0px))) scale(1);
 }
 
 .live-events-poster-slide.is-prev,
@@ -1322,11 +1325,19 @@ body {
 }
 
 .live-events-poster-slide.is-prev {
-  transform: translateX(calc(-50% - clamp(12rem, 29vw, 25rem))) scale(0.74);
+  transform: translateX(calc(-50% - clamp(12rem, 29vw, 25rem) + var(--live-events-drag-x, 0px))) scale(0.74);
 }
 
 .live-events-poster-slide.is-next {
-  transform: translateX(calc(-50% + clamp(12rem, 29vw, 25rem))) scale(0.74);
+  transform: translateX(calc(-50% + clamp(12rem, 29vw, 25rem) + var(--live-events-drag-x, 0px))) scale(0.74);
+}
+
+.live-events-poster-slider.is-dragging .live-events-poster-slide {
+  transition: none;
+}
+
+.live-events-poster-slider.is-dragging {
+  cursor: grabbing;
 }
 
 .live-events-poster-slide::after {
@@ -1414,11 +1425,11 @@ body {
   }
 
   .live-events-poster-slide.is-prev {
-    transform: translateX(calc(-50% - 54vw)) scale(0.64);
+    transform: translateX(calc(-50% - 54vw + var(--live-events-drag-x, 0px))) scale(0.64);
   }
 
   .live-events-poster-slide.is-next {
-    transform: translateX(calc(-50% + 54vw)) scale(0.64);
+    transform: translateX(calc(-50% + 54vw + var(--live-events-drag-x, 0px))) scale(0.64);
   }
 
   .live-events-poster-slide.is-prev,

@@ -23,25 +23,6 @@ const FEATURED_VIDEOS = [
   { videoId: "-KnzDx8UV5M", title: "Where Can I Go" },
 ];
 
-const FOOTER_LINKS = [
-  { label: "Home", href: "#home" },
-  { label: "Music", href: "/music" },
-  { label: "Sheet Music", href: "/music/charts" },
-  { label: "Events", href: "/live-events" },
-  { label: "Videos", href: "/videos" },
-  { label: "Shop", href: "/shop" },
-  { label: "About", href: "/about" },
-];
-
-const SOCIAL_LINKS = [
-  {
-    label: "Spotify",
-    href: "https://open.spotify.com/artist/0h2AQKpVBEEXQQ03KGf7ep?si=9eAa0Ik8Rmm2Nip-K8Y-Kg",
-  },
-  { label: "YouTube", href: "https://www.youtube.com/CelticWorshipMusic" },
-  { label: "Instagram", href: "https://www.instagram.com/celtic_worship" },
-];
-
 export default async function Home() {
   const [events, featuredProducts] = await Promise.all([
     getUpcomingEvents(),
@@ -274,7 +255,7 @@ export default async function Home() {
         </section>
       </main>
 
-      <footer className="home-footer">
+      {/* <footer className="home-footer">
         <Link className="home-footer-brand" href="#home">
           Celtic Worship
         </Link>
@@ -293,7 +274,7 @@ export default async function Home() {
           ))}
         </div>
         <p>© {new Date().getFullYear()} Celtic Worship. All rights reserved.</p>
-      </footer>
+      </footer> */}
     </div>
   );
 }

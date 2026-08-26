@@ -3,24 +3,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
-  Fragment,
   useEffect,
   useRef,
   type CSSProperties,
-  type ReactNode,
 } from "react";
-import { ABOUT_PHOTOS, MEMBERS } from "./about-data";
+import { ABOUT_PHOTOS, MEMBERS, TIMELINE_MILESTONES } from "./about-data";
 import styles from "./about.module.css";
 
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(max, value));
 
-type AboutBodyProps = {
-  /** Passed in from the server page so the footer stays a server component. */
-  footer?: ReactNode;
-};
-
-export default function AboutBody({ footer }: AboutBodyProps) {
+export default function AboutBody() {
   const rootRef = useRef<HTMLDivElement | null>(null);
 
   // Reveals. Harmless under reduced motion: the `on` rules simply don't apply.
@@ -58,7 +51,9 @@ export default function AboutBody({ footer }: AboutBodyProps) {
       const exitFigures = Array.from(
         root.querySelectorAll<HTMLElement>("[data-exit-figure]"),
       );
-      const disc = root.querySelector<HTMLElement>("[data-vinyl-disc]");
+      const discs = Array.from(
+        root.querySelectorAll<HTMLElement>("[data-vinyl-disc]"),
+      );
       let rafId = 0;
 
       // How far the record slides, in percent of its own width. The stylesheet
@@ -66,6 +61,7 @@ export default function AboutBody({ footer }: AboutBodyProps) {
       // resize rather than per frame, which would force a style recalc.
       let discTravel = 50;
       const readDiscTravel = () => {
+        const disc = discs[0];
         if (!disc) return;
         const parsed = Number.parseFloat(
           getComputedStyle(disc).getPropertyValue("--disc-travel"),
@@ -100,9 +96,13 @@ export default function AboutBody({ footer }: AboutBodyProps) {
         }
 
         // The record slides out of its sleeve, and back in on the way up.
-        if (disc) {
+        discs.forEach((disc) => {
           const rect = disc.parentElement?.getBoundingClientRect();
           if (rect) {
+            const discY = Number.parseFloat(
+              getComputedStyle(disc).getPropertyValue("--disc-y"),
+            );
+            const verticalOffset = Number.isFinite(discY) ? discY : 6;
             const centreY = rect.top + rect.height * 0.5;
             const out = clamp(
               (viewportHeight * 1.02 - centreY) / (viewportHeight * 0.44),
@@ -112,9 +112,9 @@ export default function AboutBody({ footer }: AboutBodyProps) {
             disc.style.opacity = out.toFixed(3);
             disc.style.transform = `translate(${(6 + discTravel * out).toFixed(
               1,
-            )}%,6%) rotate(${(150 * out).toFixed(0)}deg)`;
+            )}%,${verticalOffset}%) rotate(${(150 * out).toFixed(0)}deg)`;
           }
-        }
+        });
 
         rafId = window.requestAnimationFrame(frame);
       };
@@ -129,10 +129,10 @@ export default function AboutBody({ footer }: AboutBodyProps) {
           el.style.transform = "";
           el.style.opacity = "";
         });
-        if (disc) {
+        discs.forEach((disc) => {
           disc.style.transform = "";
           disc.style.opacity = "";
-        }
+        });
       };
     };
 
@@ -154,34 +154,204 @@ export default function AboutBody({ footer }: AboutBodyProps) {
   return (
     <div className={styles.up} ref={rootRef}>
       <div className={styles.light}>
-        <div className={styles.w}>
-          <div className={styles.roster}>
-            <span className={`${styles.tag} ${styles.rv}`} data-reveal>
-              The collective
-            </span>
-            <div className={styles.names} data-reveal>
-              {MEMBERS.map((member, i) => (
-                <Fragment key={member.name}>
-                  <span
-                    className={styles.nm}
-                    style={{ transitionDelay: `${(i * 2 * 0.05).toFixed(2)}s` }}
-                  >
-                    {member.name.toUpperCase()}
-                  </span>
-                  <span
-                    className={styles.instr}
-                    style={{
-                      transitionDelay: `${((i * 2 + 1) * 0.05).toFixed(2)}s`,
-                    }}
-                  >
-                    {member.instrument.toUpperCase()}
-                  </span>
-                </Fragment>
-              ))}
+        <div className={styles.rosterWrap}>
+          <div className={styles.rosterStage}>
+            <div className={styles.w}>
+              <div className={styles.roster}>
+                <span className={`${styles.tag} ${styles.rv}`} data-reveal>
+                </span>
+                <div className={styles.names} data-reveal>
+                  {MEMBERS.map((member, i) => (
+                    <div
+                      className={`${styles.member} ${
+                        member.name === "Calum MacAskill"
+                          ? styles.memberBelowGus
+                          : ""
+                      }`}
+                      key={member.name}
+                    >
+                      <span
+                        className={styles.signature}
+                        style={{
+                          transitionDelay: `${(i * 2 * 0.05).toFixed(2)}s`,
+                        }}
+                      >
+                        <Image
+                          src={member.signature}
+                          alt={`${member.name} signature`}
+                          width={2048}
+                          height={768}
+                          sizes="(max-width: 900px) 82vw, 480px"
+                        />
+                      </span>
+                      <span
+                        className={styles.instr}
+                        style={{
+                          transitionDelay: `${((i * 2 + 1) * 0.05).toFixed(2)}s`,
+                        }}
+                      >
+                        {member.instrument.toUpperCase()}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
+        <section
+          className={`${styles.timelinePanel} ${styles.timelineTakeover}`}
+        >
+          <div className={`${styles.w} ${styles.timelineCard}`}>
+            <header
+              className={`${styles.timelineHeading} ${styles.rv}`}
+              data-reveal
+            >
+              <h2>Our story</h2>
+            </header>
+
+            <ol className={styles.timeline}>
+              {TIMELINE_MILESTONES.map((milestone) => (
+                <li
+                  className={`${styles.timelineMilestone} ${styles.rv}`}
+                  data-reveal
+                  key={`${milestone.dateTime}-${milestone.title}`}
+                >
+                  <span
+                    className={styles.timelineMarker}
+                    style={
+                      {
+                        "--marker-scale": milestone.markerScale ?? 1,
+                        "--marker-offset-y": milestone.markerOffsetY ?? "-12%",
+                      } as CSSProperties
+                    }
+                    aria-hidden="true"
+                  >
+                    <Image
+                      src={milestone.markerIcon}
+                      alt=""
+                      width={96}
+                      height={96}
+                      sizes="52px"
+                      unoptimized
+                    />
+                  </span>
+                  <div
+                    className={`${styles.timelineEntry} ${
+                      milestone.image || milestone.portrait
+                        ? styles.timelineEntryIllustrated
+                        : ""
+                    }`}
+                  >
+                    <div className={styles.timelineCopy}>
+                      <time dateTime={milestone.dateTime}>
+                        {milestone.dateLabel}
+                      </time>
+                      <h3>{milestone.title}</h3>
+                      <p>{milestone.description}</p>
+                    </div>
+
+                    {milestone.portrait ? (
+                      <figure
+                        className={`${styles.timelinePortrait} ${
+                          milestone.portrait === "david-mhairi"
+                            ? styles.timelinePortraitReverse
+                            : ""
+                        }`}
+                        aria-label={
+                          milestone.portrait === "naomi-chris"
+                            ? "Naomi Stirrat and Chris Amer"
+                            : "David Hogg and Mhairi Marwick"
+                        }
+                      >
+                        <Image
+                          className={styles.timelinePortraitPartner}
+                          src={
+                            milestone.portrait === "naomi-chris"
+                              ? `${ABOUT_PHOTOS}/cutouts/chris-amer-partner.webp`
+                              : `${ABOUT_PHOTOS}/cutouts/mhairi-marwick-partner.webp`
+                          }
+                          alt=""
+                          width={540}
+                          height={1213}
+                          sizes="(max-width: 900px) 34vw, 150px"
+                        />
+                        <Image
+                          className={styles.timelinePortraitLead}
+                          src={
+                            milestone.portrait === "naomi-chris"
+                              ? `${ABOUT_PHOTOS}/cutouts/naomi-stirrat-lead.webp`
+                              : `${ABOUT_PHOTOS}/cutouts/david-hogg-lead.webp`
+                          }
+                          alt=""
+                          width={800}
+                          height={1634}
+                          sizes="(max-width: 900px) 58vw, 280px"
+                        />
+                      </figure>
+                    ) : milestone.image ? (
+                      milestone.image.href ? (
+                        <Link
+                          className={`${styles.timelineMediaLink} ${
+                            milestone.image.kind === "cover"
+                              ? styles.timelineRecord
+                              : ""
+                          }`}
+                          href={milestone.image.href}
+                          aria-label={`View ${milestone.title} on the Music page`}
+                        >
+                          {milestone.image.kind === "cover" ? (
+                            <Image
+                              className={styles.timelineDisc}
+                              src="/757d4d27-a7a1-423e-8fe3-24ceb7929679-background-removed.png"
+                              alt=""
+                              width={1254}
+                              height={1254}
+                              sizes="(max-width: 900px) 72vw, 300px"
+                              data-vinyl-disc
+                            />
+                          ) : null}
+                          <span
+                            className={`${styles.timelineMedia} ${
+                              milestone.image.kind === "cover"
+                                ? styles.timelineCover
+                                : styles.timelinePhoto
+                            }`}
+                          >
+                            <Image
+                              src={milestone.image.src}
+                              alt={milestone.image.alt}
+                              fill
+                              sizes="(max-width: 900px) 82vw, 320px"
+                            />
+                          </span>
+                        </Link>
+                      ) : (
+                        <figure
+                          className={`${styles.timelineMedia} ${styles.timelinePhoto} ${
+                            milestone.image.fit === "contain"
+                              ? styles.timelineMediaContain
+                              : ""
+                          }`}
+                        >
+                          <Image
+                            src={milestone.image.src}
+                            alt={milestone.image.alt}
+                            fill
+                            sizes="(max-width: 900px) 82vw, 320px"
+                          />
+                        </figure>
+                      )
+                    ) : null}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        {false && <>
         {/* Each section below is its own full-width panel so it can ride up
             over the one before it and cover it opaquely, edge to edge. */}
         <section className={styles.lift}>
@@ -290,7 +460,15 @@ export default function AboutBody({ footer }: AboutBodyProps) {
               </p>
             </div>
             <figure className={`${styles.plate} ${styles.vinyl}`}>
-              <div className={styles.disc} data-vinyl-disc aria-hidden="true" />
+              <Image
+                className={styles.disc}
+                src="/757d4d27-a7a1-423e-8fe3-24ceb7929679-background-removed.png"
+                alt=""
+                width={1254}
+                height={1254}
+                sizes="(max-width: 900px) 80vw, 405px"
+                data-vinyl-disc
+              />
               <Image
                 src="/Harvest.webp"
                 alt="Harvest album artwork"
@@ -306,35 +484,10 @@ export default function AboutBody({ footer }: AboutBodyProps) {
             <hr className={`${styles.rule} ${styles.rv}`} data-reveal />
           </div>
         </section>
+        </>}
       </div>
 
-      <section className={styles.band} data-reveal>
-        <figure className={`${styles.sc} ${styles.l}`}>
-          <Image
-            src={`${ABOUT_PHOTOS}/scenes/cowfords-barn.jpg`}
-            alt="The barn at Cowfords Farm"
-            fill
-            sizes="(max-width: 900px) 100vw, 430px"
-          />
-        </figure>
-        <div className={styles.bandIn}>
-          <span className={styles.ln}>Fields ripe for harvest,</span>
-          <span className={styles.ln}>
-            and long summer days at Cowfords Farm.
-          </span>
-          <cite>MORAYSHIRE &middot; 2025</cite>
-        </div>
-        <figure className={`${styles.sc} ${styles.r}`}>
-          <Image
-            src={`${ABOUT_PHOTOS}/scenes/ayr-town-hall-audience.jpg`}
-            alt="Audience at Ayr Town Hall"
-            fill
-            sizes="(max-width: 900px) 100vw, 430px"
-          />
-        </figure>
-      </section>
-
-      <div className={styles.dark}>
+      <div className={`${styles.dark} ${styles.lift}`}>
         <section className={`${styles.w} ${styles.exit} ${styles.rv}`} data-reveal>
           <div className={styles.exitGrid}>
             <div>
@@ -385,7 +538,6 @@ export default function AboutBody({ footer }: AboutBodyProps) {
           </div>
         </section>
 
-        {footer}
       </div>
     </div>
   );

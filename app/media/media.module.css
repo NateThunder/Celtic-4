@@ -1,12 +1,17 @@
 .page {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   min-height: 100vh;
   min-height: 100dvh;
   background-color: #0f0e0b;
   background-image:
-    linear-gradient(rgba(15, 14, 11, 0.86), rgba(15, 14, 11, 0.9)),
-    var(--charcoal-linen);
-  background-repeat: repeat;
-  background-size: auto, 960px 540px;
+    linear-gradient(rgba(15, 14, 11, 0.75), rgba(15, 14, 11, 0.75)),
+    url("/textures/background video.png");
+  background-repeat: no-repeat;
+  background-position: center top;
+  background-size: cover;
+  background-attachment: fixed;
   color: #efe6d7;
 }
 

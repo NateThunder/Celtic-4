@@ -96,7 +96,8 @@
   position: absolute;
   inset: 0;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  /* Keep all seven members in one continuous desktop strip. */
+  grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
 .st {
@@ -135,10 +136,7 @@
   background: linear-gradient(to top, rgba(7, 6, 5, 0.92) 2%, transparent 44%);
 }
 
-/* The strip you are reading is the one the rack lifts to brightness(1.05), so
-   the plate has to hold a name over a *lit* photo, not a dimmed one: taller
-   box, deeper ramp, and a shadow on the type itself as the last line of
-   defence over a blown-out highlight. */
+/* The label uses a deep ramp so its type remains legible over bright photos. */
 .who {
   position: absolute;
   left: 0;
@@ -185,8 +183,6 @@
   filter: brightness(0.4) saturate(0.65);
 }
 
-/* Beats `.rack:hover .st img` above, which would otherwise dim the strip you
-   are actually pointing at along with the rest. */
 .rack:hover .st:hover img {
   filter: brightness(1.05);
 }
@@ -264,7 +260,10 @@
 /* --------------------------------------------------------------- greige --- */
 
 .light {
-  background: var(--greige);
+  background-color: var(--greige);
+  background-image: url("/paper texture.png");
+  background-repeat: repeat;
+  background-size: 900px auto;
   color: #241f1b;
   /* The disc is a circle drawn on a rotated square, so its bounding box sticks
      out past the circle you can actually see and drags the document scroll
@@ -312,33 +311,510 @@
 .lift {
   position: relative;
   isolation: isolate;
-  background: var(--greige);
+}
+
+.light .lift {
+  background-color: var(--greige);
+  background-image: url("/paper texture.png");
+  background-repeat: repeat;
+  background-size: 900px auto;
+}
+
+.rosterWrap {
+  position: relative;
+  z-index: 0;
+  height: 200vh;
+}
+
+.rosterStage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  min-height: 560px;
+  overflow: hidden;
+  background-color: var(--greige);
+  background-image: url("/paper texture.png");
+  background-repeat: repeat;
+  background-size: 900px auto;
 }
 
 .roster {
-  padding: var(--s3) 0 var(--s4);
+  padding: clamp(48px, 8vh, 80px) 0
+    clamp(110px, 20vh, var(--s4));
+}
+
+@media (min-width: 901px) {
+  .rosterStage {
+    display: flex;
+    align-items: center;
+    padding-block: clamp(48px, 8vh, 80px);
+  }
+
+  .rosterStage > .w {
+    width: 100%;
+  }
+
+  .roster {
+    padding-block: 0;
+  }
+}
+
+.roster > .tag {
+  position: relative;
+  width: max-content;
+  padding-bottom: 18px;
 }
 
 .names {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 34px;
-  align-items: baseline;
-  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: flex-end;
+  gap: clamp(11px, 1.5vw, 22px) clamp(17px, 2.5vw, 41px);
+  margin-top: 15px;
 }
 
-.nm {
-  font-family: var(--display);
-  font-size: clamp(40px, 5.6vw, 88px);
-  line-height: 1.02;
-  color: var(--ink);
+.member {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  width: 100%;
+}
+
+.signature {
+  display: block;
+  width: 100%;
+  height: clamp(88px, 11vw, 148px);
+}
+
+.signature img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left center;
 }
 
 .instr {
+  order: -1;
   font-family: var(--display);
   font-size: var(--t1);
   letter-spacing: 0.2em;
   color: var(--sandstone);
+}
+
+@media (min-width: 901px) and (min-height: 800px) {
+  .names {
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    min-height: clamp(440px, 62vh, 680px);
+    align-items: center;
+  }
+
+  .member {
+    justify-content: center;
+  }
+
+  .signature {
+    height: clamp(130px, 16vh, 190px);
+  }
+
+}
+
+@media (min-width: 901px) {
+  .memberBelowGus {
+    grid-column: 2;
+  }
+}
+
+/* --------------------------------------------------------- timeline --- */
+
+.timelinePanel {
+  padding: var(--s3) 0 var(--s4);
+}
+
+.timelineTakeover {
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
+  margin-top: -100vh;
+  background-color: var(--greige);
+  background-image: url("/paper texture.png");
+  background-repeat: repeat;
+  background-size: 900px auto;
+  box-shadow: 0 -30px 60px -24px rgba(36, 31, 27, 0.42);
+}
+
+.timelineHeading {
+  max-width: 760px;
+  margin-bottom: clamp(64px, 8vw, 112px);
+}
+
+.timelineHeading h2 {
+  margin: 18px 0 0;
+  font-family: var(--display);
+  font-size: clamp(72px, 10vw, 156px);
+  font-weight: 400;
+  letter-spacing: -0.015em;
+  line-height: 0.88;
+  color: var(--ink);
+}
+
+.timeline {
+  position: relative;
+  max-width: 1080px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline::before {
+  content: none;
+}
+
+.timelineMilestone {
+  position: relative;
+  padding-left: clamp(48px, 5vw, 72px);
+}
+
+.timelineMilestone::before {
+  content: "";
+  position: absolute;
+  top: 58px;
+  bottom: 0;
+  left: -5px;
+  width: 28px;
+  background-image: url("/instrument/line.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.timelineMilestone:not(:last-child)::before {
+  bottom: calc(20px - clamp(76px, 9vw, 132px));
+}
+
+.timelineMilestone + .timelineMilestone {
+  margin-top: clamp(76px, 9vw, 132px);
+}
+
+.timelineMarker {
+  position: absolute;
+  top: -10px;
+  left: -18px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  padding: 10px;
+}
+
+.timelineMarker::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("/instrument/CIRCLE.png") center / contain no-repeat;
+  opacity: 0.6;
+}
+
+.timelineMarker img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transform: translateY(var(--marker-offset-y, 0%))
+    scale(var(--marker-scale, 1));
+}
+
+.timelineEntry {
+  min-width: 0;
+}
+
+.timelineEntryIllustrated {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(210px, 26vw, 340px);
+  align-items: start;
+  gap: clamp(42px, 7vw, 100px);
+}
+
+.timelineCopy {
+  max-width: 650px;
+}
+
+.timelineCopy time {
+  display: block;
+  margin-bottom: 13px;
+  font-family: var(--display);
+  font-size: clamp(18px, 2vw, 28px);
+  letter-spacing: 0.045em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.timelineCopy h3 {
+  max-width: 14ch;
+  margin: 0 0 24px;
+  font-family: var(--display);
+  font-size: clamp(44px, 5.6vw, 82px);
+  font-weight: 400;
+  letter-spacing: -0.008em;
+  line-height: 0.95;
+  color: var(--ink);
+}
+
+.timelineCopy p {
+  max-width: 48ch;
+  margin: 0;
+  font-size: clamp(20px, 2vw, 25px);
+  line-height: 1.58;
+  color: #332c26;
+}
+
+.timelineMedia,
+.timelineMediaLink {
+  display: block;
+}
+
+.timelineMedia {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #b8afa3;
+  box-shadow: 0 22px 44px -28px rgba(36, 31, 27, 0.72);
+}
+
+.timelineMedia img {
+  object-fit: cover;
+}
+
+.timelineCover {
+  aspect-ratio: 1;
+}
+
+.timelineCover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background-image: url("/textures/cover texture.png");
+  background-position: center;
+  background-size: cover;
+  mix-blend-mode: screen;
+  opacity: 0.92;
+}
+
+.timelinePhoto {
+  aspect-ratio: 4 / 3;
+}
+
+.timelineMediaContain {
+  width: 100%;
+  aspect-ratio: 2200 / 1238;
+  margin-left: 0;
+  background: none;
+}
+
+.timelineMediaContain img {
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  mix-blend-mode: normal;
+  opacity: 1;
+}
+
+.timelineMediaLink {
+  color: inherit;
+  text-decoration: none;
+}
+
+.timelineRecord {
+  position: relative;
+  isolation: isolate;
+  overflow: visible;
+}
+
+.timelineRecord .timelineMedia {
+  position: relative;
+  z-index: 2;
+}
+
+.timelineDisc {
+  --disc-travel: 42;
+  --disc-y: 0;
+  position: absolute;
+  top: 4%;
+  left: 0;
+  z-index: 1;
+  width: 92%;
+  height: auto;
+  max-width: none;
+  opacity: 0;
+  filter: drop-shadow(0 18px 24px rgba(36, 31, 27, 0.36));
+  transform: translate(6%, 0) rotate(0deg);
+  transition: none;
+  will-change: transform, opacity;
+}
+
+@media (min-width: 901px) and (max-width: 1100px) {
+  .timelineCard .timelineEntryIllustrated > .timelineMedia,
+  .timelineCard .timelineEntryIllustrated > .timelineMediaLink,
+  .timelineCard .timelineEntryIllustrated > .timelinePortrait {
+    transform: translateX(-100px);
+  }
+
+  .timelineDisc {
+    --disc-travel: 42;
+  }
+}
+
+.timelineMediaLink:focus-visible {
+  outline: 3px solid var(--amber);
+  outline-offset: 7px;
+}
+
+.timelinePortrait {
+  position: relative;
+  min-height: clamp(360px, 42vw, 540px);
+  margin: -34px 0 0;
+  overflow: hidden;
+}
+
+.timelinePortrait img {
+  position: absolute;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  max-width: none;
+  object-fit: contain;
+  filter: drop-shadow(0 20px 24px rgba(36, 31, 27, 0.16));
+}
+
+.timelinePortraitLead {
+  right: -3%;
+  z-index: 2;
+  max-height: 96%;
+}
+
+.timelinePortraitPartner {
+  left: 0;
+  z-index: 1;
+  max-height: 57%;
+}
+
+.timelinePortraitReverse .timelinePortraitLead {
+  right: 0;
+  max-height: 94%;
+}
+
+.timelinePortraitReverse .timelinePortraitPartner {
+  left: -2%;
+  max-height: 58%;
+}
+
+/* Compact editorial timeline structure with the original illustrated spine
+   and fine rules separating each milestone. */
+.timelineCard {
+  max-width: 1200px;
+}
+
+.timelineCard .timelineHeading {
+  margin-bottom: clamp(44px, 5vw, 68px);
+}
+
+.timelineCard .timelineHeading h2 {
+  font-size: clamp(60px, 7vw, 96px);
+}
+
+.timelineCard .timeline {
+  max-width: none;
+  padding-left: 62px;
+}
+
+.timelineCard .timeline::before {
+  content: none;
+}
+
+.timelineCard .timelineMilestone {
+  padding: 0 0 clamp(28px, 3.2vw, 42px);
+}
+
+.timelineCard .timelineMilestone::before {
+  top: 58px;
+  right: auto;
+  bottom: 0;
+  left: -47px;
+  width: 28px;
+  height: auto;
+  background-image: url("/instrument/line.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.timelineCard .timelineMilestone:not(:last-child)::before {
+  bottom: calc(20px - clamp(42px, 4.6vw, 62px));
+}
+
+.timelineCard .timelineMilestone::after {
+  content: "";
+  position: absolute;
+  top: -22px;
+  right: 0;
+  left: 0;
+  height: 1px;
+  background: color-mix(in srgb, var(--sandstone) 34%, transparent);
+}
+
+.timelineCard .timelineMilestone:first-child::after {
+  content: none;
+}
+
+.timelineCard .timelineMilestone + .timelineMilestone {
+  margin-top: clamp(42px, 4.6vw, 62px);
+}
+
+.timelineCard .timelineMarker {
+  top: 0;
+  left: -67px;
+}
+
+.timelineCard .timelineEntryIllustrated {
+  grid-template-columns: minmax(0, 1fr) clamp(220px, 27vw, 300px);
+  align-items: center;
+  gap: clamp(34px, 5vw, 74px);
+}
+
+.timelineCard .timelineCopy time {
+  margin-bottom: 8px;
+  font-size: clamp(14px, 1.35vw, 18px);
+}
+
+.timelineCard .timelineCopy h3 {
+  max-width: 18ch;
+  margin-bottom: 12px;
+  font-size: clamp(31px, 3.6vw, 48px);
+}
+
+.timelineCard .timelineCopy p {
+  font-size: clamp(16px, 1.45vw, 19px);
+  line-height: 1.42;
+}
+
+.timelineCard .timelineMedia {
+  border: 5px solid #fff;
+  box-shadow: 0 3px 9px rgba(36, 31, 27, 0.34);
+}
+
+.timelineCard .timelineRecord .timelineMedia {
+  border: 0;
 }
 
 /* ---------------------------------------------------- editorial spreads --- */
@@ -511,28 +987,14 @@
   top: 0;
   left: 0;
   width: 88%;
-  padding-bottom: 88%;
-  border-radius: 50%;
-  background: radial-gradient(
-    circle at 50% 50%,
-    #1a1613 0 17%,
-    #0d0b09 17.6% 19%,
-    #171310 19.6% 100%
-  );
-  box-shadow: 0 18px 40px rgba(36, 31, 27, 0.42);
+  height: auto;
+  max-width: none;
+  filter: drop-shadow(0 18px 28px rgba(36, 31, 27, 0.42));
   z-index: 0;
   /* Scroll-position driven, never transitioned, so it reverses on the way up. */
   transition: none;
   opacity: 1;
   transform: translate(calc(6% + var(--disc-travel) * 1%), 6%) rotate(150deg);
-}
-
-.disc::after {
-  content: "";
-  position: absolute;
-  inset: 39%;
-  border-radius: 50%;
-  background: var(--tungsten);
 }
 
 /* --- photographs ghosting into the greige --------------------------- */
@@ -859,40 +1321,48 @@
 
 .exitPeople {
   position: relative;
+  width: 100%;
+  max-width: 100%;
   min-height: 400px;
+  overflow: hidden;
 }
 
 .exitPeople img {
   position: absolute;
   bottom: 0;
   width: auto;
-  height: auto;
+  height: calc(100% - 36px);
   max-width: none;
-  max-height: 340px;
+  max-height: none;
+  object-fit: contain;
   filter: drop-shadow(0 26px 44px rgba(0, 0, 0, 0.6));
   transform: none;
   transition: none;
 }
 
 .exitPeople .q1 {
-  left: -6%;
+  left: 0;
   z-index: 1;
-  max-height: 320px;
 }
 
 .exitPeople .q2 {
-  left: 26%;
-  z-index: 2;
-  max-height: 345px;
+  left: 0;
+  z-index: 0;
 }
 
 .exitPeople .q3 {
-  right: -14%;
-  z-index: 3;
-  max-height: 290px;
+  right: 0;
+  z-index: 2;
 }
 
 /* ---------------------------------------------------------- responsive --- */
+
+@media (min-width: 901px) and (max-width: 1100px) {
+  .exit {
+    padding-right: 60px;
+    padding-left: 60px;
+  }
+}
 
 @media (max-width: 1100px) {
   .band {
@@ -918,6 +1388,108 @@
     padding: 0 28px;
   }
 
+  .names {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .member {
+    padding: 24px 0;
+    width: 100%;
+  }
+
+  .signature {
+    height: clamp(88px, 24vw, 132px);
+  }
+
+  .timelinePanel {
+    padding: var(--s3) 0 var(--s4);
+  }
+
+  .rosterWrap {
+    height: auto;
+  }
+
+  .rosterWrap::after {
+    content: "";
+    display: block;
+    height: 100svh;
+  }
+
+  .rosterStage {
+    position: sticky;
+    top: auto;
+    bottom: 0;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .roster {
+    padding: var(--s3) 0 var(--s4);
+  }
+
+  .timelineTakeover {
+    margin-top: -100svh;
+    box-shadow: 0 -30px 60px -24px rgba(36, 31, 27, 0.42);
+  }
+
+  .timelineHeading {
+    margin-bottom: 64px;
+  }
+
+  .timelineHeading h2 {
+    font-size: clamp(62px, 18vw, 104px);
+  }
+
+  .timeline::before {
+    content: none;
+  }
+
+  .timelineMilestone {
+    padding-left: 38px;
+  }
+
+  .timelineMilestone + .timelineMilestone {
+    margin-top: 78px;
+  }
+
+  .timelineMarker {
+    top: -7px;
+    left: -15px;
+    width: 46px;
+    height: 46px;
+    padding: 8px;
+  }
+
+  .timelineMilestone::before {
+    top: 51px;
+    left: -6px;
+  }
+
+  .timelineMilestone:not(:last-child)::before {
+    bottom: -61px;
+  }
+
+  .timelineEntryIllustrated {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+
+  .timelineCopy h3 {
+    font-size: clamp(42px, 11vw, 68px);
+  }
+
+  .timelineCopy p {
+    font-size: 19px;
+  }
+
+  .timelineMedia,
+  .timelineMediaLink {
+    width: min(100%, 460px);
+  }
+
   /* No sticky hero on small screens: the stage simply scrolls past. */
   .heroWrap {
     height: auto;
@@ -933,7 +1505,7 @@
   }
 
   .rack {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
   }
 
@@ -969,12 +1541,7 @@
     display: none;
   }
 
-  .rack:hover .st img,
-  .rack:hover .st:hover img {
-    filter: none;
-  }
-
-  /* Seams are cut for a seven-column rack; at four columns they'd fall
+  /* Seams are cut for the desktop rack; at three columns they'd fall
      between nothing. */
   .seam {
     display: none;
@@ -1060,6 +1627,13 @@
     opacity: 0.38;
   }
 
+  /* The final CTA needs its full top gutter on narrow screens. Reusing the
+     editorial panel overlap here consumed 68px of that gutter and left the
+     label/headline tucked underneath the preceding paper section. */
+  .dark.lift {
+    margin-top: 0;
+  }
+
   .exitGrid {
     grid-template-columns: 1fr;
     gap: 30px;
@@ -1070,15 +1644,38 @@
   }
 
   .exitPeople img {
-    max-height: 230px;
+    height: calc(100% - 30px);
+    max-width: none;
+    max-height: none;
   }
 
   .exitPeople .q2 {
-    left: 22%;
+    left: 4%;
   }
 
   .exitPeople .q3 {
-    right: -16%;
+    right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .exitPeople img {
+    height: calc(100% - 70px);
+  }
+
+  .exitPeople .q2 {
+    left: 0;
+  }
+
+  .exit .btn {
+    display: block;
+    width: 100%;
+    margin: 0;
+    text-align: center;
+  }
+
+  .exit .btn + .btn {
+    margin-top: 12px;
   }
 }
 
@@ -1099,6 +1696,51 @@
    on, none of these initial states apply: the page paints fully visible and
    the JS never starts a rAF loop or a photo cycle.                        */
 
+@media (max-width: 900px) {
+  .timelineCard {
+    width: auto;
+    padding: 0 28px;
+  }
+
+  .timelineCard .timelineHeading {
+    margin-bottom: 46px;
+  }
+
+  .timelineCard .timeline {
+    padding-left: 44px;
+  }
+
+  .timelineCard .timelineMarker {
+    left: -52px;
+  }
+
+  .timelineCard .timelineMilestone::before {
+    top: 51px;
+    left: -38px;
+  }
+
+  .timelineCard .timelineMilestone:not(:last-child)::before {
+    bottom: -31px;
+  }
+
+  .timelineCard .timelineEntryIllustrated {
+    grid-template-columns: 1fr;
+    gap: 26px;
+  }
+
+  .timelineCard .timelineMedia,
+  .timelineCard .timelineMediaLink {
+    width: min(100%, 460px);
+  }
+}
+
+/* Leave room for the disc to slide clear of its sleeve on tall screens. */
+@media (max-width: 900px) and (orientation: portrait) {
+  .timelineCard .timelineRecord {
+    width: min(72%, 340px);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   /* Section interleave. Each panel rides up over the one before it and casts a
      soft edge onto it, so the sections read as stacked rather than butted. A
@@ -1114,6 +1756,17 @@
      only adds the leading edge. */
   .light {
     box-shadow: 0 -30px 60px -24px rgba(7, 6, 5, 0.72);
+  }
+
+  .timelineMedia img {
+    transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1),
+      filter 650ms ease;
+  }
+
+  .timelineMediaLink:not(.timelineRecord):hover img,
+  .timelineMediaLink:not(.timelineRecord):focus-visible img {
+    transform: scale(1.035);
+    filter: saturate(1.08) contrast(1.03);
   }
 
   /* Strips assemble from off-centre; JS owns transform and opacity. */
@@ -1141,7 +1794,7 @@
     width: 100%;
   }
 
-  .nm {
+  .signature {
     opacity: 0;
     transform: translateY(16px);
     transition: opacity 0.7s ease, transform 0.7s ease;
@@ -1152,7 +1805,7 @@
     transition: opacity 0.7s ease;
   }
 
-  .names.on .nm,
+  .names.on .signature,
   .names.on .instr {
     opacity: 1;
     transform: none;
