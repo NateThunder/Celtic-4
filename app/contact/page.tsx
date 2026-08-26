@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import SiteFooter from "../components/SiteFooter";
 import SiteHeader from "../components/SiteHeader";
 import ContactBackdrop from "./ContactBackdrop";
 import ContactForm from "./ContactForm";
@@ -23,7 +22,6 @@ export default function ContactPage() {
           </div>
         </section>
       </main>
-      <SiteFooter />
     </div>
   );
 }

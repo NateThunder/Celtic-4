@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import SiteFooter from "../components/SiteFooter";
 import SiteHeader from "../components/SiteHeader";
 import AboutBody from "./about-body";
 import { ABOUT_PHOTOS, MEMBERS } from "./about-data";
@@ -80,7 +79,7 @@ export default function AboutPage() {
       />
       <main className={styles.page}>
         <AboutHero />
-        <AboutBody footer={<SiteFooter />} />
+        <AboutBody />
       </main>
     </div>
   );

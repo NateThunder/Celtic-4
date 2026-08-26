@@ -4,6 +4,7 @@ import Script from "next/script";
 import "lenis/dist/lenis.css";
 import "./globals.css";
 import SmoothScrollProvider from "./components/SmoothScrollProvider";
+import SiteFooter from "./components/SiteFooter";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -49,7 +50,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${anton.variable} ${bebasNeue.variable} antialiased`}
       >
-        <SmoothScrollProvider>{children}</SmoothScrollProvider>
+        <SmoothScrollProvider>
+          {children}
+          <SiteFooter />
+        </SmoothScrollProvider>
         <Script
           src="https://widgetv3.bandsintown.com/main.min.js"
           strategy="afterInteractive"

@@ -13,6 +13,8 @@ export default function MediaPage() {
     <div className="site-shell">
       <SiteHeader />
       <main className={styles.page}>
+        <div className="home-events-noise" aria-hidden="true" />
+
         <section className={styles.hero} aria-label="Celtic Worship videos">
           <h1 className={styles.title}>
             Videos

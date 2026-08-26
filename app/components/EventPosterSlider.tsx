@@ -1,10 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import type { FocusEvent } from "react";
-import { useEffect, useState } from "react";
+import type { CSSProperties, FocusEvent, PointerEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const SLIDE_INTERVAL_MS = 5000;
+const SWIPE_THRESHOLD_PX = 56;
+const HORIZONTAL_INTENT_PX = 8;
 
 const EVENT_POSTER_SLIDES = [
   {
@@ -29,10 +31,18 @@ function getQueuedOffset(index: number, activeIndex: number, slideCount: number)
   return rawOffset;
 }
 
+function getWrappedSlideIndex(index: number, offset: number, slideCount: number) {
+  return (index + offset + slideCount) % slideCount;
+}
+
 export default function EventPosterSlider() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStart = useRef<{ pointerId: number; x: number; y: number; isHorizontal: boolean } | null>(null);
+  const dragOffsetRef = useRef(0);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -53,7 +63,9 @@ export default function EventPosterSlider() {
     if (isPaused || prefersReducedMotion || EVENT_POSTER_SLIDES.length <= 1) return;
 
     const intervalId = window.setInterval(() => {
-      setActiveIndex((currentIndex) => (currentIndex + 1) % EVENT_POSTER_SLIDES.length);
+      setActiveIndex((currentIndex) =>
+        getWrappedSlideIndex(currentIndex, 1, EVENT_POSTER_SLIDES.length),
+      );
     }, SLIDE_INTERVAL_MS);
 
     return () => {
@@ -69,15 +81,73 @@ export default function EventPosterSlider() {
     setIsPaused(false);
   };
 
+  const finishDrag = (event: PointerEvent<HTMLDivElement>) => {
+    const drag = dragStart.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
+
+    if (drag.isHorizontal && Math.abs(dragOffsetRef.current) >= SWIPE_THRESHOLD_PX) {
+      setActiveIndex((currentIndex) => {
+        const direction = dragOffsetRef.current < 0 ? 1 : -1;
+        return getWrappedSlideIndex(currentIndex, direction, EVENT_POSTER_SLIDES.length);
+      });
+    }
+
+    dragStart.current = null;
+    dragOffsetRef.current = 0;
+    setDragOffset(0);
+    setIsDragging(false);
+    setIsPaused(false);
+  };
+
+  const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.button !== 0 || event.target instanceof HTMLButtonElement) return;
+
+    dragStart.current = { pointerId: event.pointerId, x: event.clientX, y: event.clientY, isHorizontal: false };
+    event.currentTarget.setPointerCapture(event.pointerId);
+    setIsPaused(true);
+  };
+
+  const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    const drag = dragStart.current;
+    if (!drag || drag.pointerId !== event.pointerId) return;
+
+    const deltaX = event.clientX - drag.x;
+    const deltaY = event.clientY - drag.y;
+
+    if (!drag.isHorizontal) {
+      if (Math.abs(deltaX) < HORIZONTAL_INTENT_PX && Math.abs(deltaY) < HORIZONTAL_INTENT_PX) return;
+      if (Math.abs(deltaY) >= Math.abs(deltaX)) {
+        dragStart.current = null;
+        setIsPaused(false);
+        return;
+      }
+
+      drag.isHorizontal = true;
+      setIsDragging(true);
+    }
+
+    event.preventDefault();
+    dragOffsetRef.current = deltaX;
+    setDragOffset(deltaX);
+  };
+
+  const dragStyle = { "--live-events-drag-x": `${dragOffset}px` } as CSSProperties;
+
   return (
     <div
-      className="live-events-poster-banner live-events-poster-slider"
       role="region"
       aria-label="Event poster slider"
+      className={`live-events-poster-banner live-events-poster-slider${isDragging ? " is-dragging" : ""}`}
+      style={dragStyle}
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onFocusCapture={() => setIsPaused(true)}
       onBlurCapture={handleBlur}
+      onDragStart={(event) => event.preventDefault()}
     >
       <div className="live-events-poster-backdrop-wrap" aria-hidden="true">
         <Image
@@ -90,7 +160,13 @@ export default function EventPosterSlider() {
         />
       </div>
 
-      <div className="live-events-poster-stage">
+      <div
+        className="live-events-poster-stage"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={finishDrag}
+        onPointerCancel={finishDrag}
+      >
         {EVENT_POSTER_SLIDES.map((slide, index) => {
           const isActive = index === activeIndex;
           const queuedOffset = getQueuedOffset(index, activeIndex, EVENT_POSTER_SLIDES.length);
@@ -116,6 +192,7 @@ export default function EventPosterSlider() {
                 fill
                 sizes="(max-width: 700px) 74vw, 32vw"
                 priority={slide.priority}
+                draggable={false}
               />
             </div>
           );

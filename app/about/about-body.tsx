@@ -6,7 +6,6 @@ import {
   useEffect,
   useRef,
   type CSSProperties,
-  type ReactNode,
 } from "react";
 import { ABOUT_PHOTOS, MEMBERS, TIMELINE_MILESTONES } from "./about-data";
 import styles from "./about.module.css";
@@ -14,12 +13,7 @@ import styles from "./about.module.css";
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(max, value));
 
-type AboutBodyProps = {
-  /** Passed in from the server page so the footer stays a server component. */
-  footer?: ReactNode;
-};
-
-export default function AboutBody({ footer }: AboutBodyProps) {
+export default function AboutBody() {
   const rootRef = useRef<HTMLDivElement | null>(null);
 
   // Reveals. Harmless under reduced motion: the `on` rules simply don't apply.
@@ -168,7 +162,14 @@ export default function AboutBody({ footer }: AboutBodyProps) {
                 </span>
                 <div className={styles.names} data-reveal>
                   {MEMBERS.map((member, i) => (
-                    <div className={styles.member} key={member.name}>
+                    <div
+                      className={`${styles.member} ${
+                        member.name === "Calum MacAskill"
+                          ? styles.memberBelowGus
+                          : ""
+                      }`}
+                      key={member.name}
+                    >
                       <span
                         className={styles.signature}
                         style={{
@@ -202,14 +203,6 @@ export default function AboutBody({ footer }: AboutBodyProps) {
         <section
           className={`${styles.timelinePanel} ${styles.timelineTakeover}`}
         >
-          <div className={styles.storyDivider} aria-hidden="true">
-            <Image
-              src="/instrument/line.png"
-              alt=""
-              width={428}
-              height={1517}
-            />
-          </div>
           <div className={`${styles.w} ${styles.timelineCard}`}>
             <header
               className={`${styles.timelineHeading} ${styles.rv}`}
@@ -545,7 +538,6 @@ export default function AboutBody({ footer }: AboutBodyProps) {
           </div>
         </section>
 
-        {footer}
       </div>
     </div>
   );

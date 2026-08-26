@@ -96,7 +96,8 @@
   position: absolute;
   inset: 0;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  /* Keep all seven members in one continuous desktop strip. */
+  grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 
 .st {
@@ -416,6 +417,13 @@
   .signature {
     height: clamp(130px, 16vh, 190px);
   }
+
+}
+
+@media (min-width: 901px) {
+  .memberBelowGus {
+    grid-column: 2;
+  }
 }
 
 /* --------------------------------------------------------- timeline --- */
@@ -434,24 +442,6 @@
   background-repeat: repeat;
   background-size: 900px auto;
   box-shadow: 0 -30px 60px -24px rgba(36, 31, 27, 0.42);
-}
-
-.storyDivider {
-  display: none;
-  width: min(calc(100% - 56px), 1280px);
-  height: clamp(48px, 6vw, 76px);
-  margin: 0 auto clamp(34px, 5vw, 64px);
-  overflow: hidden;
-}
-
-.storyDivider img {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: clamp(170px, 28vw, 428px);
-  max-width: none;
-  height: auto;
-  transform: translate(-50%, -50%) rotate(90deg);
 }
 
 .timelineHeading {
@@ -671,6 +661,18 @@
   transform: translate(6%, 0) rotate(0deg);
   transition: none;
   will-change: transform, opacity;
+}
+
+@media (min-width: 901px) and (max-width: 1100px) {
+  .timelineCard .timelineEntryIllustrated > .timelineMedia,
+  .timelineCard .timelineEntryIllustrated > .timelineMediaLink,
+  .timelineCard .timelineEntryIllustrated > .timelinePortrait {
+    transform: translateX(-100px);
+  }
+
+  .timelineDisc {
+    --disc-travel: 42;
+  }
 }
 
 .timelineMediaLink:focus-visible {
@@ -1329,9 +1331,9 @@
   position: absolute;
   bottom: 0;
   width: auto;
-  height: auto;
-  max-width: 44%;
-  max-height: calc(100% - 16px);
+  height: calc(100% - 36px);
+  max-width: none;
+  max-height: none;
   object-fit: contain;
   filter: drop-shadow(0 26px 44px rgba(0, 0, 0, 0.6));
   transform: none;
@@ -1341,23 +1343,26 @@
 .exitPeople .q1 {
   left: 0;
   z-index: 1;
-  max-height: calc(100% - 36px);
 }
 
 .exitPeople .q2 {
-  left: 29%;
-  z-index: 2;
-  max-height: calc(100% - 12px);
+  left: 0;
+  z-index: 0;
 }
 
 .exitPeople .q3 {
   right: 0;
-  z-index: 3;
-  max-width: 40%;
-  max-height: calc(100% - 54px);
+  z-index: 2;
 }
 
 /* ---------------------------------------------------------- responsive --- */
+
+@media (min-width: 901px) and (max-width: 1100px) {
+  .exit {
+    padding-right: 60px;
+    padding-left: 60px;
+  }
+}
 
 @media (max-width: 1100px) {
   .band {
@@ -1370,11 +1375,6 @@
 }
 
 @media (max-width: 900px) {
-  .storyDivider {
-    display: block;
-    position: relative;
-  }
-
   .page {
     --t2: 19px;
     --t4: 32px;
@@ -1399,6 +1399,10 @@
     width: 100%;
   }
 
+  .signature {
+    height: clamp(88px, 24vw, 132px);
+  }
+
   .timelinePanel {
     padding: var(--s3) 0 var(--s4);
   }
@@ -1407,8 +1411,16 @@
     height: auto;
   }
 
+  .rosterWrap::after {
+    content: "";
+    display: block;
+    height: 100svh;
+  }
+
   .rosterStage {
-    position: relative;
+    position: sticky;
+    top: auto;
+    bottom: 0;
     height: auto;
     min-height: 0;
     overflow: visible;
@@ -1419,8 +1431,8 @@
   }
 
   .timelineTakeover {
-    margin-top: 0;
-    box-shadow: none;
+    margin-top: -100svh;
+    box-shadow: 0 -30px 60px -24px rgba(36, 31, 27, 0.42);
   }
 
   .timelineHeading {
@@ -1632,21 +1644,29 @@
   }
 
   .exitPeople img {
-    max-width: 46%;
-    max-height: calc(100% - 12px);
+    height: calc(100% - 30px);
+    max-width: none;
+    max-height: none;
   }
 
   .exitPeople .q2 {
-    left: 22%;
+    left: 4%;
   }
 
   .exitPeople .q3 {
     right: 0;
-    max-width: 42%;
   }
 }
 
 @media (max-width: 480px) {
+  .exitPeople img {
+    height: calc(100% - 70px);
+  }
+
+  .exitPeople .q2 {
+    left: 0;
+  }
+
   .exit .btn {
     display: block;
     width: 100%;

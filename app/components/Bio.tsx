@@ -31,6 +31,7 @@ export default function CelticWorshipBio() {
       <p className="mb-1">Chris Amer - Guitars</p>
       <p className="mb-1">Mhairi Marwick - Fiddle</p>
       <p>Gus Stirrat - Bass</p>
+      <p>Calum MacAskill - Whistle &amp; Bagpipes</p>
       <p>Ifedade Thomas - Drums</p>
     </section>
   );

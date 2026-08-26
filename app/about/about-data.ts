@@ -136,8 +136,8 @@ export const TIMELINE_MILESTONES: TimelineMilestone[] = [
     description:
       "Celtic Worship are scheduled to headline a major homecoming concert at the O2 Academy Glasgow, marking one of the largest headline performances in the group's journey so far.",
     image: {
-      src: "/photos/band%20sitting.png",
-      alt: "Celtic Worship band sitting together",
+      src: "/photos/Band%20Amsterdam.png",
+      alt: "Celtic Worship in Amsterdam",
       kind: "photo",
     },
   },
@@ -204,6 +204,16 @@ export const MEMBERS: Member[] = [
       { src: `${ABOUT_PHOTOS}/hero/ifedade-thomas-01.jpg`, position: "50% 22%" },
       { src: `${ABOUT_PHOTOS}/hero/ifedade-thomas-02.jpg`, position: "62% 12%" },
       { src: `${ABOUT_PHOTOS}/hero/ifedade-thomas-03.jpg`, position: "70% 30%" },
+    ],
+  },
+  {
+    name: "Calum MacAskill",
+    instrument: "Whistle & Bagpipes",
+    signature: "/signatures/Calum.png",
+    frames: [
+      { src: `${ABOUT_PHOTOS}/hero/calum-macaskill-01.jpg`, position: "50% 26%" },
+      { src: `${ABOUT_PHOTOS}/hero/calum-macaskill-02.jpg`, position: "50% 26%" },
+      { src: `${ABOUT_PHOTOS}/hero/calum-macaskill-03.jpg`, position: "50% 26%" },
     ],
   },
 ];
