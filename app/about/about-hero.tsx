@@ -48,6 +48,7 @@ export default function AboutHero() {
   const [frameIndexes, setFrameIndexes] = useState<number[]>(() =>
     MEMBERS.map(() => 0),
   );
+  const [memberRotation, setMemberRotation] = useState(0);
   // The frame on screen at load is the LCP candidate and asks for high fetch
   // priority; once the rack has cycled, the preloader below has already warmed
   // everything, so there is nothing left to prioritise.
@@ -56,6 +57,19 @@ export default function AboutHero() {
   const stripRefs = useRef<(HTMLDivElement | null)[]>([]);
   const seamRef = useRef<HTMLDivElement | null>(null);
   const isMemberSelectedRef = useRef(false);
+  const isMobileRef = useRef(false);
+
+  useEffect(() => {
+    const mobile = window.matchMedia("(max-width: 900px)");
+    const syncMobileState = () => {
+      isMobileRef.current = mobile.matches;
+      if (!mobile.matches) setMemberRotation(0);
+    };
+
+    syncMobileState();
+    mobile.addEventListener("change", syncMobileState);
+    return () => mobile.removeEventListener("change", syncMobileState);
+  }, []);
 
   // Fetch *and* decode every frame of every cycle up front, so a swap is a src
   // change against a warm cache rather than a network hop mid-transition. A
@@ -144,6 +158,9 @@ export default function AboutHero() {
         if (elapsed >= CYCLE_SECONDS) {
           startedAt = now;
           setHasCycled(true);
+          if (isMobileRef.current) {
+            setMemberRotation((current) => (current + 1) % STRIP_COUNT);
+          }
           setFrameIndexes((previous) =>
             previous.map((current, i) => pickNextFrame(i, current)),
           );
@@ -191,8 +208,10 @@ export default function AboutHero() {
             isMemberSelectedRef.current = false;
           }}
         >
-          {MEMBERS.map((member, i) => {
-            const frame = member.frames[frameIndexes[i]];
+          {MEMBERS.map((_, i) => {
+            const memberIndex = (i + memberRotation) % STRIP_COUNT;
+            const member = MEMBERS[memberIndex];
+            const frame = member.frames[frameIndexes[memberIndex]];
             return (
               <div
                 key={member.name}
