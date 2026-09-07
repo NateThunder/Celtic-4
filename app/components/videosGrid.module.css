@@ -178,33 +178,31 @@
   display: grid;
   place-items: center;
   transform: translate(-50%, -50%);
-  transition: transform 160ms ease;
-}
-
-.playMark::before {
-  content: "";
-  position: absolute;
-  inset: -8%;
-  background: var(--editorial-gold);
-  opacity: 0.88;
-  -webkit-mask: url("/instrument/CIRCLE.png") center / contain no-repeat;
-  mask: url("/instrument/CIRCLE.png") center / contain no-repeat;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.66);
+  border: 2px solid rgba(255, 255, 255, 0.88);
+  box-shadow: 0 9px 24px rgba(0, 0, 0, 0.34);
+  pointer-events: none;
+  transition: transform 180ms ease, background-color 180ms ease, border-color 180ms ease;
 }
 
 .playMark svg {
   position: relative;
   z-index: 1;
   width: 42%;
+  height: auto;
   margin-left: 0.15rem;
 }
 
 .playMark path {
-  fill: var(--editorial-gold);
+  fill: #ffffff;
 }
 
 .card:hover .playMark,
 .card:focus-visible .playMark {
   transform: translate(-50%, -50%) scale(1.04);
+  background: rgba(0, 0, 0, 0.75);
+  border-color: #ffffff;
 }
 
 .cardCopy {
