@@ -1,14 +1,19 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useShopCart } from "../../components/shop/ShopCartContext";
+import ShopStripeCard, { type ShopStripeCardHandle } from "../../components/shop/ShopStripeCard";
+import ShopWalletPayments from "../../components/shop/ShopWalletPayments";
+import { getShopPaymentMethods, isPayPalMethod, SHOP_STRIPE_METHOD, type ShopStripeAction } from "../../lib/shopPayments";
 import styles from "./checkout.module.css";
 
 type CheckoutMethodsPayload = {
   methods?: string[];
   defaultMethod?: string | null;
+  stripe?: { publishableKey: string } | null;
+  stripeError?: string | null;
 };
 
 type CheckoutPaymentResult = {
@@ -22,6 +27,8 @@ type CheckoutResponsePayload = {
   code?: string;
   order_id?: number;
   order_number?: string;
+  stripeAction?: ShopStripeAction | null;
+  stripeError?: string;
 };
 
 type CheckoutFormValues = {
@@ -58,10 +65,6 @@ const DEFAULT_FORM_VALUES: CheckoutFormValues = {
   note: "",
 };
 
-function isPayPalMethod(method: string): boolean {
-  return /(^ppcp-gateway$)|paypal/i.test(method);
-}
-
 const COUNTRY_OPTIONS: CountryOption[] = [
   { code: "GB" },
   { code: "US" },
@@ -89,10 +92,32 @@ export default function ShopCheckoutPage() {
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [hasMounted, setHasMounted] = useState(false);
+  const [stripeKey, setStripeKey] = useState("");
+  const [stripeError, setStripeError] = useState("");
+  const [cardReady, setCardReady] = useState(false);
+  const [pendingStripeAction, setPendingStripeAction] = useState<ShopStripeAction | null>(null);
+  const [paymentFinished, setPaymentFinished] = useState(false);
+  const cardRef = useRef<ShopStripeCardHandle>(null);
+  const submittingRef = useRef(false);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [walletLocked, setWalletLocked] = useState(false);
+  const isStripe = paymentMethod === SHOP_STRIPE_METHOD;
+  const walletCheckout = useMemo(() => {
+    const billing = {
+      first_name: formValues.firstName.trim(), last_name: formValues.lastName.trim(),
+      email: formValues.email.trim(), phone: formValues.phone.trim(), company: formValues.company.trim(),
+      address_1: formValues.address1.trim(), address_2: formValues.address2.trim(), city: formValues.city.trim(),
+      state: formValues.state.trim(), postcode: formValues.postcode.trim(), country: formValues.country,
+    };
+    const { email, ...shipping } = billing;
+    void email;
+    return { billing_address: billing, shipping_address: shipping, customer_note: formValues.note.trim() };
+  }, [formValues]);
 
   const canSubmit = useMemo(
-    () => !isLoading && !isLoadingMethods && items.length > 0 && !!paymentMethod && !isSubmitting,
-    [isLoading, isLoadingMethods, items.length, paymentMethod, isSubmitting],
+    () => !isLoading && !isLoadingMethods && (items.length > 0 || !!pendingStripeAction) && !!paymentMethod
+      && !isSubmitting && !paymentFinished && !walletLocked && (!isStripe || cardReady),
+    [isLoading, isLoadingMethods, items.length, paymentMethod, isSubmitting, paymentFinished, isStripe, cardReady, pendingStripeAction, walletLocked],
   );
 
   const paypalMethod = useMemo(
@@ -131,17 +156,16 @@ export default function ShopCheckoutPage() {
           throw new Error(getMessageFromPayload(payload, `Unable to load payment methods (${response.status}).`));
         }
 
-        const methods = Array.isArray(payload.methods)
-          ? payload.methods.filter((method): method is string => typeof method === "string" && method.length > 0)
-          : [];
-        const paypalMethods = methods.filter((method) => isPayPalMethod(method));
+        const methods = getShopPaymentMethods(payload.methods);
 
         if (isCancelled) return;
 
-        setPaymentMethods(paypalMethods);
-        const defaultMethod = payload.defaultMethod && paypalMethods.includes(payload.defaultMethod)
+        setPaymentMethods(methods);
+        setStripeKey(payload.stripe?.publishableKey || "");
+        setStripeError(payload.stripeError || "");
+        const defaultMethod = payload.defaultMethod && methods.includes(payload.defaultMethod)
           ? payload.defaultMethod
-          : paypalMethods[0] || "";
+          : methods.find((method) => method !== SHOP_STRIPE_METHOD || payload.stripe?.publishableKey) || "";
         setPaymentMethod(defaultMethod);
       } catch (error) {
         if (isCancelled) return;
@@ -163,8 +187,9 @@ export default function ShopCheckoutPage() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!canSubmit) return;
+    if (!canSubmit || submittingRef.current) return;
 
+    submittingRef.current = true;
     setIsSubmitting(true);
     setErrorMessage("");
     setSuccessMessage("");
@@ -197,6 +222,30 @@ export default function ShopCheckoutPage() {
         phone: billingAddress.phone,
       };
 
+      const stripeBilling = {
+        name: `${billingAddress.first_name} ${billingAddress.last_name}`.trim(),
+        email: billingAddress.email,
+        phone: billingAddress.phone || undefined,
+        address: {
+          line1: billingAddress.address_1, line2: billingAddress.address_2,
+          city: billingAddress.city, state: billingAddress.state,
+          postal_code: billingAddress.postcode, country: billingAddress.country,
+        },
+      };
+      if (pendingStripeAction) {
+        if (!cardRef.current) throw new Error("Please wait for the card form to load.");
+        await cardRef.current.confirm(pendingStripeAction, stripeBilling);
+        setPaymentFinished(true);
+        window.location.assign(pendingStripeAction.verificationUrl);
+        return;
+      }
+      const paymentData: { key: string; value: string }[] = [];
+      if (isStripe) {
+        if (!cardRef.current) throw new Error("Please wait for the card form to load.");
+        const source = await cardRef.current.createPaymentMethod(stripeBilling);
+        paymentData.push({ key: "fkwcs_source", value: source }, { key: "payment_method", value: SHOP_STRIPE_METHOD });
+      }
+
       const response = await fetch("/api/shop/checkout", {
         method: "POST",
         headers: {
@@ -208,8 +257,11 @@ export default function ShopCheckoutPage() {
           shipping_address: shippingAddress,
           customer_note: formValues.note.trim(),
           payment_method: paymentMethod,
-          payment_data: [],
+          payment_data: paymentData,
         }),
+      }).catch(() => {
+        setPaymentFinished(true);
+        throw new Error("The connection was interrupted while placing your order. Please contact the shop to confirm its status before paying again.");
       });
 
       const payload = (await response.json().catch(() => null)) as CheckoutResponsePayload | null;
@@ -217,9 +269,31 @@ export default function ShopCheckoutPage() {
         throw new Error(getMessageFromPayload(payload, `Checkout failed (${response.status}).`));
       }
 
-      await refreshCart();
+      if (payload.stripeError) {
+        setPaymentFinished(true);
+        throw new Error(payload.stripeError);
+      }
+      if (payload.stripeAction) {
+        setPendingStripeAction(payload.stripeAction);
+        if (!cardRef.current) throw new Error("Please wait for the card form to load.");
+        await cardRef.current.confirm(payload.stripeAction, stripeBilling);
+        setPaymentFinished(true);
+        window.location.assign(payload.stripeAction.verificationUrl);
+        return;
+      }
 
       const redirectUrl = payload.payment_result?.redirect_url?.trim();
+      if (isStripe) {
+        if (payload.payment_result?.payment_status !== "success") {
+          throw new Error("The card payment was not completed. Please check your details and try again.");
+        }
+        setPaymentFinished(true);
+        setSuccessMessage("Payment confirmed. Thank you for your order.");
+        await refreshCart();
+        if (redirectUrl) window.location.assign(redirectUrl);
+        return;
+      }
+      await refreshCart();
       if (redirectUrl) {
         const opened = openHostedCheckoutPopup(redirectUrl);
         if (!opened) {
@@ -244,6 +318,7 @@ export default function ShopCheckoutPage() {
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : "Unable to complete checkout.");
     } finally {
+      submittingRef.current = false;
       setIsSubmitting(false);
     }
   }
@@ -281,11 +356,12 @@ export default function ShopCheckoutPage() {
             </div>
           </header>
 
-          {errorMessage ? <p className={styles.error}>{errorMessage}</p> : null}
-          {successMessage ? <p className={styles.success}>{successMessage}</p> : null}
+          {errorMessage ? <p className={styles.error} role="alert">{errorMessage}</p> : null}
+          {successMessage ? <p className={styles.success} role="status">{successMessage}</p> : null}
 
           <div className={styles.layout}>
-            <form className={styles.form} onSubmit={handleSubmit}>
+            <form ref={formRef} className={styles.form} onSubmit={handleSubmit}>
+              <fieldset className={styles.checkoutFields} disabled={walletLocked}>
                 <div className={styles.row}>
                   <label className={styles.field}>
                     <span>First name</span>
@@ -393,9 +469,26 @@ export default function ShopCheckoutPage() {
                   </label>
                 </div>
 
+              </fieldset>
                 <div className={styles.paymentField}>
                   <span className={styles.paymentLabel}>Payment method</span>
                   <div className={styles.paymentGrid}>
+                    {paymentMethods.includes(SHOP_STRIPE_METHOD) ? (
+                      <button type="button"
+                        className={`${styles.paymentOption}${isStripe ? ` ${styles.paymentOptionSelected}` : ""}`}
+                        aria-pressed={isStripe}
+                        onClick={() => setPaymentMethod(SHOP_STRIPE_METHOD)}
+                        disabled={!stripeKey || isSubmitting || paymentFinished || !!pendingStripeAction || walletLocked}
+                      >
+                        <span className={styles.cardGlyph} aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
+                            <rect x="2" y="4" width="20" height="16" rx="3" />
+                            <path d="M2 9h20M6 15h4" />
+                          </svg>
+                        </span>
+                        <span className={styles.cardText}>Credit / debit card</span>
+                      </button>
+                    ) : null}
                     <button
                       type="button"
                       className={`${styles.paymentOption}${
@@ -404,18 +497,30 @@ export default function ShopCheckoutPage() {
                       onClick={() => {
                         if (paypalMethod) setPaymentMethod(paypalMethod);
                       }}
-                      disabled={isLoadingMethods || !paypalMethod}
+                      aria-pressed={!!paypalMethod && paymentMethod === paypalMethod}
+                      disabled={isLoadingMethods || !paypalMethod || isSubmitting || paymentFinished || !!pendingStripeAction || walletLocked}
                     >
                       <span className={styles.paypalMark}>
                         <Image className={styles.paypalLogo} src="/paypal-logo.svg" alt="PayPal" width={129} height={32} />
                       </span>
                     </button>
                   </div>
+                  {stripeError ? <p className={styles.error} role="status">{stripeError}</p> : null}
+                  {isStripe && stripeKey ? <ShopStripeCard key={stripeKey} ref={cardRef} publishableKey={stripeKey} onReady={setCardReady} /> : null}
+                  {!isLoadingMethods && paymentMethods.length === 0 ? <p className={styles.error}>No payment methods are currently available.</p> : null}
+                  {stripeKey ? <ShopWalletPayments
+                    key={JSON.stringify([walletCheckout, items.map((item) => [item.key, item.quantity])])}
+                    publishableKey={stripeKey} checkout={walletCheckout}
+                    disabled={isLoading || isSubmitting || paymentFinished || !!pendingStripeAction || items.length === 0}
+                    validate={() => formRef.current?.reportValidity() ?? false}
+                    refreshCart={refreshCart} onLock={setWalletLocked} onFinished={setPaymentFinished}
+                  /> : null}
                 </div>
 
                 <label className={styles.field}>
                   <span>Order note (optional)</span>
                   <textarea
+                    disabled={walletLocked}
                     rows={3}
                     value={formValues.note}
                     onChange={(event) => setFormValues((prev) => ({ ...prev, note: event.target.value }))}
@@ -423,7 +528,7 @@ export default function ShopCheckoutPage() {
                 </label>
 
                 <button type="submit" className={styles.submitButton} disabled={!canSubmit}>
-                  {isSubmitting ? "Processing..." : `Pay ${totalLabel}`}
+                  {isSubmitting ? "Processing..." : paymentFinished ? "Order submitted" : pendingStripeAction ? "Retry card verification" : `Pay ${totalLabel}`}
                 </button>
             </form>
 
