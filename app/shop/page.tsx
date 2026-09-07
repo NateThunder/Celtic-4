@@ -477,7 +477,6 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
                       <h2 id={headingId} className={styles.sectionTitle}>
                         {section.title}
                       </h2>
-                      <p className={styles.sectionCount}>{section.items.length}</p>
                     </div>
                     <EqualHeightCardGrid className={styles.grid}>
                       {section.items.map((item) => renderProductCard(item))}

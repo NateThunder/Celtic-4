@@ -203,13 +203,13 @@ export default async function Home() {
           <div className="home-community-stage">
             <div className="home-community-photos" aria-hidden="true">
               <div className="home-community-photo home-community-photo--church">
-                <Image src="/photos/Church.png" alt="" fill sizes="(max-width: 760px) 31vw, 24vw" />
+                <Image src="/photos/Church.png" alt="" fill sizes="(max-width: 760px) 31vw, 19vw" />
               </div>
               <div className="home-community-photo home-community-photo--crowd-two">
                 <Image src="/photos/crowd2.png" alt="" fill sizes="(max-width: 760px) 31vw, 20vw" />
               </div>
               <div className="home-community-photo home-community-photo--crowd-three">
-                <Image src="/photos/Crowd3.png" alt="" fill sizes="(max-width: 760px) 31vw, 22vw" />
+                <Image src="/photos/Crowd3.png" alt="" fill sizes="(max-width: 760px) 31vw, 42vw" />
               </div>
               <div className="home-community-photo home-community-photo--church-two">
                 <Image src="/photos/Church2.png" alt="" fill sizes="(max-width: 760px) 31vw, 18vw" />
@@ -218,7 +218,7 @@ export default async function Home() {
                 <Image src="/photos/Church3.png" alt="" fill sizes="(max-width: 760px) 31vw, 20vw" />
               </div>
               <div className="home-community-photo home-community-photo--church-four">
-                <Image src="/photos/church4.png" alt="" fill sizes="(max-width: 760px) 31vw, 17vw" />
+                <Image src="/photos/church4.png" alt="" fill sizes="(max-width: 760px) 31vw, 21vw" />
               </div>
             </div>
             <div className="home-community-inner" data-home-reveal>
