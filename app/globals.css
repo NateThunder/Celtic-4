@@ -4782,51 +4782,51 @@ body.has-open-shop-cart-drawer {
 }
 
 .home-community-photo--church {
-  top: clamp(3.5rem, 6vh, 5rem);
-  left: clamp(3rem, 4vw, 4rem);
-  width: clamp(9.5rem, 13.2vw, 13.2rem);
-  aspect-ratio: 3 / 4;
-  rotate: -7.4deg;
+  top: 3.6%;
+  left: 4.9%;
+  width: 19%;
+  aspect-ratio: 5 / 6;
+  rotate: -9deg;
 }
 
 .home-community-photo--crowd-two {
-  top: clamp(3.5rem, 6vh, 5rem);
-  right: clamp(4.5rem, 8vw, 8rem);
-  width: clamp(10.5rem, 14.2vw, 14.2rem);
-  aspect-ratio: 5 / 6;
-  rotate: -3.6deg;
+  top: 2.8%;
+  right: 3.8%;
+  width: 20%;
+  aspect-ratio: 8 / 9;
+  rotate: -7deg;
 }
 
 .home-community-photo--crowd-three {
-  bottom: clamp(4.5rem, 8vh, 6rem);
-  left: clamp(0.5rem, 9.5vw, 9.5rem);
-  width: clamp(11rem, 17vw, 17rem);
-  aspect-ratio: 5 / 6;
-  rotate: -5.6deg;
+  top: 61%;
+  left: -2%;
+  width: 42%;
+  aspect-ratio: 3 / 2;
+  rotate: 10deg;
 }
 
 .home-community-photo--church-two {
-  top: calc(50% - clamp(3rem, 4.5vw, 4.5rem));
-  left: clamp(3rem, 4vw, 4rem);
-  width: clamp(9rem, 12.5vw, 12.5rem);
-  aspect-ratio: 4 / 5;
-  rotate: 2.6deg;
+  top: 33.6%;
+  left: 2.2%;
+  width: 18.3%;
+  aspect-ratio: 3 / 4;
+  rotate: 7deg;
 }
 
 .home-community-photo--church-three {
-  top: calc(50% - clamp(3.5rem, 5vw, 5rem));
-  right: clamp(3.5rem, 4vw, 4rem);
-  width: clamp(11rem, 16vw, 16rem);
-  aspect-ratio: 3 / 4;
-  rotate: 8.4deg;
+  top: 34.3%;
+  right: 2%;
+  width: 19.5%;
+  aspect-ratio: 7 / 10;
+  rotate: 10deg;
 }
 
 .home-community-photo--church-four {
-  right: clamp(5rem, 11vw, 11rem);
-  bottom: clamp(4.5rem, 7vh, 5.5rem);
-  width: clamp(8.8rem, 11.2vw, 11.2rem);
+  top: 62%;
+  right: 6.9%;
+  width: 21%;
   aspect-ratio: 3 / 4;
-  rotate: -5.2deg;
+  rotate: -10deg;
 }
 
 .home-community-inner {
