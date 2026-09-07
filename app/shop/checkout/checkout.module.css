@@ -154,7 +154,7 @@
 
 .paymentGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.78rem;
 }
 
@@ -312,6 +312,48 @@ button.paymentOption:disabled {
   font-size: 1.06rem;
   color: #2d2d2d;
   line-height: 1.32;
+}
+
+.cardFields {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+}
+
+.stripeElement {
+  min-height: 3.18rem;
+  padding: 1rem 0.95rem;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+.cardHelp {
+  margin: 0;
+  color: #505050;
+  font-size: 0.85rem;
+}
+
+.checkoutFields {
+  display: grid;
+  gap: 0.78rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.walletPayments {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.paymentOption:focus-visible {
+  outline: 2px solid #111111;
+  outline-offset: 3px;
 }
 
 .summaryItemMeta {
