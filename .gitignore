@@ -45,3 +45,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+/dist/
+.vinext/
+.wrangler/
+.dev.vars*
+/output/cloudflare/
+/.agents/
+/skills-lock.json

@@ -1,0 +1,38 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "celtic-worship",
+  "account_id": "4b6b2aa0f8f33b9a62bedfba1fd8dcb6",
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "celticworship.co.uk", "custom_domain": true, "zone_name": "celticworship.co.uk" },
+    { "pattern": "www.celticworship.co.uk", "custom_domain": true, "zone_name": "celticworship.co.uk" }
+  ],
+  "vars": {
+    "CHECKOUT_DISABLED": "true",
+    "NEXT_PUBLIC_COMMERCE_DISABLED": "false",
+    "NEXT_PUBLIC_WOO_URL": "https://cms.celticworship.co.uk",
+    "ADMIN_AUTH_REQUIRED": "true"
+  },
+  "observability": { "enabled": true, "traces": { "enabled": true } },
+  "d1_databases": [{
+    "binding": "STEMS_DB",
+    "database_name": "celtic-worship-stems",
+    "database_id": "166d6272-2637-4631-96b6-80707740f84a",
+    "migrations_dir": "migrations"
+  }],
+  "r2_buckets": [{ "binding": "STEMS_BUCKET", "bucket_name": "celtic-worship-stems" }],
+  "kv_namespaces": [{
+    "binding": "PRODUCT_CATALOG",
+    "id": "6ae6af9b542246189b51604b83be8056"
+  }],
+  "compatibility_date": "2026-09-16",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ],
+  "main": "vinext/server/fetch-handler",
+  "assets": {
+    "directory": "dist/client",
+    "not_found_handling": "none",
+    "binding": "ASSETS"
+  }
+}

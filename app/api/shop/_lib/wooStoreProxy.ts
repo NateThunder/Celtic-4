@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { WOO_BASE_URL } from "../../../lib/woo";
+import { WOO_BASE_URL, WOO_REQUEST_HEADERS } from "../../../lib/woo";
 
 const CART_TOKEN_COOKIE = "celtic_woo_cart_token";
 const NONCE_COOKIE = "celtic_woo_nonce";
@@ -56,7 +56,7 @@ export async function requestWooStore(
   const nonce = options?.nonceOverride ?? request.cookies.get(NONCE_COOKIE)?.value;
 
   const headers: Record<string, string> = {
-    Accept: "application/json",
+    ...WOO_REQUEST_HEADERS,
   };
 
   if (cartToken) {

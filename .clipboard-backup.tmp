@@ -1,0 +1,35 @@
+Implement the Cloudflare KV product-sync approach instead of upgrading SiteGround.
+Architecture:
+WordPress (cms.celticworship.co.uk)
+  ? signed webhook on product changes
+  ? Cloudflare Worker sync endpoint
+  ? Cloudflare KV
+
+Visitors / Next.js frontend
+  ? Cloudflare Worker
+  ? KV
+Current state:
+- WordPress/WooCommerce clone is available at https://cms.celticworship.co.uk.
+- Woo Store API currently contains 16 products.
+- SiteGround challenges Cloudflare-originated API requests with sgcaptcha, so the Worker must not fetch WordPress during visitor requests.
+- The previous Worker version was restored, so no broken CMS deployment should be active.
+- A CMS-only MU plugin currently disables payment gateways and cart/checkout for safety.
+- The existing live WordPress website has not been intentionally altered.
+Required implementation:
+1. Create a Cloudflare KV namespace for the product catalogue.
+2. Add a protected Worker endpoint such as POST /api/internal/product-sync.
+3. Authenticate every sync using an HMAC signature and timestamp stored as secrets at both ends. Reject invalid, missing, or replayed signatures.
+4. Add a small WordPress plugin or MU plugin that pushes product data when products are created, updated, deleted, restored, or stock/price changes.
+5. Include product IDs, slugs, names, descriptions, prices, sale state, stock state, categories, attributes, variations, and image URLs.
+6. Store both a catalogue index and individual product records in KV, keyed by product ID and slug.
+7. Provide a secured full-sync mechanism so all 16 products can initially be imported and later repaired.
+8. Change the Next.js catalogue and product pages to read from KV—not directly from SiteGround.
+9. Preserve the last valid KV data if a WordPress sync fails. Add logging and a retry mechanism.
+10. Deploy to a preview Worker first and verify all 16 products before changing the live domain.
+Do not:
+- Upgrade the SiteGround plan.
+- Disable SiteGround Anti-Bot globally.
+- Expose WooCommerce consumer keys, Stripe secrets, or the webhook secret in frontend code.
+- Change DNS or the live production route until the preview is approved.
+- Re-enable live payments yet.
+Checkout remains a separate task. Before enabling customer payments, confirm whether checkout will redirect to WooCommerce or be fully headless, then safely configure the CMS clone’s checkout and payment gateways using test mode first.

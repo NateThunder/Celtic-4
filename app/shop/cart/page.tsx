@@ -92,7 +92,7 @@ export default function ShopCartPage() {
               </ul>
 
               <div className={styles.footer}>
-                <p className={styles.total}>Total: {totalLabel}</p>
+                <p className={styles.total}>Estimated subtotal: {totalLabel}</p>
                 <div className={styles.footerActions}>
                   <Link href="/shop/checkout" className={styles.checkoutLink}>
                     Checkout

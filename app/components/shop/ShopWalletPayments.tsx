@@ -48,7 +48,7 @@ export default function ShopWalletPayments({ publishableKey, checkout, disabled,
       const response = await fetch("/api/shop/checkout/prepare", {
         method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify(checkout),
       });
-      const data = await response.json();
+      const data = await response.json() as ShopWalletQuote & { message?: string };
       if (!response.ok) throw new Error(data.message || "Unable to calculate your order total.");
       await refreshCart();
       setAvailability("loading");

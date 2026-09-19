@@ -39,6 +39,7 @@ export type VariableProductVariationAttribute = {
 export type VariableProduct = {
   id: number;
   name: string;
+  permalink?: string;
   images?: VariableProductImage[];
   prices?: VariableProductPrices;
   attributes?: VariableProductAttribute[];
@@ -363,8 +364,11 @@ export default function VariableProductSelector({
           : product.name,
         href: `/shop/${product.id}`,
         price: priceLabel,
+                  unitAmount: Number(selectedVariation.prices?.price) / 10 ** Number(selectedVariation.prices?.currency_minor_unit ?? 2),
+                  currency: selectedVariation.prices?.currency_code || "GBP",
         imageSrc: image?.src,
         imageAlt: image?.alt || product.name,
+        permalink: product.permalink,
         variation: variableAttributes.map((attribute) => ({
           attribute: attribute.taxonomy || attribute.name || getAttributeKey(attribute),
           value: selectedOptions[getAttributeKey(attribute)],

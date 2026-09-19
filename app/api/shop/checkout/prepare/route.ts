@@ -3,7 +3,7 @@ import { applyWooSessionCookies, badRequest, requestWooStore, toProxyJsonRespons
 import { getShopWalletQuote, SHOP_STRIPE_METHOD } from "../../../../lib/shopPayments";
 
 export async function POST(request: NextRequest) {
-  const body = await request.json().catch(() => null);
+  const body = await request.json().catch(() => null) as { billing_address?: unknown; shipping_address?: unknown } | null;
   if (!body?.billing_address || !body?.shipping_address) return badRequest("Please complete your billing and delivery details.");
   // Calculate shipping and tax before showing a total in the wallet sheet.
   const result = await requestWooStore(request, "/cart/update-customer", {

@@ -29,8 +29,8 @@ export default async function AdminStemsPage() {
             </div>
             <aside className={styles.notice} aria-label="Admin access status">
               <span>Access</span>
-              <strong>No auth enabled</strong>
-              <p>Uploads are kept on this admin route for now.</p>
+              <strong>{process.env.ADMIN_AUTH_REQUIRED === "true" ? "Password protected" : "Local admin"}</strong>
+              <p>Upload at most 32 MB at a time on the hosted preview.</p>
             </aside>
           </header>
 

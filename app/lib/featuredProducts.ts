@@ -1,4 +1,5 @@
 import { WOO_BASE_URL } from "./woo";
+import { fetchCatalogArray, fixtureProducts } from "./wooCatalog";
 
 type WooStoreImage = {
   src?: string;
@@ -75,16 +76,8 @@ export async function getFeaturedProducts(limit = 3): Promise<FeaturedProduct[]>
     endpoint.searchParams.set("orderby", "date");
     endpoint.searchParams.set("order", "desc");
 
-    const response = await fetch(endpoint.toString(), {
-      next: { revalidate: 3600 },
-    });
-
-    if (!response.ok) return [];
-
-    const payload = (await response.json()) as unknown;
-    if (!Array.isArray(payload)) return [];
-
-    return (payload as WooStoreProduct[])
+    const payload = await fetchCatalogArray<WooStoreProduct>(endpoint, fixtureProducts(), 3600);
+    return payload
       .map(normalizeProduct)
       .filter((product): product is FeaturedProduct => product !== null)
       .slice(0, limit);
@@ -100,17 +93,10 @@ export async function getShopSectionProducts(): Promise<ShopSectionProduct[]> {
     endpoint.searchParams.set("orderby", "date");
     endpoint.searchParams.set("order", "desc");
 
-    const response = await fetch(endpoint.toString(), {
-      headers: { "User-Agent": "Mozilla/5.0 CelticWorshipWebsite/1.0" },
-      next: { revalidate: 300 },
-    });
-    if (!response.ok) return [];
-
-    const payload = (await response.json()) as unknown;
-    if (!Array.isArray(payload)) return [];
+    const payload = await fetchCatalogArray<WooStoreProduct>(endpoint, fixtureProducts());
 
     const selected = new Map<string, ShopSectionProduct>();
-    for (const rawProduct of payload as WooStoreProduct[]) {
+    for (const rawProduct of payload) {
       const product = normalizeProduct(rawProduct);
       if (!product) continue;
 
