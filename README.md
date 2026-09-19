@@ -31,6 +31,19 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 In production, set `NEXT_PUBLIC_SITE_URL` to the live site origin so Stripe returns customers to the right success and cancel pages.
 
+## Community signup email
+
+The homepage community form sends each consented signup to `info@celticworship.co.uk` through the SiteGround mailbox SMTP server. Configure these variables in the SiteGround Node.js project environment (and in `.env.local` for local testing):
+
+```bash
+SMTP_HOST=the-outgoing-server-from-siteground
+SMTP_PORT=465
+SMTP_USER=info@celticworship.co.uk
+SMTP_PASSWORD=the-mailbox-password
+```
+
+Find the exact outgoing server in **Site Tools → Email → Accounts → Actions → Mail Configuration → Manual Settings**. Keep `SMTP_PASSWORD` out of source control.
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

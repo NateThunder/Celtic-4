@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import AlbumStack from "./components/AlbumStack";
+import CommunitySignupForm from "./components/CommunitySignupForm";
 import EventMusicDivider from "./components/EventMusicDivider";
 import FeaturedVideo from "./components/FeaturedVideo";
 import HomeEvents from "./components/HomeEvents";
@@ -224,32 +225,7 @@ export default async function Home() {
             <div className="home-community-inner" data-home-reveal>
               <h2 id="home-community-title">Join Our Community</h2>
               <p>Sign up for music, events, and stories from Celtic Worship.</p>
-              <form className="home-community-form" aria-describedby="community-status">
-                <div className="home-community-name-row">
-                  <label>
-                    <span>First name</span>
-                    <input type="text" name="firstName" placeholder="First name*" disabled />
-                  </label>
-                  <label>
-                    <span>Last name</span>
-                    <input type="text" name="lastName" placeholder="Last name*" disabled />
-                  </label>
-                </div>
-                <label>
-                  <span>Email address</span>
-                  <input type="email" name="email" placeholder="Email*" disabled />
-                </label>
-                <button type="button" disabled>
-                  Sign-up coming soon
-                </button>
-                <label className="home-community-consent">
-                  <input type="checkbox" disabled />
-                  <span>I agree to receive email updates from Celtic Worship.</span>
-                </label>
-                <p id="community-status" className="home-community-status">
-                  Mailing-list integration is coming soon.
-                </p>
-              </form>
+              <CommunitySignupForm />
             </div>
           </div>
         </section>
