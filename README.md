@@ -18,7 +18,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Shop checkout
 
-The storefront uses a browser-persisted cart and submits product IDs, selected options and quantities directly to WooCommerce using a browser form POST. WooCommerce validates availability and quantities, calculates prices, and handles customer details, delivery and payments on its own checkout page. No Worker-to-WooCommerce cart requests are required. Install the companion CMS handoff plugin before publishing; see [CLOUDFLARE.md](./CLOUDFLARE.md).
+The storefront uses its own checkout at `/shop/checkout`. Same-origin `/api/shop` routes connect the cart and checkout to WooCommerce, which validates stock, calculates totals and creates orders. Existing browser carts are migrated into the WooCommerce session. Customers review delivery and the final total before paying; the server checks the total again before submitting payment. Stripe card fields use `SHOP_STRIPE_PUBLISHABLE_KEY`, which must match the WooCommerce Stripe account and mode. PayPal approval and card verification may open gateway pages. This requires a running Next.js server, not a static export.
 
 ## Stem Checkout
 

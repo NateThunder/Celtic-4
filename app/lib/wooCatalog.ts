@@ -22,7 +22,7 @@ export async function fetchCatalogArray<T>(endpoint: URL, fallback: readonly T[]
     if (endpoint.searchParams.get("type") === "variation") {
       const parents = endpoint.searchParams.get("parent")?.split(",").filter(Boolean);
       products = parents
-        ? parents.flatMap((parent) => catalog.variations[parent] ?? [])
+        ? parents.flatMap((parent) => (catalog.variations as Record<string, typeof products>)[parent] ?? [])
         : Object.values(catalog.variations).flat();
     }
     const include = endpoint.searchParams.get("include");
