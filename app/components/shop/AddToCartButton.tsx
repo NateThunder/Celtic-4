@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useShopCart, type ShopCartItemInput } from "./ShopCartContext";
 import styles from "./shopCart.module.css";
+import { COMMERCE_DISABLED } from "../../lib/shopConfig";
 
 type AddToCartButtonProps = {
   item?: ShopCartItemInput;
@@ -55,18 +56,8 @@ export default function AddToCartButton({
     }
   };
 
-  return (
-    <button
-      type="button"
-      className={`${styles.addButton}${className ? ` ${className}` : ""}`}
-      onClick={() => {
-        void handleClick();
-      }}
-      data-added={isAdded ? "true" : "false"}
-      data-busy={isBusy ? "true" : "false"}
-      disabled={isBusy || disabled || !item}
-      aria-label={item ? `Add ${item.name} to cart` : disabledLabel}
-    >
+  const buttonContent = (
+    <>
       <span className={styles.addButtonIcon} aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -80,7 +71,35 @@ export default function AddToCartButton({
           <circle cx="18" cy="20" r="1.5" fill="currentColor" />
         </svg>
       </span>
-      {isAdded ? "Added" : item ? label : disabledLabel}
+      {COMMERCE_DISABLED ? "Buy via WooCommerce" : isAdded ? "Added" : item ? label : disabledLabel}
+    </>
+  );
+
+  if (COMMERCE_DISABLED && item?.permalink && !disabled) {
+    return (
+      <a
+        className={`${styles.addButton}${className ? ` ${className}` : ""}`}
+        href={item.permalink}
+        aria-label={`Buy ${item.name} via WooCommerce test checkout`}
+      >
+        {buttonContent}
+      </a>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      className={`${styles.addButton}${className ? ` ${className}` : ""}`}
+      onClick={() => {
+        void handleClick();
+      }}
+      data-added={isAdded ? "true" : "false"}
+      data-busy={isBusy ? "true" : "false"}
+      disabled={COMMERCE_DISABLED || isBusy || disabled || !item}
+      aria-label={COMMERCE_DISABLED ? "Purchasing disabled on preview" : item ? `Add ${item.name} to cart` : disabledLabel}
+    >
+      {buttonContent}
     </button>
   );
 }

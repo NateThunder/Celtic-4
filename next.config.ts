@@ -27,6 +27,10 @@ try {
 
 const nextConfig: NextConfig = {
   images: {
+    // SiteGround blocks Next's `/_next/image` endpoint at nginx with a 403.
+    // Serve image sources directly so the same build works on SiteGround and
+    // Cloudflare without routing otherwise-public files through that endpoint.
+    unoptimized: true,
     // Required for local WooCommerce hosts (localhost/127.0.0.1) in development.
     dangerouslyAllowLocalIP: allowLocalWooIp,
     remotePatterns: [
@@ -44,6 +48,11 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "www.celticworship.co.uk",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "cms.celticworship.co.uk",
         pathname: "/**",
       },
       {

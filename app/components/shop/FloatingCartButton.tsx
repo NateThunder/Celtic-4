@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 import { useShopCart } from "./ShopCartContext";
 import styles from "./shopCart.module.css";
+import { COMMERCE_DISABLED } from "../../lib/shopConfig";
 
 export default function FloatingCartButton() {
   const { items, totalLabel, isLoading, error, updateQuantity, removeItem, clearCart, itemCount } = useShopCart();
@@ -56,6 +57,8 @@ export default function FloatingCartButton() {
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [isDrawerOpen]);
+
+  if (COMMERCE_DISABLED) return null;
 
   return (
     <>
@@ -208,7 +211,7 @@ export default function FloatingCartButton() {
         </div>
 
         <footer className={styles.cartDrawerFooter}>
-          <p className={styles.cartDrawerTotal}>Total: {totalLabel}</p>
+          <p className={styles.cartDrawerTotal}>Estimated subtotal: {totalLabel}</p>
 
           <div className={styles.cartDrawerFooterActions}>
             <Link

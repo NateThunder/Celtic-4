@@ -1,0 +1,5 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["app/**/*.ts", "app/**/*.tsx", "cloudflare/**/*.ts", "proxy.ts", "vite.config.ts", "worker-configuration.d.ts"],
+  "exclude": ["node_modules", ".next", "dist"]
+}

@@ -16,21 +16,9 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Shop card payments
+## Shop checkout
 
-The shop checkout uses the enabled WooCommerce gateways: FunnelKit Stripe (`fkwcs_stripe`) and PayPal. Configure the public browser key from the **same Stripe account and test/live mode** as FunnelKit in `.env.local` (and in hosting environment variables when deploying):
-
-```bash
-SHOP_STRIPE_PUBLISHABLE_KEY=pk_test_...
-```
-
-Card details are collected directly by Stripe Elements on `/shop/checkout`. Only a PaymentMethod ID is sent through the site to WooCommerce. WooCommerce calculates and charges the order, and its gateway handles fulfillment and webhooks. Bank authentication runs on the checkout page before continuing to WooCommerce's order verification/receipt page. The shop does not use `STRIPE_SECRET_KEY`.
-
-Use a matching WooCommerce test environment and test key to exercise successful payments, declines, and 3-D Secure before live transactions. Run `node --experimental-strip-types --test tests/shopPayments.test.mjs` for payment response checks.
-
-Apple Pay and Google Pay use Stripe's Express Checkout Element through the same WooCommerce card gateway. Customers complete their billing/delivery fields, then prepare the wallet payment so WooCommerce calculates the total including shipping and tax. The server checks that total again before charging; changed totals require another review. Only wallets supported by the customer's browser/account are shown.
-
-Wallets require **HTTPS**, including during development, and the checkout hostname must be registered in the same Stripe account under **Settings → Payment method domains**, in the matching test/live mode. Plain `http://localhost:3000` displays the wallet availability message; it cannot launch these wallets. Test on a registered HTTPS development or staging domain with a supported browser and configured Apple Wallet/Google Pay account. A successful wallet payment has not been verified against the live account.
+The storefront uses a browser-persisted cart and submits product IDs, selected options and quantities directly to WooCommerce using a browser form POST. WooCommerce validates availability and quantities, calculates prices, and handles customer details, delivery and payments on its own checkout page. No Worker-to-WooCommerce cart requests are required. Install the companion CMS handoff plugin before publishing; see [CLOUDFLARE.md](./CLOUDFLARE.md).
 
 ## Stem Checkout
 
@@ -57,6 +45,8 @@ To learn more about Next.js, take a look at the following resources:
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
 ## Deploy on Vercel
+
+For the configured Cloudflare Worker preview, see [CLOUDFLARE.md](./CLOUDFLARE.md).
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 

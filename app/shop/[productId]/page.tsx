@@ -6,6 +6,7 @@ import AddToCartButton from "../../components/shop/AddToCartButton";
 import EqualHeightCardGrid from "../../components/shop/EqualHeightCardGrid";
 import ExpandableDescription from "../../components/shop/ExpandableDescription";
 import { WOO_BASE_URL } from "../../lib/woo";
+import { fetchCatalogArray, fetchCatalogObject, fixtureProduct, fixtureProducts, fixtureVariations } from "../../lib/wooCatalog";
 import ProductImageGallery from "./ProductImageGallery";
 import ScrollToProductTop from "./ScrollToProductTop";
 import VariableProductSelector, {
@@ -52,6 +53,7 @@ type WooStoreProductVariationSummary = {
 type WooStoreProduct = {
   id: number;
   name: string;
+  permalink?: string;
   type?: string;
   parent?: number;
   has_options?: boolean;
@@ -93,17 +95,7 @@ function formatProductPrice(prices?: WooStorePrices): string {
 
 async function getStoreProduct(productId: number): Promise<WooStoreProduct | null> {
   const endpoint = new URL(`/wp-json/wc/store/v1/products/${productId}`, WOO_BASE_URL);
-  const response = await fetch(endpoint.toString(), {
-    next: { revalidate: 300 },
-  });
-
-  if (response.status === 404) return null;
-  if (!response.ok) {
-    throw new Error(`Store request failed with ${response.status}.`);
-  }
-
-  const payload = (await response.json()) as unknown;
-  return payload && typeof payload === "object" ? (payload as WooStoreProduct) : null;
+  return fetchCatalogObject<WooStoreProduct>(endpoint, fixtureProduct(productId));
 }
 
 async function getStoreProductVariations(productId: number): Promise<WooStoreProduct[]> {
@@ -112,16 +104,7 @@ async function getStoreProductVariations(productId: number): Promise<WooStorePro
   endpoint.searchParams.set("parent", String(productId));
   endpoint.searchParams.set("per_page", "100");
 
-  const response = await fetch(endpoint.toString(), {
-    next: { revalidate: 300 },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Variation request failed with ${response.status}.`);
-  }
-
-  const payload = (await response.json()) as unknown;
-  return Array.isArray(payload) ? (payload as WooStoreProduct[]) : [];
+  return fetchCatalogArray<WooStoreProduct>(endpoint, fixtureVariations(productId));
 }
 
 function getCategoryKeys(category: WooStoreCategory): string[] {
@@ -161,20 +144,11 @@ async function getRecommendedProducts(currentProduct: WooStoreProduct): Promise<
   endpoint.searchParams.set("orderby", "date");
   endpoint.searchParams.set("order", "desc");
 
-  const response = await fetch(endpoint.toString(), {
-    next: { revalidate: 300 },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Recommended products request failed with ${response.status}.`);
-  }
-
-  const payload = (await response.json()) as unknown;
-  if (!Array.isArray(payload)) return [];
+  const payload = await fetchCatalogArray<WooStoreProduct>(endpoint, fixtureProducts());
 
   const currentCategoryKeys = getProductCategoryKeys(currentProduct);
 
-  return (payload as WooStoreProduct[])
+  return payload
     .map((product, index) => ({
       product,
       index,
@@ -268,6 +242,7 @@ function renderRecommendedProductCard(product: WooStoreProduct) {
                 price,
                 imageSrc: image?.src,
                 imageAlt: image?.alt || product.name,
+                permalink: product.permalink,
               }}
             />
           )}
@@ -347,8 +322,11 @@ export default async function ShopProductPage({ params }: ShopProductPageProps) 
                       name: product.name,
                       href: `/shop/${product.id}`,
                       price,
+                  unitAmount: Number(product.prices?.price) / 10 ** Number(product.prices?.currency_minor_unit ?? 2),
+                  currency: product.prices?.currency_code || "GBP",
                       imageSrc: image?.src,
                       imageAlt: image?.alt || product.name,
+                      permalink: product.permalink,
                     }}
                   />
                   <Link className={styles.actionGhost} href="/shop">

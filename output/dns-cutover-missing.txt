@@ -1,0 +1,6 @@
+$ORIGIN celticworship.co.uk.
+$TTL 300
+www.cms IN A 35.214.36.232
+cms IN TXT "v=spf1 +a +mx include:celticworship.co.uk.spf.auto.dnssmarthost.net ~all"
+default._domainkey IN CNAME celticworship.co.uk.default.dkim.auto.dnssmarthost.net.
+default._domainkey.cms IN TXT "v=DKIM1; k=rsa; p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC3tLXC3nmo9ow3/OPzjUQbvW3QmPEw0uDpuCOeLPWXC2MkNZgp13IvrbnCiccPVmnZdatlLf8SV2UX3eE587Ptc39e+qQ/5f88TOcLcNnKrVk2wMd8vhES4m3n7ATxKRKzZW0Og/H7r6HT2aM6g0g++E2V/6C1DfEYD3MFl9BYhwIDAQAB;"

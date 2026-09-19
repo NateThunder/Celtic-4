@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
-import { mkdir, readFile, writeFile } from "fs/promises";
 import path from "path";
+import { readTracks, saveTrack, saveAudio, audioUrl } from "#stem-storage";
 import type { Stem, Track } from "../components/stem-player/types";
 import { sanitizePriceInput } from "./prices";
 
@@ -15,10 +15,6 @@ const STEM_COLORS = [
   "#3f6f55",
 ];
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const TRACKS_FILE = path.join(DATA_DIR, "stem-tracks.json");
-const PUBLIC_UPLOAD_ROOT = path.join(process.cwd(), "public", "stems", "uploads");
-const PUBLIC_UPLOAD_PATH = "/stems/uploads";
 
 export type StemUploadFile = {
   name: string;
@@ -69,18 +65,7 @@ export function isSupportedAudioFile(fileName: string, type?: string): boolean {
 }
 
 export async function getStemTracks(): Promise<StoredTrack[]> {
-  try {
-    const file = await readFile(TRACKS_FILE, "utf8");
-    const parsed = JSON.parse(file) as unknown;
-    return Array.isArray(parsed) ? parsed.filter(isStoredTrack) : [];
-  } catch {
-    return [];
-  }
-}
-
-async function writeStemTracks(tracks: StoredTrack[]) {
-  await mkdir(DATA_DIR, { recursive: true });
-  await writeFile(TRACKS_FILE, `${JSON.stringify(tracks, null, 2)}\n`, "utf8");
+  return (await readTracks()).filter(isStoredTrack);
 }
 
 export async function createStemTrack(input: {
@@ -91,19 +76,16 @@ export async function createStemTrack(input: {
 }): Promise<StoredTrack> {
   const title = input.title.trim() || "Untitled Stem Session";
   const trackId = getSafeTrackId(title);
-  const trackUploadDir = path.join(PUBLIC_UPLOAD_ROOT, trackId);
-
-  await mkdir(trackUploadDir, { recursive: true });
 
   const stems: Stem[] = await Promise.all(
     input.stems.map(async (stemFile, index) => {
       const safeFileName = getSafeFileName(stemFile.fileName, index);
-      await writeFile(path.join(trackUploadDir, safeFileName), stemFile.buffer);
+      await saveAudio(`stems/uploads/${trackId}/${safeFileName}`, stemFile.buffer, stemFile.type);
 
       return {
         id: `${trackId}-${index + 1}`,
         name: stemFile.name.trim() || `Stem ${index + 1}`,
-        fileUrl: `${PUBLIC_UPLOAD_PATH}/${trackId}/${safeFileName}`,
+        fileUrl: audioUrl(`stems/uploads/${trackId}/${safeFileName}`),
         color: STEM_COLORS[index % STEM_COLORS.length],
         fileName: stemFile.fileName,
         price: sanitizePriceInput(stemFile.price || "") || undefined,
@@ -120,8 +102,7 @@ export async function createStemTrack(input: {
     createdAt: new Date().toISOString(),
   };
 
-  const existingTracks = await getStemTracks();
-  await writeStemTracks([track, ...existingTracks]);
+  await saveTrack(track);
 
   return track;
 }
@@ -151,19 +132,17 @@ export async function updateStemTrack(input: {
     price: sanitizePriceInput(priceByStemId.get(stem.id) || "") || undefined,
   }));
 
-  const trackUploadDir = path.join(PUBLIC_UPLOAD_ROOT, currentTrack.id);
-  await mkdir(trackUploadDir, { recursive: true });
 
   const newStems: Stem[] = await Promise.all(
     input.newStems.map(async (stemFile, index) => {
       const stemIndex = updatedExistingStems.length + index;
       const safeFileName = getSafeFileName(stemFile.fileName, stemIndex);
-      await writeFile(path.join(trackUploadDir, safeFileName), stemFile.buffer);
+      await saveAudio(`stems/uploads/${currentTrack.id}/${safeFileName}`, stemFile.buffer, stemFile.type);
 
       return {
         id: `${currentTrack.id}-${stemIndex + 1}`,
         name: stemFile.name.trim() || `Stem ${stemIndex + 1}`,
-        fileUrl: `${PUBLIC_UPLOAD_PATH}/${currentTrack.id}/${safeFileName}`,
+        fileUrl: audioUrl(`stems/uploads/${currentTrack.id}/${safeFileName}`),
         color: STEM_COLORS[stemIndex % STEM_COLORS.length],
         fileName: stemFile.fileName,
         price: sanitizePriceInput(stemFile.price || "") || undefined,
@@ -179,9 +158,7 @@ export async function updateStemTrack(input: {
     stems: [...updatedExistingStems, ...newStems],
   };
 
-  const nextTracks = [...existingTracks];
-  nextTracks[trackIndex] = updatedTrack;
-  await writeStemTracks(nextTracks);
+  await saveTrack(updatedTrack);
 
   return updatedTrack;
 }

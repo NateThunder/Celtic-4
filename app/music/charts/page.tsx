@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import SiteHeader from "../../components/SiteHeader";
 import { WOO_BASE_URL } from "../../lib/woo";
+import { fetchCatalogArray, fixtureProducts, fixtureVariations } from "../../lib/wooCatalog";
 import MusicSectionTabs from "../MusicSectionTabs";
 import ChartsPageClient, { type SheetMusicProduct } from "./ChartsPageClient";
 import styles from "./charts.module.css";
@@ -68,13 +69,8 @@ async function getAvailableSheetMusic(): Promise<SheetMusicProduct[]> {
   endpoint.searchParams.set("orderby", "menu_order");
   endpoint.searchParams.set("order", "asc");
 
-  const response = await fetch(endpoint.toString(), { next: { revalidate: 300 } });
-  if (!response.ok) throw new Error(`Sheet music request failed with ${response.status}.`);
-
-  const payload = (await response.json()) as unknown;
-  if (!Array.isArray(payload)) return [];
-
-  const sheetMusicProducts = (payload as WooStoreProduct[])
+  const payload = await fetchCatalogArray<WooStoreProduct>(endpoint, fixtureProducts());
+  const sheetMusicProducts = payload
     .filter((product) => product.is_in_stock !== false && isSheetMusicProduct(product));
 
   return Promise.all(sheetMusicProducts.map(async (product) => {
@@ -94,11 +90,11 @@ async function getAvailableSheetMusic(): Promise<SheetMusicProduct[]> {
       variationsEndpoint.searchParams.set("parent", String(product.id));
       variationsEndpoint.searchParams.set("per_page", "100");
 
-      const variationsResponse = await fetch(variationsEndpoint.toString(), { next: { revalidate: 300 } });
-      if (variationsResponse.ok) {
-        const variationsPayload = (await variationsResponse.json()) as unknown;
-        if (Array.isArray(variationsPayload)) {
-          packageOptions = (variationsPayload as WooStoreProduct[]).flatMap((variation) => {
+      const variationsPayload = await fetchCatalogArray<WooStoreProduct>(
+        variationsEndpoint,
+        fixtureVariations(product.id),
+      );
+      packageOptions = variationsPayload.flatMap((variation) => {
             const summaryAttribute = variationSummaries.get(variation.id)?.find(
               (attribute) => attribute.name?.trim().toLowerCase() === "package",
             );
@@ -121,8 +117,6 @@ async function getAvailableSheetMusic(): Promise<SheetMusicProduct[]> {
             const packageOrder = { standard: 0, complete: 1 } as Record<string, number>;
             return (packageOrder[left.label.toLowerCase()] ?? 2) - (packageOrder[right.label.toLowerCase()] ?? 2);
           });
-        }
-      }
     }
 
     return {

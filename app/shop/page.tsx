@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { WOO_BASE_URL } from "../lib/woo";
+import { fetchCatalogArray, fixtureCategories, fixtureProducts } from "../lib/wooCatalog";
 import AddToCartButton from "../components/shop/AddToCartButton";
 import EqualHeightCardGrid from "../components/shop/EqualHeightCardGrid";
 import ExpandableDescription from "../components/shop/ExpandableDescription";
@@ -28,6 +29,7 @@ type WooStoreCategory = {
 type WooStoreProduct = {
   id: number;
   name: string;
+  permalink?: string;
   type?: string;
   has_options?: boolean;
   variation?: string;
@@ -314,8 +316,11 @@ function renderProductCard(item: ProductCardItem) {
                 name: item.cartItemName,
                 href: `/shop/${item.product.id}`,
                 price: item.priceLabel,
+                  unitAmount: Number(item.product.prices?.price) / 10 ** Number(item.product.prices?.currency_minor_unit ?? 2),
+                  currency: item.product.prices?.currency_code || "GBP",
                 imageSrc: image?.src,
                 imageAlt: image?.alt || item.product.name,
+                permalink: item.product.permalink,
               }}
             />
           )}
@@ -334,32 +339,14 @@ async function getStoreProducts(): Promise<WooStoreProduct[]> {
   endpoint.searchParams.set("orderby", "date");
   endpoint.searchParams.set("order", "desc");
 
-  const response = await fetch(endpoint.toString(), {
-    next: { revalidate: 300 },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Store request failed with ${response.status}.`);
-  }
-
-  const payload = (await response.json()) as unknown;
-  return Array.isArray(payload) ? (payload as WooStoreProduct[]) : [];
+  return fetchCatalogArray<WooStoreProduct>(endpoint, fixtureProducts());
 }
 
 async function getStoreCategories(): Promise<WooStoreCategory[]> {
   const endpoint = new URL("/wp-json/wc/store/v1/products/categories", WOO_BASE_URL);
   endpoint.searchParams.set("per_page", "100");
 
-  const response = await fetch(endpoint.toString(), {
-    next: { revalidate: 300 },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Category request failed with ${response.status}.`);
-  }
-
-  const payload = (await response.json()) as unknown;
-  return Array.isArray(payload) ? (payload as WooStoreCategory[]) : [];
+  return fetchCatalogArray<WooStoreCategory>(endpoint, fixtureCategories());
 }
 
 type ShopPageProps = {
