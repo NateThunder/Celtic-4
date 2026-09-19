@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Celtic Worship Cart Handoff
  * Description: Receives a browser cart and opens WooCommerce checkout without Worker-to-CMS requests.
- * Version: 1.0.0
+ * Version: 1.0.1
  */
 defined('ABSPATH') || exit;
 
@@ -13,7 +13,11 @@ add_action('woocommerce_api_cw_cart_handoff', function () {
     };
     if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') $fail('Please start checkout from the shop cart.', 405);
     // A normal top-level browser POST supplies Origin. Do not accept arbitrary sites.
-    $origins = apply_filters('cw_cart_handoff_origins', ['https://celticworship.co.uk', 'https://www.celticworship.co.uk']);
+    $origins = apply_filters('cw_cart_handoff_origins', [
+        'https://celticworship.co.uk',
+        'https://www.celticworship.co.uk',
+        'https://ifedadet1.sg-host.com',
+    ]);
     $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
     if (!in_array($origin, $origins, true)) $fail('Please start checkout from the Celtic Worship website.', 403);
     $raw = isset($_POST['items']) && is_string($_POST['items']) ? wp_unslash($_POST['items']) : '';

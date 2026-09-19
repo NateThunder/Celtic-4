@@ -19,6 +19,12 @@ export async function fetchCatalogArray<T>(endpoint: URL, fallback: readonly T[]
   if (variationMatch) return ((catalog.variations as Record<string, unknown[]>)[variationMatch[1]] ?? []) as T[];
   if (endpoint.pathname.endsWith("/products")) {
     let products = catalog.products;
+    if (endpoint.searchParams.get("type") === "variation") {
+      const parents = endpoint.searchParams.get("parent")?.split(",").filter(Boolean);
+      products = parents
+        ? parents.flatMap((parent) => catalog.variations[parent] ?? [])
+        : Object.values(catalog.variations).flat();
+    }
     const include = endpoint.searchParams.get("include");
     if (include) {
       const ids = new Set(include.split(",").map(Number));
