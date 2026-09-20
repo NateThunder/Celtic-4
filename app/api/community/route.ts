@@ -52,6 +52,6 @@ export async function POST(request: Request) {
       event: "community_signup_delivery_failed",
       reason: error instanceof Error ? error.message : "unknown",
     }));
-    return json({ error: "Email delivery is temporarily unavailable." }, 503);
+    return json({ error: "Mailing-list signup is temporarily unavailable." }, 503);
   }
 }

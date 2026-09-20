@@ -1,55 +1,63 @@
-import nodemailer from "nodemailer";
 import type { CommunitySignup } from "./communitySignup";
 
-const DESTINATION = "info@celticworship.co.uk";
-
-function requiredEnvironment(name: string): string {
-  const value = process.env[name]?.trim();
-  if (!value) throw new Error(`Missing ${name} email configuration.`);
-  return value;
-}
-
-function escapeHtml(value: string): string {
-  return value.replace(/[&<>"']/g, (character) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;",
-  })[character] || character);
-}
+const DEFAULT_SUBSCRIBE_URL =
+  "https://cms.celticworship.co.uk/wp-admin/admin-ajax.php?action=tnp&na=s";
 
 export async function deliverCommunitySignup(signup: CommunitySignup): Promise<void> {
-  const host = requiredEnvironment("SMTP_HOST");
-  const user = requiredEnvironment("SMTP_USER");
-  const password = requiredEnvironment("SMTP_PASSWORD");
-  const port = Number(process.env.SMTP_PORT || "465");
-  if (!Number.isInteger(port) || port < 1 || port > 65_535) {
-    throw new Error("Invalid SMTP_PORT email configuration.");
+  const subscribeUrl = process.env.NEWSLETTER_SUBSCRIBE_URL?.trim() || DEFAULT_SUBSCRIBE_URL;
+  const signupFields = {
+    nlang: "",
+    nn: signup.firstName,
+    ns: signup.lastName,
+    ne: signup.email,
+    ny: "1",
+  };
+
+  const challengeResponse = await fetch(subscribeUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "User-Agent": "CelticWorshipWebsite/1.0",
+    },
+    body: new URLSearchParams(signupFields),
+    cache: "no-store",
+    redirect: "follow",
+  });
+
+  if (!challengeResponse.ok) {
+    throw new Error(`Newsletter subscription failed with status ${challengeResponse.status}.`);
   }
 
-  const transporter = nodemailer.createTransport({
-    host,
-    port,
-    secure: port === 465,
-    auth: { user, pass: password },
-  });
-  const fullName = `${signup.firstName} ${signup.lastName}`;
+  const challengeHtml = await challengeResponse.text();
+  const timestamp = challengeHtml.match(/name=["']ts["']\s+value=["'](\d+)["']/i)?.[1];
+  let response = challengeResponse;
 
-  const result = await transporter.sendMail({
-    to: DESTINATION,
-    from: { address: user, name: "Celtic Worship website" },
-    replyTo: { address: signup.email, name: fullName },
-    subject: `Community sign-up request — ${fullName}`,
-    text: [
-      "A visitor has requested to join the Celtic Worship community mailing list.",
-      "",
-      `Name: ${fullName}`,
-      `Email: ${signup.email}`,
-      "Consent: The visitor agreed to receive email updates from Celtic Worship.",
-    ].join("\n"),
-    html: `<h1>Community sign-up request</h1><p>A visitor has requested to join the Celtic Worship community mailing list.</p><dl><dt>Name</dt><dd>${escapeHtml(fullName)}</dd><dt>Email</dt><dd>${escapeHtml(signup.email)}</dd><dt>Consent</dt><dd>The visitor agreed to receive email updates from Celtic Worship.</dd></dl>`,
-  });
+  if (timestamp) {
+    const endpoint = new URL(subscribeUrl);
+    endpoint.search = "";
+    response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "User-Agent": "CelticWorshipWebsite/1.0",
+      },
+      body: new URLSearchParams({
+        action: "tnp",
+        na: "s",
+        ...signupFields,
+        ts: timestamp,
+      }),
+      cache: "no-store",
+      redirect: "follow",
+    });
+  }
 
-  console.log(JSON.stringify({ event: "community_signup_delivered", messageId: result.messageId }));
+  if (!response.ok) {
+    throw new Error(`Newsletter subscription failed with status ${response.status}.`);
+  }
+
+  console.log(JSON.stringify({
+    event: "community_signup_delivered",
+    provider: "wordpress-newsletter",
+  }));
 }
