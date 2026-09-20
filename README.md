@@ -31,18 +31,17 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 In production, set `NEXT_PUBLIC_SITE_URL` to the live site origin so Stripe returns customers to the right success and cancel pages.
 
-## Community signup email
+## Community mailing list
 
-The homepage community form sends each consented signup to `info@celticworship.co.uk` through the SiteGround mailbox SMTP server. Configure these variables in the SiteGround Node.js project environment (and in `.env.local` for local testing):
+The homepage community form subscribes visitors through The Newsletter Plugin on the
+WordPress CMS. By default it posts server-side to the public subscription endpoint at
+`cms.celticworship.co.uk`, so no WordPress credentials are stored in this application.
+
+To point a non-production environment at a different WordPress installation, set:
 
 ```bash
-SMTP_HOST=the-outgoing-server-from-siteground
-SMTP_PORT=465
-SMTP_USER=info@celticworship.co.uk
-SMTP_PASSWORD=the-mailbox-password
+NEWSLETTER_SUBSCRIBE_URL=https://example.com/wp-admin/admin-ajax.php?action=tnp&na=s
 ```
-
-Find the exact outgoing server in **Site Tools → Email → Accounts → Actions → Mail Configuration → Manual Settings**. Keep `SMTP_PASSWORD` out of source control.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
