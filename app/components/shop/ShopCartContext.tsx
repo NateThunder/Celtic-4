@@ -202,6 +202,16 @@ function toVariationLabel(variation?: WooCartItemVariation[]): string {
     .join(" / ");
 }
 
+function toVariationInput(variation?: WooCartItemVariation[]): ShopCartVariationInput[] {
+  if (!Array.isArray(variation)) return [];
+
+  return variation.flatMap((option) => {
+    const attribute = option.attribute?.trim() || option.name?.trim() || "";
+    const value = option.value?.trim() || "";
+    return attribute && value ? [{ attribute, value }] : [];
+  });
+}
+
 function hasNonZeroAmount(rawValue: unknown): boolean {
   const amount = toMinorAmount(rawValue);
   return amount !== null && Math.abs(amount) > 0;
@@ -236,6 +246,7 @@ function toShopCartItems(payload: WooCartPayload): ShopCartItem[] {
         imageSrc: image?.src || image?.thumbnail,
         imageAlt: image?.alt || item.name,
         quantity: Math.max(1, Math.round(item.quantity)),
+        variation: toVariationInput(item.variation),
         variationLabel: toVariationLabel(item.variation),
       };
     });

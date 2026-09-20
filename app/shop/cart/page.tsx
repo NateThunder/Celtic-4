@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SiteHeader from "../../components/SiteHeader";
 import { useShopCart } from "../../components/shop/ShopCartContext";
+import ShopCheckoutHandoff from "../../components/shop/ShopCheckoutHandoff";
 import styles from "./cart.module.css";
 
 export default function ShopCartPage() {
@@ -94,9 +95,9 @@ export default function ShopCartPage() {
               <div className={styles.footer}>
                 <p className={styles.total}>Estimated subtotal: {totalLabel}</p>
                 <div className={styles.footerActions}>
-                  <Link href="/shop/checkout" className={styles.checkoutLink}>
+                  <ShopCheckoutHandoff className={styles.checkoutLink}>
                     Checkout
-                  </Link>
+                  </ShopCheckoutHandoff>
                   <button
                     type="button"
                     className={styles.clearButton}

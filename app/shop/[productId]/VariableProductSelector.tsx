@@ -43,6 +43,7 @@ export type VariableProduct = {
   images?: VariableProductImage[];
   prices?: VariableProductPrices;
   attributes?: VariableProductAttribute[];
+  is_in_stock?: boolean;
 };
 
 export type VariableProductVariation = {
@@ -376,7 +377,10 @@ export default function VariableProductSelector({
       }
     : undefined;
 
-  const disabledLabel = exactSelectedVariation && !selectedVariation ? "Out of Stock" : "Select Options";
+  const hasInStockVariation = variations.some(isVariationInStock);
+  const disabledLabel = product.is_in_stock === false || !hasInStockVariation || (exactSelectedVariation && !selectedVariation)
+    ? "Out of Stock"
+    : "Select Options";
 
   return (
     <article className={styles.card}>

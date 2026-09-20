@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 import { useShopCart } from "./ShopCartContext";
+import ShopCheckoutHandoff from "./ShopCheckoutHandoff";
 import styles from "./shopCart.module.css";
 import { COMMERCE_DISABLED } from "../../lib/shopConfig";
 
@@ -214,15 +215,14 @@ export default function FloatingCartButton() {
           <p className={styles.cartDrawerTotal}>Estimated subtotal: {totalLabel}</p>
 
           <div className={styles.cartDrawerFooterActions}>
-            <Link
-              href="/shop/checkout"
+            <ShopCheckoutHandoff
               className={styles.cartDrawerCheckoutLink}
-              onClick={() => {
+              onSubmit={() => {
                 setIsDrawerOpen(false);
               }}
             >
               Checkout
-            </Link>
+            </ShopCheckoutHandoff>
             <Link
               href="/shop/cart"
               className={styles.cartDrawerSecondaryLink}
