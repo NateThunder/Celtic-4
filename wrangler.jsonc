@@ -19,8 +19,20 @@
     "database_name": "celtic-worship-stems",
     "database_id": "166d6272-2637-4631-96b6-80707740f84a",
     "migrations_dir": "migrations"
+  }, {
+    "binding": "COMMERCE_DB",
+    "database_name": "celtic-worship-commerce",
+    "database_id": "888b954c-19e5-4c4b-b3d8-1dfff35c4232",
+    "migrations_dir": "commerce-migrations"
   }],
-  "r2_buckets": [{ "binding": "STEMS_BUCKET", "bucket_name": "celtic-worship-stems" }],
+  "r2_buckets": [
+    { "binding": "STEMS_BUCKET", "bucket_name": "celtic-worship-stems" },
+    {
+      "binding": "COMMERCE_BACKUPS",
+      "bucket_name": "celtic-worship-commerce-backups",
+      "jurisdiction": "eu"
+    }
+  ],
   "kv_namespaces": [{
     "binding": "PRODUCT_CATALOG",
     "id": "6ae6af9b542246189b51604b83be8056"

@@ -317,6 +317,8 @@ export default async function ShopProductPage({ params }: ShopProductPageProps) 
                 <div className={styles.actions}>
                   <AddToCartButton
                     className={styles.actionAdd}
+                    disabled={product.is_in_stock === false}
+                    disabledLabel="Out of Stock"
                     item={{
                       id: product.id,
                       name: product.name,

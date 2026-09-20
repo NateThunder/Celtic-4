@@ -407,6 +407,8 @@
 }
 
 .cartDrawerCheckoutLink {
+  cursor: pointer;
+  font-family: inherit;
   border-radius: 999px;
   border: 1px solid #101010;
   background: #101010;

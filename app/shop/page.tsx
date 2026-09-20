@@ -37,6 +37,7 @@ type WooStoreProduct = {
   images?: WooStoreImage[];
   prices?: WooStorePrices;
   categories?: WooStoreCategory[];
+  is_in_stock?: boolean;
 };
 
 type ProductCardItem = {
@@ -280,6 +281,7 @@ function renderProductCard(item: ProductCardItem) {
   const image = item.product.images?.[0];
   const description = stripHtml(item.product.short_description);
   const hasVariableOptions = item.product.type === "variable" || item.product.has_options === true;
+  const isOutOfStock = item.product.is_in_stock === false;
 
   return (
     <li key={item.key} className={styles.card}>
@@ -306,11 +308,13 @@ function renderProductCard(item: ProductCardItem) {
         <div className={styles.cardActions}>
           {hasVariableOptions ? (
             <Link className={styles.cardOptionsLink} href={`/shop/${item.product.id}`}>
-              View Options
+              {isOutOfStock ? "Out of Stock" : "View Options"}
             </Link>
           ) : (
             <AddToCartButton
               className={styles.cardAddButton}
+              disabled={isOutOfStock}
+              disabledLabel="Out of Stock"
               item={{
                 id: item.cartItemId,
                 name: item.cartItemName,

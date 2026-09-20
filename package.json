@@ -5,7 +5,8 @@
   "imports": {
     "#stem-storage": "./app/lib/stemStorage.ts",
     "#product-catalog": "./app/lib/productCatalog.local.ts",
-    "#product-catalog-sync": "./app/lib/productCatalogSync.local.ts"
+    "#product-catalog-sync": "./app/lib/productCatalogSync.local.ts",
+    "#commerce-backup": "./app/lib/commerceBackup.local.ts"
   },
   "scripts": {
     "dev": "next dev",

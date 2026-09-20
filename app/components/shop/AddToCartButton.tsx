@@ -71,7 +71,13 @@ export default function AddToCartButton({
           <circle cx="18" cy="20" r="1.5" fill="currentColor" />
         </svg>
       </span>
-      {COMMERCE_DISABLED ? "Buy via WooCommerce" : isAdded ? "Added" : item ? label : disabledLabel}
+      {disabled || !item
+        ? disabledLabel
+        : COMMERCE_DISABLED
+          ? "Buy via WooCommerce"
+          : isAdded
+            ? "Added"
+            : label}
     </>
   );
 
@@ -97,7 +103,11 @@ export default function AddToCartButton({
       data-added={isAdded ? "true" : "false"}
       data-busy={isBusy ? "true" : "false"}
       disabled={COMMERCE_DISABLED || isBusy || disabled || !item}
-      aria-label={COMMERCE_DISABLED ? "Purchasing disabled on preview" : item ? `Add ${item.name} to cart` : disabledLabel}
+      aria-label={disabled || !item
+        ? disabledLabel
+        : COMMERCE_DISABLED
+          ? "Purchasing disabled on preview"
+          : `Add ${item.name} to cart`}
     >
       {buttonContent}
     </button>

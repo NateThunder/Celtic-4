@@ -14,6 +14,9 @@ export default defineConfig({
     }, {
       find: "#product-catalog-sync",
       replacement: fileURLToPath(new URL("./cloudflare/productCatalogSync.ts", import.meta.url)),
+    }, {
+      find: "#commerce-backup",
+      replacement: fileURLToPath(new URL("./cloudflare/commerceBackup.ts", import.meta.url)),
     }],
   },
   plugins: [
