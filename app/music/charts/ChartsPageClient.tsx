@@ -129,7 +129,7 @@ function SearchAndFilters({
             onClick={() => onFilterChange(filter)}
             aria-pressed={activeFilter === filter}
           >
-            {filter}
+            {filter === "Album Resource Packs" ? "Album Packs" : filter}
           </button>
         ))}
       </div>
