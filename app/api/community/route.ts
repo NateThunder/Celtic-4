@@ -1,5 +1,6 @@
 import { deliverCommunitySignup } from "../../lib/communitySignupDelivery";
 import { isHoneypotSubmission, parseCommunitySignup } from "../../lib/communitySignup";
+import { isSameOriginRequest } from "../../lib/requestOrigin";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,16 +21,7 @@ export async function POST(request: Request) {
     return json({ error: "Expected a JSON request." }, 415);
   }
 
-  const origin = request.headers.get("origin");
-  if (origin) {
-    try {
-      if (new URL(origin).host !== new URL(request.url).host) {
-        return json({ error: "Invalid request origin." }, 403);
-      }
-    } catch {
-      return json({ error: "Invalid request origin." }, 403);
-    }
-  }
+  if (!isSameOriginRequest(request)) return json({ error: "Invalid request origin." }, 403);
 
   let payload: unknown;
   try {
