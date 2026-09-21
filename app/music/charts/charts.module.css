@@ -1395,15 +1395,18 @@
   }
 
   .categoryPills {
-    gap: 0.7rem;
-    margin-inline: -1.1rem;
-    padding: 0.2rem 1.1rem 0.35rem;
+    min-width: 0;
+    flex-wrap: wrap;
+    gap: clamp(0.35rem, 1.5vw, 0.7rem);
+    overflow: visible;
+    padding: 0.2rem 0 0.35rem;
   }
 
   .categoryPill {
+    max-width: 100%;
     min-height: 2.9rem;
-    font-size: 0.9rem;
-    padding-inline: 1.35rem;
+    font-size: clamp(0.8rem, 3.2vw, 0.95rem);
+    padding-inline: clamp(0.65rem, 2.5vw, 1.35rem);
   }
 
 }

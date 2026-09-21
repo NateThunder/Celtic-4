@@ -1,0 +1,19 @@
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://172.17.96.1:3000
+- Environments: .env.local
+
+✓ Starting...
+Creating turbopack project { dir: 'E:\\Websites\\Celtic-4', testMode: true }
+✓ Ready in 3.1s
+ GET /music 200 in 2.8s (compile: 2.5s, render: 217ms)
+ GET /music 200 in 166ms (compile: 10ms, render: 156ms)
+ GET / 200 in 961ms (compile: 94ms, render: 867ms)
+ GET /music/charts 200 in 691ms (compile: 450ms, render: 241ms)
+ GET /api/shop/cart 200 in 2.2s (compile: 324ms, proxy.ts: 110ms, render: 1743ms)
+✓ Compiled in 326ms
+ GET /music/charts 200 in 91ms (compile: 20ms, render: 70ms)
+ GET /api/shop/cart 200 in 1383ms (compile: 5ms, proxy.ts: 7ms, render: 1372ms)
+✓ Compiled in 947ms
+✓ Compiled in 100ms
+✓ Compiled in 149ms

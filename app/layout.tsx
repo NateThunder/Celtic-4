@@ -48,6 +48,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
+        id="top"
         className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} ${anton.variable} ${bebasNeue.variable} antialiased`}
       >
         <SmoothScrollProvider>

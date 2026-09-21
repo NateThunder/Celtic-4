@@ -136,7 +136,7 @@ export default async function MusicChartsPage() {
 
   return (
     <div className="site-shell">
-      <SiteHeader hideMobileSocials />
+      <SiteHeader />
       <main className={styles.page}>
         <section className={styles.shell}>
           <MusicSectionTabs active="charts" />

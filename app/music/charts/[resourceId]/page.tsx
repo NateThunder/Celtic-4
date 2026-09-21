@@ -52,7 +52,7 @@ export default async function ChartDetailPage({ params, searchParams }: PageProp
 
   return (
     <div className="site-shell">
-      <SiteHeader hideMobileSocials />
+      <SiteHeader />
       <main className={styles.detailPage}>
         <ChartDetailPageClient
           key={`${resourceId}-${requestedResourceType ?? "default"}`}

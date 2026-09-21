@@ -1,73 +1,173 @@
-/*
-  The site footer. Five of seven pages have none; this is the pattern they
-  should inherit. Deliberately transparent so it sits on whatever ground the
-  page already lays down — the site body texture, or /about's ink gradient.
-*/
-
 .footer {
-  display: grid;
-  justify-items: center;
-  gap: 2rem;
-  padding: clamp(3.5rem, 6vw, 5.5rem) clamp(1.1rem, 4vw, 4rem) 2rem;
+  padding: 28px clamp(1.1rem, 4vw, 4rem) 20px;
   border-top: 1px solid rgba(242, 239, 233, 0.2);
   background: #000;
   color: #fff;
-  text-align: center;
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
+  text-align: left;
+}
+
+.topRow {
+  display: grid;
+  min-height: 104px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(24px, 4vw, 64px);
+  padding-bottom: 24px;
 }
 
 .brand {
   color: #fff;
   font-family: var(--font-anton), Impact, sans-serif;
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
-  line-height: 0.85;
+  font-size: 44px;
+  line-height: 0.98;
+  white-space: nowrap;
   text-decoration: none;
   text-transform: uppercase;
 }
 
-.nav,
-.socials {
+.nav {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.8rem clamp(1rem, 2.4vw, 2.2rem);
+  align-items: center;
+  gap: 4px 24px;
 }
 
-.nav a,
-.socials a {
-  color: rgba(255, 255, 255, 0.82);
-  font-family: var(--font-anton), Impact, sans-serif;
-  font-size: 0.82rem;
-  letter-spacing: 0.055em;
+.footer a {
   text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 13px;
+  font-weight: 700;
   text-transform: uppercase;
+}
+
+.socials {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .socials a {
   display: grid;
-  width: 1.45rem;
-  height: 1.45rem;
+  width: 44px;
+  height: 44px;
   place-items: center;
+  color: rgba(255, 255, 255, 0.82);
 }
 
 .socials svg {
-  width: 100%;
-  height: 100%;
+  width: 24px;
+  height: 24px;
   fill: currentColor;
 }
 
-.nav a:hover,
-.nav a:focus-visible,
-.socials a:hover,
-.socials a:focus-visible {
-  color: var(--editorial-gold);
+.footer a:hover,
+.footer a:focus-visible {
+  color: #d67a00;
+}
+
+.footer a:focus-visible {
+  outline: 2px solid #d67a00;
+  outline-offset: 4px;
+}
+
+.bottomRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 32px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 12px;
 }
 
 .legal {
-  width: 100%;
-  margin: 1rem 0 0;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.48);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 0.78rem;
+  margin: 0;
+}
+
+.credit {
+  margin: 4px 0 0;
+  text-align: center;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.credit a {
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.utilities {
+  display: flex;
+  gap: 24px;
+}
+
+.utilities a,
+.backToTop {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  color: inherit;
+}
+
+.backToTop {
+  margin-left: auto;
+  gap: 10px;
+}
+
+@media (max-width: 767px) {
+  .footer {
+    padding-top: 24px;
+  }
+
+  .topRow {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding-bottom: 16px;
+  }
+
+  .brand {
+    font-size: clamp(30px, 7vw, 40px);
+  }
+
+  .nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 20px;
+  }
+
+  .nav a:nth-child(2) {
+    order: 1;
+  }
+
+  .socials {
+    margin-left: -10px;
+  }
+
+  .bottomRow {
+    flex-wrap: nowrap;
+    gap: 12px;
+  }
+
+  .backToTop {
+    flex-shrink: 0;
+  }
+
+  .utilities a,
+  .backToTop {
+    min-height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer a {
+    transition: none;
+  }
 }
