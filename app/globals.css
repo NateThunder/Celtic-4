@@ -5470,6 +5470,26 @@ body.has-open-shop-cart-drawer {
   .site-header.site-header--inner .main-nav {
     background: var(--home-ink, #0b0b0a);
   }
+
+  .site-header.site-header--home-overlay .main-nav a,
+  .site-header.site-header--inner .main-nav a,
+  .site-header.site-header--home-overlay .main-nav a.is-active,
+  .site-header.site-header--inner .main-nav a.is-active,
+  .site-header.site-header--home-overlay .main-nav a[aria-current="page"],
+  .site-header.site-header--inner .main-nav a[aria-current="page"] {
+    color: #ffffff;
+    font-size: clamp(1.75rem, 6vw, 2.2rem);
+  }
+
+  .site-header.site-header--inner.site-header--transparent-top:not(.is-scrolled) .main-nav a,
+  .site-header.site-header--inner.site-header--transparent-top:not(.is-scrolled) .main-nav a:hover,
+  .site-header.site-header--inner.site-header--transparent-top:not(.is-scrolled) .main-nav a:focus-visible,
+  .site-header.site-header--inner.site-header--transparent-top:not(.is-scrolled) .main-nav a.is-active,
+  .site-header.site-header--inner.site-header--transparent-top:not(.is-scrolled)
+    .main-nav
+    a[aria-current="page"] {
+    color: #ffffff;
+  }
 }
 
 @media (max-width: 760px) {
