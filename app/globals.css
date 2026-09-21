@@ -5750,7 +5750,37 @@ body.has-open-shop-cart-drawer {
 @media (max-width: 520px) {
   .site-header.site-header--home-overlay .header-socials,
   .site-header.site-header--inner .header-socials {
-    display: none;
+    display: flex;
+    position: fixed;
+    left: 0;
+    bottom: calc(4rem + env(safe-area-inset-bottom));
+    width: min(82vw, 330px);
+    justify-content: flex-start;
+    padding-left: calc(1rem - 4px);
+    transform: translateX(calc(-100% - 12px));
+    visibility: hidden;
+    pointer-events: none;
+    transition: transform 220ms ease, visibility 0s 220ms;
+  }
+
+  .site-header.site-header--home-overlay:has(.main-nav.is-open) .header-socials,
+  .site-header.site-header--inner:has(.main-nav.is-open) .header-socials {
+    transform: translateX(0);
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+
+  .site-header.site-header--home-overlay .header-socials .social-link,
+  .site-header.site-header--inner .header-socials .social-link {
+    width: 48px;
+    height: 48px;
+  }
+
+  .site-header.site-header--home-overlay .header-socials .social-link svg,
+  .site-header.site-header--inner .header-socials .social-link svg {
+    width: 40px;
+    height: 40px;
   }
 
   .site-header.site-header--home-overlay,
