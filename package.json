@@ -11,6 +11,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:siteground": "next build && node scripts/package-siteground.mjs",
+    "package:siteground": "node scripts/package-siteground.mjs",
+    "start:siteground": "node .siteground/server.js",
     "start": "next start",
     "lint": "eslint",
     "dev:vinext": "vinext dev --port 3001",

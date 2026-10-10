@@ -52,3 +52,24 @@ next-env.d.ts
 /output/cloudflare/
 /.agents/
 /skills-lock.json
+
+# Deployment packages, tool caches, and local reports
+/.siteground/
+.cache/
+.npm/
+.pnpm-store/
+.turbo/
+.eslintcache
+/output/
+/test-results/
+/playwright-report/
+*.log
+*.log.*
+*.tmp
+*.temp
+/.tmp-*
+/tmp/
+/temp/
+# User uploads are persistent content, never disposable build output.
+/public/stems/uploads/*
+!/public/stems/uploads/.gitkeep
