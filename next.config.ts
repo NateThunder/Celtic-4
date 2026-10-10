@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
-const wooUrl = process.env.NEXT_PUBLIC_WOO_URL || "http://localhost:10003";
+const wooUrl =
+  process.env.NEXT_PUBLIC_WOO_URL || "https://cms.celticworship.co.uk";
 
 let wooRemotePattern:
   | {
@@ -26,6 +27,7 @@ try {
 }
 
 const nextConfig: NextConfig = {
+  output: "standalone",
   images: {
     // SiteGround blocks Next's `/_next/image` endpoint at nginx with a 403.
     // Serve image sources directly so the same build works on SiteGround and
