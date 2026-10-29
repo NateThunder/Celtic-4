@@ -162,23 +162,96 @@
   pointer-events: none;
 }
 
-.venueBoard {
+/* The letterboard, edge to edge, lit from behind: it flickers as it tries to
+   catch, then settles into a soft hum, spilling light onto the wall below. */
+.venueSign {
   position: absolute;
-  z-index: 3;
-  left: 4%;
-  top: 3.5%;
-  width: 92%;
-  height: auto;
-  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.32);
+  z-index: 6;
+  left: 0;
+  right: 0;
+  top: 0;
   animation: annBoardIn 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 0.1s both;
+}
+
+.venueSign img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: brightness(0.62) saturate(0.9);
+  box-shadow: 0 8px 14px rgba(0, 0, 0, 0.35), 0 0 0 rgba(255, 240, 205, 0);
+  animation:
+    annSignOn 2.6s linear 0.9s forwards,
+    annSignHum 5.5s ease-in-out 3.5s infinite;
+}
+
+.signTight {
+  display: none !important;
+  border: 7px solid #17171c;
+  border-top-width: 6px;
+}
+
+.venueSign::before {
+  content: "";
+  position: absolute;
+  inset: -6px 0;
+  box-shadow: 0 0 34px 6px rgba(255, 238, 200, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  animation:
+    annSpillOn 2.6s linear 0.9s forwards,
+    annSpillHum 5.5s ease-in-out 3.5s infinite;
+}
+
+.venueSign::after {
+  content: "";
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 100%;
+  height: 120%;
+  background: radial-gradient(ellipse 60% 70% at 50% 0%, rgba(255, 240, 205, 0.65), rgba(255, 240, 205, 0) 70%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  pointer-events: none;
+  animation:
+    annSpillOn 2.6s linear 0.9s forwards,
+    annSpillHum 5.5s ease-in-out 3.5s infinite;
+}
+
+/* Layouts: proportions of sign, banners and doorway. */
+.venue {
+  --banner-top: 14.5%;
+  --banner-w: 12.5%;
+  --banner-x: 3.5%;
+  --door-x: 19%;
+  --door-top: 14.5%;
+}
+
+.layout_bigSign {
+  --banner-top: 21%;
+  --door-top: 21%;
+}
+
+.layout_bigSign .signFull {
+  display: none !important;
+}
+
+.layout_bigSign .signTight {
+  display: block !important;
+}
+
+.layout_wideDoor {
+  --banner-w: 8.5%;
+  --banner-x: 2.5%;
+  --door-x: 13%;
 }
 
 .venueBanner {
   position: absolute;
   z-index: 3;
-  top: 17%;
-  width: 12.5%;
-  height: 79%;
+  top: var(--banner-top);
+  width: var(--banner-w);
+  height: calc(100% - var(--banner-top) - 4%);
   object-fit: cover;
   object-position: 50% 45%;
   box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.3);
@@ -186,19 +259,19 @@
 }
 
 .venueBannerLeft {
-  left: 4%;
+  left: var(--banner-x);
 }
 
 .venueBannerRight {
-  right: 4%;
+  right: var(--banner-x);
 }
 
 .doorway {
   position: absolute;
   z-index: 2;
-  left: 20%;
-  right: 20%;
-  top: 17%;
+  left: var(--door-x);
+  right: var(--door-x);
+  top: var(--door-top);
   bottom: 4%;
   overflow: hidden;
   background: #050403;
@@ -867,6 +940,50 @@
   100% { transform: none; }
 }
 
+@keyframes annSignOn {
+  0% { filter: brightness(0.62) saturate(0.9); }
+  6% { filter: brightness(1.75) saturate(0.8) sepia(0.12); }
+  9% { filter: brightness(0.66) saturate(0.9); }
+  20% { filter: brightness(0.7) saturate(0.9); }
+  23% { filter: brightness(1.7) saturate(0.8) sepia(0.12); }
+  25% { filter: brightness(0.72) saturate(0.9); }
+  28% { filter: brightness(1.65) saturate(0.8) sepia(0.12); }
+  31% { filter: brightness(0.8) saturate(0.9); }
+  52% { filter: brightness(0.86) saturate(0.9); }
+  56% { filter: brightness(1.7) saturate(0.8) sepia(0.12); }
+  60% { filter: brightness(1.3) saturate(0.85) sepia(0.08); }
+  64% { filter: brightness(1.7) saturate(0.8) sepia(0.12); }
+  100% { filter: brightness(1.6) saturate(0.82) sepia(0.12); }
+}
+
+@keyframes annSignHum {
+  0%, 100% { filter: brightness(1.6) saturate(0.82) sepia(0.12); }
+  45% { filter: brightness(1.48) saturate(0.82) sepia(0.12); }
+  71% { filter: brightness(1.56) saturate(0.82) sepia(0.12); }
+  72% { filter: brightness(1.08) saturate(0.86) sepia(0.06); }
+  73.5% { filter: brightness(1.6) saturate(0.82) sepia(0.12); }
+}
+
+@keyframes annSpillOn {
+  0%, 5% { opacity: 0; }
+  6% { opacity: 0.9; }
+  9%, 22% { opacity: 0.05; }
+  23% { opacity: 0.8; }
+  25% { opacity: 0.1; }
+  28% { opacity: 0.75; }
+  31%, 55% { opacity: 0.2; }
+  56% { opacity: 0.9; }
+  60% { opacity: 0.5; }
+  64%, 100% { opacity: 0.85; }
+}
+
+@keyframes annSpillHum {
+  0%, 100% { opacity: 0.85; }
+  45% { opacity: 0.7; }
+  72% { opacity: 0.35; }
+  73.5% { opacity: 0.85; }
+}
+
 @keyframes annVenueDrift {
   from { transform: scale(1); }
   to { transform: scale(1.025); }
@@ -1066,7 +1183,10 @@
   }
 
   .venue,
-  .venueBoard,
+  .venueSign,
+  .venueSign img,
+  .venueSign::before,
+  .venueSign::after,
   .venueBanner,
   .doorway,
   .venueGrain::before,
@@ -1094,6 +1214,14 @@
   .newLine::after {
     animation: none;
     transform: none;
+  }
+
+  .venueSign img {
+    filter: brightness(1.6) saturate(0.82) sepia(0.12);
+  }
+
+  .venueSign::after {
+    opacity: 0.85;
   }
 
   .trackName {

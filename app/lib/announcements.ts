@@ -37,6 +37,10 @@ export type AnnouncementMontageItem = {
 
 export type AnnouncementVenue = {
   board: string;
+  /** The board cropped to its lettering, used by the "bigSign" layout. */
+  boardTight?: string;
+  /** classic: full-width sign; bigSign: larger, tighter sign; wideDoor: slimmer banners, wider doorway. */
+  layout?: "classic" | "bigSign" | "wideDoor";
   bannerLeft: string;
   bannerRight: string;
   /** Wall texture that repeats behind the pieces. */
@@ -120,6 +124,8 @@ export const announcements: Announcement[] = [
       ],
       venue: {
         board: "/announcements/o2-board.jpg",
+        boardTight: "/announcements/o2-board-tight.jpg",
+        layout: "classic",
         bannerLeft: "/announcements/o2-banner-left.jpg",
         bannerRight: "/announcements/o2-banner-right.jpg",
         wall: "/announcements/o2-wall.jpg",

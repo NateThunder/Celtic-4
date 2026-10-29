@@ -125,7 +125,7 @@ function ConcertArt({ event, fallback, shot, glitch, count }: ConcertArtProps) {
     const v = event.venue;
     return (
       <div
-        className={styles.venue}
+        className={`${styles.venue} ${styles[`layout_${v.layout ?? "classic"}`] ?? ""}`}
         style={
           {
             backgroundImage: `url(${v.wall})`,
@@ -135,8 +135,14 @@ function ConcertArt({ event, fallback, shot, glitch, count }: ConcertArtProps) {
           } as CSSProperties
         }
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className={styles.venueBoard} src={v.board} alt={v.alt} />
+        <div className={styles.venueSign}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className={styles.signFull} src={v.board} alt={v.alt} />
+          {v.boardTight && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className={styles.signTight} src={v.boardTight} alt="" />
+          )}
+        </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className={`${styles.venueBanner} ${styles.venueBannerLeft}`} src={v.bannerLeft} alt="" />
         {/* eslint-disable-next-line @next/next/no-img-element */}
