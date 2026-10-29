@@ -43,6 +43,17 @@ To point a non-production environment at a different WordPress installation, set
 NEWSLETTER_SUBSCRIBE_URL=https://example.com/wp-admin/admin-ajax.php?action=tnp&na=s
 ```
 
+When `MAILCHIMP_API_KEY` is set, signups (homepage form and announcement popup) are also
+added to the Celtic Worship Mailchimp audience, tagged "Website signup". The WordPress copy
+continues as a backup, and the signup succeeds if either accepts it. New contacts are added
+as subscribed; anyone who previously unsubscribed is left unsubscribed.
+
+```bash
+MAILCHIMP_API_KEY=xxxxxxxxxxxxxxxx-us5
+# Optional, defaults to the Celtic Worship audience:
+MAILCHIMP_AUDIENCE_ID=522581d030
+```
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
