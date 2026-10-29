@@ -5,6 +5,7 @@ import "lenis/dist/lenis.css";
 import "./globals.css";
 import SmoothScrollProvider from "./components/SmoothScrollProvider";
 import SiteFooter from "./components/SiteFooter";
+import AnnouncementModal from "./components/AnnouncementModal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,6 +56,7 @@ export default function RootLayout({
           {children}
           <SiteFooter />
         </SmoothScrollProvider>
+        <AnnouncementModal />
         <Script
           src="https://widgetv3.bandsintown.com/main.min.js"
           strategy="afterInteractive"
