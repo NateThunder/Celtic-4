@@ -2,13 +2,15 @@
 // REST API. We render our own UI from this data instead of Bandsintown's
 // embedded widget, so we control styling, date formatting, and artwork.
 
+import { autoPosterUrl } from "./autoPoster";
+
 const ARTIST_ID = "id_849462";
 const DEFAULT_APP_ID = "js_celticworship.co.uk";
 
 // Our own poster artwork keyed to specific events. The API returns venues and
 // ticket links but not our flyers, so we map posters by venue/city. Any event
-// without a match falls back to FALLBACK_POSTER.
-const FALLBACK_POSTER = "/posters/then-sings-my-soul-st-lukes.jpg";
+// without a match gets an automatic poster made from its date, venue and city
+// (app/api/poster), so a new show never shows somebody else's poster.
 
 const MONTHS = [
   "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -36,7 +38,7 @@ type RawEvent = {
 };
 
 // Map an event's venue/city to one of our poster flyers.
-function posterFor(venueName: string, city: string): string {
+function posterFor(venueName: string, city: string): string | null {
   const v = venueName.toLowerCase();
   const c = city.toLowerCase();
 
@@ -60,7 +62,7 @@ function posterFor(venueName: string, city: string): string {
     return "/posters/2026-12-21-veenendaal-de-regenboog.jpg";
   }
 
-  return FALLBACK_POSTER;
+  return null;
 }
 
 // Format an ISO datetime as "07 Aug 2026". We parse the date parts directly
@@ -102,7 +104,7 @@ function normalize(event: RawEvent): HomeEvent | null {
     venueName,
     city,
     ticketUrl: ticketUrlFor(event),
-    poster: posterFor(venueName, city),
+    poster: posterFor(venueName, city) ?? autoPosterUrl(String(event.datetime), venueName, city),
   };
 }
 
