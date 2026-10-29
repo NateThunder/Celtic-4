@@ -711,24 +711,25 @@
 
 /* Pre-save button with the streaming icons stacked beside it. Each pops in,
    then they take turns stepping to the front. */
-.saveRow {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 14px;
+/* Pre-save with the streaming icons inside the button, after a thin divider. */
+.saveButton {
+  gap: 0;
+  padding: 0 10px 0 22px;
+  letter-spacing: 0.16em;
 }
 
-.saveRow .button {
-  gap: 14px;
-  padding: 0 18px;
-  letter-spacing: 0.16em;
+.saveButton .platforms {
+  margin-left: 18px;
+  padding-left: 20px;
+  border-left: 1px solid rgba(255, 255, 255, 0.25);
+  align-self: stretch;
 }
 
 .platforms {
   --size: 34px;
   display: inline-flex;
   align-items: center;
-  height: var(--size);
+  height: auto;
   padding-left: 10px;
 }
 

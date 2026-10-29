@@ -446,21 +446,19 @@ export default function AnnouncementModal() {
                     </div>
                   )}
                   <div className={`${styles.actions} ${styles.rise}`} style={{ animationDelay: "2.2s" }}>
-                    <div className={styles.saveRow}>
-                      <a
-                        className={styles.button}
-                        href={primary.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={() => {
-                          // They pre-save in a new tab; the concert is waiting when they come back.
-                          if (event) window.setTimeout(() => setStep(2), 600);
-                        }}
-                      >
-                        {primary.label} <span aria-hidden="true">→</span>
-                      </a>
-                      {release.platforms && release.platforms.length > 0 && (
-                        <span className={styles.platforms} aria-label={`On ${release.platforms.map((pl) => pl.name).join(", ")}`}>
+                    <a
+                      className={`${styles.button} ${styles.saveButton}`}
+                      href={primary.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => {
+                        // They pre-save in a new tab; the concert is waiting when they come back.
+                        if (event) window.setTimeout(() => setStep(2), 600);
+                      }}
+                    >
+                      <span>{primary.label}</span>
+                      {release.platforms && release.platforms.length > 0 ? (
+                        <span className={styles.platforms} aria-label={`on ${release.platforms.map((pl) => pl.name).join(", ")}`}>
                           {release.platforms.map((pl, i) => (
                             // eslint-disable-next-line @next/next/no-img-element
                             <img
@@ -472,8 +470,10 @@ export default function AnnouncementModal() {
                             />
                           ))}
                         </span>
+                      ) : (
+                        <span aria-hidden="true">→</span>
                       )}
-                    </div>
+                    </a>
                     {event && (
                       <button type="button" className={styles.nextLink} onClick={() => setStep(2)}>
                         <span className={styles.nextKicker}>{release.nextKicker ?? "Next"}</span>
