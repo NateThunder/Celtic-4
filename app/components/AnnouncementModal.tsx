@@ -1,19 +1,13 @@
 "use client";
 
-import { Cormorant_Garamond } from "next/font/google";
 import { usePathname } from "next/navigation";
-import { FormEvent, KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
+import { FormEvent, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { type Announcement, getActiveAnnouncement } from "../lib/announcements";
 import styles from "./announcementModal.module.css";
 
-const display = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["500", "600"],
-  style: ["normal", "italic"],
-});
-
 const OPEN_DELAY_MS = 1200;
 const HIDDEN_ON = ["/shop/checkout", "/admin", "/stem-player"];
+const DUST_COUNT = 36;
 
 type SignupState = "idle" | "submitting" | "success" | "error";
 
@@ -40,6 +34,34 @@ function daysUntil(iso: string, now: Date): number {
   return Math.max(0, Math.round((startOfTarget.getTime() - startOfToday.getTime()) / 86_400_000));
 }
 
+/** Deterministic "random" light dust so server and client agree and it looks the same each visit. */
+function makeDust() {
+  let seed = 7;
+  const rnd = () => {
+    seed = (seed * 9301 + 49297) % 233280;
+    return seed / 233280;
+  };
+  return Array.from({ length: DUST_COUNT }, () => ({
+    left: `${(rnd() * 100).toFixed(1)}%`,
+    size: `${(1 + rnd() * 2.6).toFixed(1)}px`,
+    opacity: Number((0.35 + rnd() * 0.55).toFixed(2)),
+    duration: `${(9 + rnd() * 10).toFixed(1)}s`,
+    delay: `${(-rnd() * 18).toFixed(1)}s`,
+  }));
+}
+
+function OutlineTitle({ id, lines }: { id: string; lines: [string, string] }) {
+  return (
+    <h2 id={id} tabIndex={-1} className={styles.title}>
+      <span className={styles.srOnly}>{lines.join(" ")}</span>
+      <svg className={styles.titleSvg} viewBox="0 0 520 216" aria-hidden="true" focusable="false">
+        <text x="0" y="102">{lines[0].toUpperCase()}</text>
+        <text x="0" y="210">{lines[1].toUpperCase()}</text>
+      </svg>
+    </h2>
+  );
+}
+
 export default function AnnouncementModal() {
   const pathname = usePathname() || "/";
   const hidden = HIDDEN_ON.some((path) => pathname === path || pathname.startsWith(`${path}/`));
@@ -49,10 +71,11 @@ export default function AnnouncementModal() {
   const [open, setOpen] = useState(false);
   const [showBar, setShowBar] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
+  const [count, setCount] = useState(0);
   const [signup, setSignup] = useState<SignupState>("idle");
   const dialogRef = useRef<HTMLDivElement>(null);
-  const closeRef = useRef<HTMLButtonElement>(null);
   const lastFocus = useRef<HTMLElement | null>(null);
+  const dust = useMemo(makeDust, []);
 
   const dismissKey = announcement ? `cw-announcement-dismissed:${announcement.id}` : "";
   const barKey = announcement ? `cw-announcement-bar-closed:${announcement.id}` : "";
@@ -84,19 +107,7 @@ export default function AnnouncementModal() {
     lastFocus.current?.focus?.();
   }, [announcement, barKey, dismissKey]);
 
-  const closeBar = () => {
-    if (barKey) storageSet(barKey, "1");
-    setShowBar(false);
-  };
-
-  const reopen = () => {
-    lastFocus.current = document.activeElement as HTMLElement | null;
-    setStep(1);
-    setShowBar(false);
-    setOpen(true);
-  };
-
-  // Escape closes from anywhere, even after a step change has moved focus out of the dialog.
+  // Escape closes from anywhere, even after a step change has moved focus.
   useEffect(() => {
     if (!open) return;
     const onDocumentKey = (event: globalThis.KeyboardEvent) => {
@@ -109,10 +120,43 @@ export default function AnnouncementModal() {
     return () => document.removeEventListener("keydown", onDocumentKey);
   }, [open, close]);
 
-  // Keep keyboard focus inside the dialog when a step changes.
+  // Keep keyboard focus inside the dialog when it opens or the step changes.
   useEffect(() => {
-    if (open) dialogRef.current?.querySelector<HTMLElement>("h2")?.focus();
+    if (open) dialogRef.current?.querySelector<HTMLElement>("h2")?.focus({ preventScroll: true });
   }, [open, step]);
+
+  // Count the "days to go" up from zero when the concert step appears.
+  useEffect(() => {
+    if (!open || step !== 2 || !announcement?.event || !now) return;
+    const target = daysUntil(announcement.event.date, now);
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setCount(target);
+      return;
+    }
+    let frame = 0;
+    const start = performance.now();
+    const tick = (time: number) => {
+      const t = Math.min(1, (time - start) / 1600);
+      setCount(Math.round((1 - Math.pow(1 - t, 3)) * target));
+      if (t < 1) frame = requestAnimationFrame(tick);
+    };
+    setCount(0);
+    frame = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frame);
+  }, [open, step, announcement, now]);
+
+  const closeBar = () => {
+    if (barKey) storageSet(barKey, "1");
+    setShowBar(false);
+  };
+
+  const reopen = () => {
+    lastFocus.current = document.activeElement as HTMLElement | null;
+    setStep(1);
+    setShowBar(false);
+    setOpen(true);
+  };
 
   function onKeyDown(event: KeyboardEvent<HTMLDivElement>) {
     if (event.key !== "Tab" || !dialogRef.current) return;
@@ -182,52 +226,71 @@ export default function AnnouncementModal() {
             aria-labelledby="cw-announcement-title"
             onKeyDown={onKeyDown}
           >
-            <button ref={closeRef} type="button" className={styles.close} aria-label="Close" onClick={close}>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+            <button type="button" className={styles.close} aria-label="Close" onClick={close}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
                 <path d="M6 6l12 12M18 6L6 18" />
               </svg>
             </button>
 
             <div className={styles.art} data-step={step}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={image.src} alt={image.alt} className={styles.artImage} />
-              {step === 2 && event && (
-                <div className={`${styles.artCaption} ${styles.fadeIn}`}>
-                  <span className={styles.eyebrow}>{event.artLabel}</span>
-                  <span className={`${display.className} ${styles.artTitle}`}>{event.artTitle}</span>
-                </div>
+              <img key={`art-${step}`} src={image.src} alt={step === 1 ? image.alt : ""} className={styles.artImage} />
+              {step === 1 ? (
+                <>
+                  <div className={styles.bloom} aria-hidden="true" />
+                  <div className={styles.dust} aria-hidden="true">
+                    {dust.map((d, i) => (
+                      <span
+                        key={i}
+                        style={{
+                          left: d.left,
+                          width: d.size,
+                          height: d.size,
+                          opacity: d.opacity,
+                          animationDuration: d.duration,
+                          animationDelay: d.delay,
+                        }}
+                      />
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className={`${styles.beam} ${styles.beamA}`} aria-hidden="true" />
+                  <div className={`${styles.beam} ${styles.beamB}`} aria-hidden="true" />
+                  {event && (
+                    <div className={styles.countdown}>
+                      <span className={styles.count}>{count}</span>
+                      <span className={styles.countLabel}>Days to go</span>
+                    </div>
+                  )}
+                </>
               )}
             </div>
 
             <div className={styles.body}>
               {step === 1 && (
-                <div className={`${styles.step} ${styles.fadeIn}`}>
-                  <span className={styles.eyebrow}>{isOut ? release.eyebrowAfter : release.eyebrowBefore}</span>
-                  <div className={styles.titleBlock}>
-                    <h2 id="cw-announcement-title" tabIndex={-1} className={`${display.className} ${styles.title}`}>
-                      {release.title}
-                    </h2>
-                    <p className={`${display.className} ${styles.subtitle}`}>{release.subtitle}</p>
-                  </div>
+                <div key="release" className={styles.step}>
+                  <span className={styles.eyebrow} style={{ animationDelay: "0.3s" }}>
+                    {isOut ? release.eyebrowAfter : release.eyebrowBefore}
+                  </span>
+                  <OutlineTitle id="cw-announcement-title" lines={release.titleLines} />
                   {release.list && (
-                    <div className={styles.list}>
-                      {release.listHeading && <span className={styles.listHeading}>{release.listHeading}</span>}
-                      <ul>
-                        {release.list.map((item) => (
-                          <li key={item.title}>
-                            {item.title} {item.detail && <span className={styles.muted}>{item.detail}</span>}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
+                    <ul className={styles.list} aria-label={release.listHeading}>
+                      {release.list.map((item, i) => (
+                        <li key={item.title} className={styles.rise} style={{ animationDelay: `${1.6 + i * 0.15}s` }}>
+                          {item.title} {item.detail && <span className={styles.muted}>{item.detail}</span>}
+                        </li>
+                      ))}
+                    </ul>
                   )}
-                  <div className={styles.actions}>
-                    <a className={styles.primary} href={primary.href} target="_blank" rel="noopener noreferrer">
-                      {primary.label}
+                  <div className={`${styles.actions} ${styles.rise}`} style={{ animationDelay: "2.2s" }}>
+                    <a className={styles.button} href={primary.href} target="_blank" rel="noopener noreferrer">
+                      {primary.label} <span aria-hidden="true">→</span>
                     </a>
                     {event && (
-                      <button type="button" className={styles.secondary} onClick={() => setStep(2)}>
-                        {release.nextLabel ?? "Next"}
+                      <button type="button" className={styles.textLink} onClick={() => setStep(2)}>
+                        {release.nextLabel ?? "Next"} <span aria-hidden="true">→</span>
                       </button>
                     )}
                   </div>
@@ -235,43 +298,47 @@ export default function AnnouncementModal() {
               )}
 
               {step === 2 && event && (
-                <div className={`${styles.step} ${styles.fadeIn}`}>
-                  <span className={styles.eyebrow}>{event.eyebrow}</span>
-                  <h2 id="cw-announcement-title" tabIndex={-1} className={`${display.className} ${styles.eventTitle}`}>
-                    {event.title}
-                  </h2>
-                  <div className={styles.countdown}>
-                    <span className={`${display.className} ${styles.days}`}>{daysUntil(event.date, now)}</span>
-                    <span className={styles.details}>
-                      days to go
-                      {event.details.map((line) => (
-                        <span key={line}>{line}</span>
-                      ))}
-                    </span>
-                  </div>
-                  <a className={styles.primary} href={event.tickets.href} target="_blank" rel="noopener noreferrer">
-                    {event.tickets.label}
+                <div key="event" className={styles.step}>
+                  <span className={styles.eyebrow} style={{ animationDelay: "0.2s" }}>
+                    {event.eyebrow}
+                  </span>
+                  <OutlineTitle id="cw-announcement-title" lines={event.titleLines} />
+                  <p className={`${styles.details} ${styles.rise}`} style={{ animationDelay: "1.4s" }}>
+                    {event.details.map((line, i) => (
+                      <span key={line} className={i > 0 ? styles.muted : undefined}>
+                        {line}
+                      </span>
+                    ))}
+                  </p>
+                  <a
+                    className={`${styles.button} ${styles.rise}`}
+                    style={{ animationDelay: "1.6s" }}
+                    href={event.tickets.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {event.tickets.label} <span aria-hidden="true">→</span>
                   </a>
 
-                  <div className={styles.signup}>
+                  <div className={`${styles.signup} ${styles.rise}`} style={{ animationDelay: "1.9s" }}>
                     {signup === "success" ? (
                       <p className={styles.signupDone} role="status">
                         You&apos;re on the list. Thank you.
                       </p>
                     ) : (
                       <form onSubmit={submitSignup} className={styles.signupForm}>
-                        <span className={styles.signupHeading}>{event.signupHeading ?? "Get updates first"}</span>
-                        <div className={styles.nameRow}>
+                        <span className={styles.signupHeading}>{event.signupHeading ?? "Join the list"}</span>
+                        <div className={styles.fieldRow}>
                           <label className={styles.srOnly} htmlFor="cw-ann-first">First name</label>
                           <input id="cw-ann-first" name="firstName" type="text" placeholder="First name" autoComplete="given-name" maxLength={60} required />
                           <label className={styles.srOnly} htmlFor="cw-ann-last">Last name</label>
                           <input id="cw-ann-last" name="lastName" type="text" placeholder="Last name" autoComplete="family-name" maxLength={60} required />
                         </div>
-                        <div className={styles.emailRow}>
+                        <div className={styles.fieldRow}>
                           <label className={styles.srOnly} htmlFor="cw-ann-email">Email address</label>
-                          <input id="cw-ann-email" name="email" type="email" placeholder="Email" autoComplete="email" inputMode="email" maxLength={254} required />
-                          <button type="submit" className={styles.join} disabled={signup === "submitting"}>
-                            {signup === "submitting" ? "Joining…" : "Join"}
+                          <input id="cw-ann-email" name="email" type="email" placeholder="Email address" autoComplete="email" inputMode="email" maxLength={254} required />
+                          <button type="submit" className={styles.textLink} disabled={signup === "submitting"}>
+                            {signup === "submitting" ? "Joining…" : "Sign up"} <span aria-hidden="true">→</span>
                           </button>
                         </div>
                         <label className={styles.honeypot} aria-hidden="true">
@@ -310,7 +377,7 @@ export default function AnnouncementModal() {
             {bar.text}
           </button>
           <a className={styles.barLink} href={bar.link.href} target="_blank" rel="noopener noreferrer">
-            {bar.link.label} →
+            {bar.link.label} <span aria-hidden="true">→</span>
           </a>
           <button type="button" className={styles.barClose} aria-label="Hide announcement" onClick={closeBar}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">

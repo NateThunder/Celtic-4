@@ -1,12 +1,18 @@
-/* Announcement popup. Self-contained: dusk indigo ground, pale gold accent,
-   taken from the release artwork. Nothing here styles the rest of the site. */
+/* Announcement popup, "site-native" design: black, outline Anton titles,
+   letterspaced Montserrat, square outline buttons, matching the homepage hero.
+   Nothing here styles the rest of the site. */
 
 .overlay {
-  --ann-ground: #1c1726;
-  --ann-text: #f3ede2;
-  --ann-muted: #cfc6d6;
-  --ann-gold: #e9c77a;
-  --ann-line: rgba(243, 237, 226, 0.16);
+  --ann-bg: #000000;
+  --ann-text: #ffffff;
+  --ann-muted: #9a9a9a;
+  --ann-soft: #bdbdbd;
+  --ann-line: rgba(255, 255, 255, 0.6);
+  --ann-hover: #e8873a;
+  --ann-display: var(--font-anton), Impact, "Arial Narrow", sans-serif;
+  --ann-body: var(--font-montserrat), Arial, Helvetica, sans-serif;
+  /* Dialog height; the artwork column ends up exactly this wide (a square cover). */
+  --ann-h: min(760px, calc(100dvh - 32px), calc(100vw - 32px - 420px));
 
   position: fixed;
   inset: 0;
@@ -16,310 +22,353 @@
   justify-content: center;
   padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
     max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
-  background: rgba(14, 11, 18, 0.72);
-  animation: annFade 0.35s ease both;
+  background: rgba(0, 0, 0, 0.82);
+  animation: annFade 0.6s ease both;
 }
 
 .dialog {
   position: relative;
   display: flex;
-  width: min(880px, 100%);
-  max-height: calc(100dvh - 32px);
-  overflow: auto;
-  overscroll-behavior: contain;
+  width: min(1200px, 100%);
+  height: var(--ann-h);
+  overflow: hidden;
   color: var(--ann-text);
-  background: var(--ann-ground);
-  border-radius: 6px;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
-  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
-  animation: annRise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  background: var(--ann-bg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-family: var(--ann-body);
 }
 
 .close {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 3;
+  top: 20px;
+  right: 20px;
+  z-index: 4;
   display: grid;
   place-items: center;
   width: 44px;
   height: 44px;
   color: var(--ann-text);
-  background: rgba(28, 23, 38, 0.55);
-  border: 0;
-  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   cursor: pointer;
 }
 
 .close:hover {
-  background: rgba(243, 237, 226, 0.16);
+  background: var(--ann-text);
+  color: var(--ann-bg);
 }
 
+/* Artwork column: opens as a portrait crop, then the dividing line slides right
+   until the full square cover (with its lettering) is showing. */
 .art {
   position: relative;
   flex: none;
-  width: 52%;
-  aspect-ratio: 1 / 1;
+  width: var(--ann-h);
+  height: 100%;
   overflow: hidden;
+  animation: annReveal 2.4s cubic-bezier(0.65, 0, 0.25, 1) 1.4s both;
 }
 
 .artImage {
-  display: block;
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: filter 0.6s ease, transform 1.2s ease;
+  object-position: 50% 30%;
+  transform-origin: 49% 19%;
+  animation: annPush 9s cubic-bezier(0.2, 0.6, 0.2, 1) both;
 }
 
 .art[data-step="2"] .artImage {
-  filter: brightness(0.6) saturate(1.25) contrast(1.05);
-  transform: scale(1.08);
+  animation: none;
+  transform: scale(1.06);
+  filter: grayscale(0.35) brightness(0.42);
+  transition: filter 1s ease;
 }
 
-.artCaption {
+/* Fade the cover's own lettering out behind the countdown on the concert step. */
+.art[data-step="2"]::after {
+  content: "";
   position: absolute;
   inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.92) 92%);
+  pointer-events: none;
+}
+
+.bloom {
+  position: absolute;
+  left: calc(49% - 120px);
+  top: calc(19% - 120px);
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 245, 0.95) 0%, rgba(255, 240, 200, 0.45) 25%, rgba(255, 230, 180, 0) 70%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: annBloom 3.2s ease-out 0.4s both;
+}
+
+.dust {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.dust span {
+  position: absolute;
+  top: -10px;
+  border-radius: 50%;
+  background: rgba(255, 246, 220, 0.85);
+  box-shadow: 0 0 6px rgba(255, 236, 190, 0.8);
+  animation-name: annFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.beam {
+  position: absolute;
+  left: 50%;
+  bottom: -140px;
+  width: 900px;
+  height: 1100px;
+  margin-left: -450px;
+  transform-origin: 50% 100%;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  background: conic-gradient(
+    from 180deg at 50% 100%,
+    transparent 0deg,
+    rgba(255, 232, 170, 0) 160deg,
+    rgba(255, 232, 170, 0.38) 176deg,
+    rgba(255, 232, 170, 0) 192deg,
+    transparent 360deg
+  );
+  opacity: 0;
+}
+
+.beamA {
+  animation: annIn 0.8s ease 0.1s forwards, annSweepA 6s ease-in-out 0.1s infinite alternate;
+}
+
+.beamB {
+  animation: annIn 0.8s ease 0.3s forwards, annSweepB 7s ease-in-out 0.3s infinite alternate;
+}
+
+.countdown {
+  position: absolute;
+  z-index: 2;
+  left: 40px;
+  bottom: 40px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  gap: 6px;
-  padding: 28px;
-  background: linear-gradient(180deg, rgba(28, 23, 38, 0) 35%, rgba(28, 23, 38, 0.7) 70%, rgba(28, 23, 38, 0.97) 100%);
+  gap: 14px;
+  animation: annPop 0.5s ease both;
 }
 
-.artTitle {
-  font-size: 1.85rem;
-  letter-spacing: 0.04em;
+.count {
+  font-family: var(--ann-display);
+  font-size: clamp(5rem, 14vh, 10rem);
+  line-height: 0.85;
+  font-variant-numeric: tabular-nums;
 }
 
+.countLabel {
+  font-size: 0.75rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+}
+
+/* Text column */
 .body {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  padding: 44px 36px 28px;
+  padding: clamp(48px, 10vh, 88px) clamp(28px, 4vw, 56px) 28px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .step {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 22px;
 }
 
 .eyebrow {
   font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.24em;
+  letter-spacing: 0.42em;
   text-transform: uppercase;
-  color: var(--ann-gold);
-}
-
-.titleBlock {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.title,
-.eventTitle {
-  outline: none;
+  opacity: 0;
+  animation: annRise 0.7s ease forwards;
 }
 
 .title {
   margin: 0;
-  font-size: clamp(2.4rem, 5vw, 3.25rem);
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0.03em;
-  text-wrap: balance;
+  outline: none;
 }
 
-.subtitle {
-  margin: 0;
-  font-size: 1.3rem;
-  font-style: italic;
-  color: var(--ann-muted);
+.titleSvg {
+  display: block;
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+  overflow: visible;
+}
+
+.titleSvg text {
+  font-family: var(--ann-display);
+  font-size: 118px;
+  fill: transparent;
+  stroke: var(--ann-text);
+  stroke-width: 1.4;
+  stroke-dasharray: 900;
+  stroke-dashoffset: 900;
+  animation: annDraw 2.4s cubic-bezier(0.45, 0, 0.2, 1) 0.5s forwards;
 }
 
 .list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.listHeading {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--ann-muted);
-}
-
-.list ul {
   margin: 0;
   padding: 0;
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  font-size: 0.95rem;
-  line-height: 1.35;
+  gap: 10px;
+  font-size: 0.8rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
 }
 
 .muted {
   color: var(--ann-muted);
 }
 
+.rise {
+  opacity: 0;
+  animation: annRise 0.7s ease forwards;
+}
+
 .actions {
   margin-top: auto;
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 28px;
 }
 
-.primary,
-.secondary {
-  display: flex;
+.button {
+  align-self: flex-start;
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-height: 48px;
-  padding: 0 20px;
-  border-radius: 24px;
-  font: inherit;
-  font-size: 0.95rem;
-  font-weight: 700;
+  gap: 24px;
+  min-height: 56px;
+  padding: 0 24px;
+  color: var(--ann-text);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
   text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.button:hover {
+  background: var(--ann-text);
+  color: var(--ann-bg);
+}
+
+.textLink {
+  min-height: 44px;
+  padding: 0;
+  color: var(--ann-soft);
+  background: transparent;
+  border: 0;
+  font: inherit;
+  font-size: 0.75rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  white-space: nowrap;
   cursor: pointer;
 }
 
-.primary {
-  color: var(--ann-ground);
-  background: var(--ann-gold);
-  border: 0;
-}
-
-.primary:hover {
-  filter: brightness(1.08);
-}
-
-.secondary {
-  color: var(--ann-text);
-  background: transparent;
-  border: 1px solid rgba(243, 237, 226, 0.35);
-  font-weight: 500;
-}
-
-.secondary:hover {
-  background: rgba(243, 237, 226, 0.08);
-}
-
-.eventTitle {
-  margin: 0;
-  font-size: clamp(1.9rem, 4vw, 2.4rem);
-  font-weight: 500;
-  line-height: 1.05;
-  text-wrap: balance;
-}
-
-.countdown {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.days {
-  font-size: 3.4rem;
-  line-height: 1;
-  color: var(--ann-gold);
-  font-variant-numeric: tabular-nums;
+.textLink:hover {
+  color: var(--ann-hover);
 }
 
 .details {
+  margin: 0;
   display: flex;
   flex-direction: column;
   font-size: 0.8rem;
-  line-height: 1.5;
-  color: var(--ann-muted);
+  letter-spacing: 0.24em;
+  line-height: 1.8;
+  text-transform: uppercase;
 }
 
 .signup {
   margin-top: auto;
-  padding-top: 14px;
-  border-top: 1px solid var(--ann-line);
 }
 
 .signupForm {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .signupHeading {
-  font-size: 0.82rem;
-  color: var(--ann-muted);
+  font-size: 0.68rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ann-soft);
 }
 
-.nameRow,
-.emailRow {
+.fieldRow {
   display: flex;
-  gap: 8px;
+  align-items: flex-end;
+  gap: 16px;
 }
 
 .signupForm input[type="text"],
 .signupForm input[type="email"] {
   flex: 1;
   min-width: 0;
-  height: 42px;
-  padding: 0 14px;
+  height: 40px;
+  padding: 0;
   color: var(--ann-text);
-  background: rgba(243, 237, 226, 0.06);
-  border: 1px solid rgba(243, 237, 226, 0.28);
-  border-radius: 21px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--ann-line);
+  border-radius: 0;
   font: inherit;
   font-size: 16px;
 }
 
 .signupForm input::placeholder {
-  color: rgba(243, 237, 226, 0.55);
-}
-
-.join {
-  flex: none;
-  height: 42px;
-  padding: 0 18px;
-  color: var(--ann-text);
-  background: transparent;
-  border: 1px solid rgba(243, 237, 226, 0.4);
-  border-radius: 21px;
-  font: inherit;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
-
-.join:hover {
-  background: rgba(243, 237, 226, 0.08);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .consent {
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   line-height: 1.4;
-  color: var(--ann-muted);
+  color: var(--ann-soft);
 }
 
 .consent input {
   margin-top: 2px;
-  accent-color: var(--ann-gold);
+  accent-color: var(--ann-text);
 }
 
 .signupDone {
   margin: 0;
   padding: 18px 0;
-  font-size: 0.9rem;
-  color: var(--ann-gold);
+  font-size: 0.8rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
 }
 
 .signupError {
@@ -347,20 +396,20 @@
 
 .dots {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 4px;
-  padding-top: 14px;
+  padding-top: 16px;
 }
 
 .dot,
 .dotOn {
+  position: relative;
   width: 36px;
   height: 20px;
   padding: 0;
   border: 0;
   background: transparent;
   cursor: pointer;
-  position: relative;
 }
 
 .dot::after,
@@ -369,40 +418,30 @@
   position: absolute;
   left: 4px;
   right: 4px;
-  top: 8px;
-  height: 4px;
-  border-radius: 2px;
-  background: rgba(243, 237, 226, 0.25);
+  top: 9px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .dotOn::after {
-  background: var(--ann-gold);
+  background: var(--ann-text);
 }
 
 .close:focus-visible,
-.primary:focus-visible,
-.secondary:focus-visible,
-.join:focus-visible,
+.button:focus-visible,
+.textLink:focus-visible,
 .dot:focus-visible,
 .dotOn:focus-visible,
 .signupForm input:focus-visible,
 .barText:focus-visible,
 .barLink:focus-visible,
 .barClose:focus-visible {
-  outline: 2px solid var(--ann-gold);
-  outline-offset: 2px;
-}
-
-.fadeIn {
-  animation: annFade 0.45s ease both;
+  outline: 2px solid var(--ann-text);
+  outline-offset: 3px;
 }
 
 /* Small reminder shown after the popup is closed. */
 .bar {
-  --ann-ground: #1c1726;
-  --ann-text: #f3ede2;
-  --ann-gold: #e9c77a;
-
   position: fixed;
   left: max(16px, env(safe-area-inset-left));
   bottom: max(16px, env(safe-area-inset-bottom));
@@ -411,24 +450,26 @@
   align-items: center;
   gap: 4px;
   max-width: calc(100vw - 32px);
-  padding: 4px 4px 4px 8px;
-  color: var(--ann-text);
-  background: var(--ann-ground);
-  border: 1px solid rgba(233, 199, 122, 0.35);
-  border-radius: 24px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  padding: 4px;
+  color: #ffffff;
+  background: #000000;
+  border: 1px solid rgba(255, 255, 255, 0.35);
   font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
-  font-size: 0.8rem;
-  animation: annRise 0.4s ease both;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  animation: annRise 0.5s ease both;
 }
 
 .barText {
-  min-height: 36px;
-  padding: 0 8px;
+  min-height: 40px;
+  padding: 0 10px;
   color: inherit;
   background: transparent;
   border: 0;
   font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
   text-align: left;
   cursor: pointer;
 }
@@ -436,11 +477,11 @@
 .barLink {
   display: flex;
   align-items: center;
-  min-height: 36px;
-  padding: 0 12px;
-  color: var(--ann-ground);
-  background: var(--ann-gold);
-  border-radius: 18px;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 14px;
+  color: #000000;
+  background: #ffffff;
   font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
@@ -449,77 +490,146 @@
 .barClose {
   display: grid;
   place-items: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   color: inherit;
   background: transparent;
   border: 0;
-  border-radius: 50%;
   cursor: pointer;
 }
 
 @keyframes annFade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes annReveal {
+  from { width: calc(var(--ann-h) * 0.737); }
+  to { width: var(--ann-h); }
+}
+
+@keyframes annPush {
+  from { transform: scale(1.18); filter: brightness(0.5); }
+  to { transform: scale(1); filter: brightness(1); }
+}
+
+@keyframes annBloom {
+  0% { opacity: 0; transform: scale(0.3); }
+  45% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.55; transform: scale(1); }
+}
+
+@keyframes annFall {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(30px, calc(var(--ann-h) + 30px), 0); }
+}
+
+@keyframes annDraw {
+  to { stroke-dashoffset: 0; }
 }
 
 @keyframes annRise {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
 }
 
-@media (max-width: 720px) {
+@keyframes annIn {
+  to { opacity: 1; }
+}
+
+@keyframes annSweepA {
+  from { transform: rotate(-24deg); }
+  to { transform: rotate(10deg); }
+}
+
+@keyframes annSweepB {
+  from { transform: rotate(22deg); }
+  to { transform: rotate(-12deg); }
+}
+
+@keyframes annPop {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+@keyframes annRevealStacked {
+  from { height: calc(var(--ann-w) * 0.62); }
+  to { height: var(--ann-w); }
+}
+
+/* Narrow screens: artwork on top, text below. The artwork opens as a
+   landscape crop and grows to the full square cover. */
+@media (max-width: 900px) {
+  .overlay {
+    --ann-w: min(460px, calc(100vw - 32px));
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+
   .dialog {
     flex-direction: column;
-    width: min(440px, 100%);
+    width: var(--ann-w);
+    height: auto;
+    overflow: visible;
   }
 
   .art {
     width: 100%;
-    aspect-ratio: 16 / 10;
-  }
-
-  .artImage {
-    object-position: center 30%;
+    height: var(--ann-w);
+    animation-name: annRevealStacked;
   }
 
   .body {
-    padding: 24px 20px 16px;
+    overflow: visible;
+    padding: 28px 22px 20px;
   }
 
-  .step {
-    gap: 14px;
+  .titleSvg {
+    max-width: 300px;
+  }
+
+  .count {
+    font-size: 4.5rem;
+  }
+
+  .countdown {
+    left: 22px;
+    bottom: 22px;
   }
 
   .actions,
   .signup {
     margin-top: 6px;
   }
-
-  .days {
-    font-size: 2.8rem;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .overlay,
-  .dialog,
-  .fadeIn,
+  .art,
+  .artImage,
+  .bloom,
+  .dust span,
+  .beamA,
+  .beamB,
+  .countdown,
+  .eyebrow,
+  .rise,
+  .titleSvg text,
   .bar {
-    animation: none;
+    animation: none !important;
   }
 
-  .artImage {
-    transition: none;
+  .eyebrow,
+  .rise,
+  .beam {
+    opacity: 1;
+  }
+
+  .dust {
+    display: none;
+  }
+
+  .titleSvg text {
+    stroke-dashoffset: 0;
   }
 }
