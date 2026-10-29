@@ -15,8 +15,18 @@ const EVENT_POSTER_SLIDES = [
     priority: true,
   },
   {
-    src: "/then sings poster.png",
-    alt: "Celtic Worship: Then Sings My Soul, psalms, hymns and spiritual songs, 7 August 2026 at St Luke's Glasgow and 8 August 2026 at Charlotte Chapel Edinburgh.",
+    src: "/posters/2026-12-19-surhuisterveen-de-flambou-large.jpg",
+    alt: "Strandheem Festival presents Kerst met Celtic Worship, Saturday 19 December 2026, De Flambou, Surhuisterveen. Doors 18:00, starts 19:30, tickets from 30 euros.",
+    priority: false,
+  },
+  {
+    src: "/posters/2026-12-20-dordrecht-jozua-large.jpg",
+    alt: "Events for Christ presents Celtic Worship Christmas, Sunday 20 December 2026, Jozua, Dordrecht. Doors 19:30, starts 20:00, tickets from 35 euros.",
+    priority: false,
+  },
+  {
+    src: "/posters/2026-12-21-veenendaal-de-regenboog-large.jpg",
+    alt: "Events for Christ presents Celtic Worship Christmas, Monday 21 December 2026, De Regenboog, Veenendaal. Doors 19:30, starts 20:00, tickets from 35 euros.",
     priority: false,
   },
 ] as const;

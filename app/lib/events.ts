@@ -49,6 +49,16 @@ function posterFor(venueName: string, city: string): string {
     return "/posters/big-church-day-out.jpg";
   }
   if (v.includes("o2 academy")) return "/posters/o-holy-night.jpg";
+  // Christmas 2026 in the Netherlands.
+  if (v.includes("flambou") || c.includes("surhuisterveen")) {
+    return "/posters/2026-12-19-surhuisterveen-de-flambou.jpg";
+  }
+  if (v.includes("jozua") || v.includes("joshua") || c.includes("dordrecht")) {
+    return "/posters/2026-12-20-dordrecht-jozua.jpg";
+  }
+  if (v.includes("regenboog") || c.includes("veenendaal")) {
+    return "/posters/2026-12-21-veenendaal-de-regenboog.jpg";
+  }
 
   return FALLBACK_POSTER;
 }
