@@ -246,6 +246,10 @@
   --door-x: 13%;
 }
 
+.layout_wideDoor .venueBanner {
+  object-fit: fill;
+}
+
 .venueBanner {
   position: absolute;
   z-index: 3;
@@ -705,6 +709,126 @@
   outline-offset: 4px;
 }
 
+/* Pre-save button with the streaming icons stacked beside it. Each pops in,
+   then they take turns stepping to the front. */
+.saveRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.saveRow .button {
+  gap: 14px;
+  padding: 0 18px;
+  letter-spacing: 0.16em;
+}
+
+.platforms {
+  --size: 30px;
+  display: inline-flex;
+  align-items: center;
+  height: var(--size);
+  padding-left: 10px;
+}
+
+.platform {
+  position: relative;
+  width: var(--size);
+  height: var(--size);
+  margin-left: -13px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--ann-bg), 0 4px 10px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translateX(-14px) scale(0.6);
+  animation:
+    annChipIn 0.45s cubic-bezier(0.2, 0.9, 0.3, 1.3) calc(2.5s + var(--i) * 0.14s) forwards,
+    annChipFront 7.5s ease-in-out calc(3.6s + var(--i) * 1.5s) infinite;
+}
+
+.platform:last-child {
+  outline: 1px solid rgba(255, 255, 255, 0.35);
+  outline-offset: -1px;
+}
+
+/* "Next: hear it live" card: big, clearly tappable, the lit sign as a thumbnail
+   and an arrow that nudges forward. */
+.nextCard {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  min-height: 64px;
+  padding: 10px 18px 10px 10px;
+  color: var(--ann-text);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.nextCard::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 244, 214, 0.14) 50%, transparent 70%) -120% 0 / 60% 100% no-repeat;
+  animation: annBannerSheen 4.5s ease-in-out 3s infinite;
+  pointer-events: none;
+}
+
+.nextCard:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.nextThumb {
+  flex: none;
+  width: 88px;
+  height: auto;
+  border: 2px solid #17171c;
+  filter: brightness(1.45) saturate(0.85) sepia(0.12);
+  box-shadow: 0 0 16px rgba(255, 238, 200, 0.35);
+  animation: annThumbHum 3.2s ease-in-out infinite;
+}
+
+.nextText {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.nextKicker {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--ann-gold);
+}
+
+.nextLabel {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.nextArrow {
+  flex: none;
+  display: grid;
+  place-items: center;
+  animation: annNudge 2.2s ease-in-out 3s infinite;
+}
+
+.nextCard:focus-visible {
+  outline: 2px solid var(--ann-text);
+  outline-offset: 3px;
+}
+
 .textLink {
   min-height: 44px;
   padding: 0;
@@ -1042,6 +1166,27 @@
   to { opacity: 0; transform: translateY(-70%); }
 }
 
+@keyframes annChipIn {
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes annChipFront {
+  0%, 18%, 100% { transform: none; z-index: auto; }
+  6%, 12% { transform: translateY(-6px) scale(1.18); z-index: 20; box-shadow: 0 0 0 2px var(--ann-bg), 0 8px 18px rgba(0, 0, 0, 0.6); }
+}
+
+@keyframes annNudge {
+  0%, 55%, 100% { transform: translateX(0); }
+  65% { transform: translateX(8px); }
+  75% { transform: translateX(0); }
+  85% { transform: translateX(5px); }
+}
+
+@keyframes annThumbHum {
+  0%, 100% { filter: brightness(1.45) saturate(0.85) sepia(0.12); }
+  50% { filter: brightness(1.25) saturate(0.85) sepia(0.12); }
+}
+
 @keyframes annGlint {
   from { background-position: 100% 0; }
   to { background-position: 0% 0; }
@@ -1154,6 +1299,19 @@
   .signup {
     margin-top: 6px;
   }
+
+  .nextThumb {
+    width: 64px;
+  }
+
+  .nextCard {
+    gap: 12px;
+    padding-right: 14px;
+  }
+
+  .nextLabel {
+    letter-spacing: 0.12em;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1222,6 +1380,18 @@
 
   .venueSign::after {
     opacity: 0.85;
+  }
+
+  .platform {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .nextArrow,
+  .nextThumb,
+  .nextCard::before {
+    animation: none;
   }
 
   .trackName {

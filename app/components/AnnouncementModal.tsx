@@ -144,9 +144,17 @@ function ConcertArt({ event, fallback, shot, glitch, count }: ConcertArtProps) {
           )}
         </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className={`${styles.venueBanner} ${styles.venueBannerLeft}`} src={v.bannerLeft} alt="" />
+        <img
+          className={`${styles.venueBanner} ${styles.venueBannerLeft}`}
+          src={v.layout === "wideDoor" && v.bannerLeftSlim ? v.bannerLeftSlim : v.bannerLeft}
+          alt=""
+        />
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img className={`${styles.venueBanner} ${styles.venueBannerRight}`} src={v.bannerRight} alt="" />
+        <img
+          className={`${styles.venueBanner} ${styles.venueBannerRight}`}
+          src={v.layout === "wideDoor" && v.bannerRightSlim ? v.bannerRightSlim : v.bannerRight}
+          alt=""
+        />
         <div className={styles.doorway}>{stage}</div>
         <div className={styles.venueGrain} aria-hidden="true" />
       </div>
@@ -438,12 +446,49 @@ export default function AnnouncementModal() {
                     </div>
                   )}
                   <div className={`${styles.actions} ${styles.rise}`} style={{ animationDelay: "2.2s" }}>
-                    <a className={styles.button} href={primary.href} target="_blank" rel="noopener noreferrer">
-                      {primary.label} <span aria-hidden="true">→</span>
-                    </a>
+                    <div className={styles.saveRow}>
+                      <a
+                        className={styles.button}
+                        href={primary.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={() => {
+                          // They pre-save in a new tab; the concert is waiting when they come back.
+                          if (event) window.setTimeout(() => setStep(2), 600);
+                        }}
+                      >
+                        {primary.label} <span aria-hidden="true">→</span>
+                      </a>
+                      {release.platforms && release.platforms.length > 0 && (
+                        <span className={styles.platforms} aria-label={`On ${release.platforms.map((pl) => pl.name).join(", ")}`}>
+                          {release.platforms.map((pl, i) => (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              key={pl.name}
+                              src={pl.icon}
+                              alt=""
+                              className={styles.platform}
+                              style={{ "--i": i, "--n": release.platforms!.length, zIndex: release.platforms!.length - i } as CSSProperties}
+                            />
+                          ))}
+                        </span>
+                      )}
+                    </div>
                     {event && (
-                      <button type="button" className={styles.textLink} onClick={() => setStep(2)}>
-                        {release.nextLabel ?? "Next"} <span aria-hidden="true">→</span>
+                      <button type="button" className={styles.nextCard} onClick={() => setStep(2)}>
+                        {event.venue?.boardTight && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img className={styles.nextThumb} src={event.venue.boardTight} alt="" />
+                        )}
+                        <span className={styles.nextText}>
+                          <span className={styles.nextKicker}>{release.nextKicker ?? "Next"}</span>
+                          <span className={styles.nextLabel}>{release.nextLabel ?? "Next"}</span>
+                        </span>
+                        <span className={styles.nextArrow} aria-hidden="true">
+                          <svg width="28" height="14" viewBox="0 0 28 14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M1 7h25M20 1l6 6-6 6" />
+                          </svg>
+                        </span>
                       </button>
                     )}
                   </div>

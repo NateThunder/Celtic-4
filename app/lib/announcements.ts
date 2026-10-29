@@ -23,7 +23,11 @@ export type AnnouncementRelease = {
   list?: { title: string; detail?: string }[];
   before: AnnouncementLink;
   after: AnnouncementLink;
+  /** Streaming services on the pre-save page, shown as a stack of icons beside the button. */
+  platforms?: { name: string; icon: string }[];
   nextLabel?: string;
+  /** Small line above the next-step label, e.g. "Next · 17 December". */
+  nextKicker?: string;
 };
 
 export type AnnouncementMontageItem = {
@@ -43,6 +47,9 @@ export type AnnouncementVenue = {
   layout?: "classic" | "bigSign" | "wideDoor";
   bannerLeft: string;
   bannerRight: string;
+  /** Full banner design scaled into a taller, slimmer panel, for the "wideDoor" layout. */
+  bannerLeftSlim?: string;
+  bannerRightSlim?: string;
   /** Wall texture that repeats behind the pieces. */
   wall: string;
   /** Optional colour laid over the wall tiles, e.g. { color: "#1b2238", mode: "multiply", opacity: 0.85 }. */
@@ -101,7 +108,15 @@ export const announcements: Announcement[] = [
       ],
       before: { label: "Pre-save now", href: "https://found.ee/ComeBeholdDeluxe" },
       after: { label: "Listen now", href: "https://found.ee/ComeBeholdDeluxe" },
+      platforms: [
+        { name: "Spotify", icon: "/announcements/stream-spotify.png" },
+        { name: "Apple Music", icon: "/announcements/stream-apple.png" },
+        { name: "Amazon Music", icon: "/announcements/stream-amazon.png" },
+        { name: "Deezer", icon: "/announcements/stream-deezer.png" },
+        { name: "Tidal", icon: "/announcements/stream-tidal.png" },
+      ],
       nextLabel: "Hear it live at the O2",
+      nextKicker: "Next · 17 December",
     },
     event: {
       eyebrow: "Live · Thu 17 December · 7pm",
@@ -128,6 +143,8 @@ export const announcements: Announcement[] = [
         layout: "classic",
         bannerLeft: "/announcements/o2-banner-left.jpg",
         bannerRight: "/announcements/o2-banner-right.jpg",
+        bannerLeftSlim: "/announcements/o2-banner-left-slim.jpg",
+        bannerRightSlim: "/announcements/o2-banner-right-slim.jpg",
         wall: "/announcements/o2-wall.jpg",
         alt: "The O2 Academy Glasgow front: letterboard reading Thursday 17th December, Celtic Worship & Zerua Music",
       },
