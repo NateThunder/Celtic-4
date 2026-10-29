@@ -1,9 +1,10 @@
 import type { CommunitySignup } from "./communitySignup";
+import { getMailchimpConfig, subscribeToMailchimp } from "./mailchimpSignup";
 
 const DEFAULT_SUBSCRIBE_URL =
   "https://cms.celticworship.co.uk/wp-admin/admin-ajax.php?action=tnp&na=s";
 
-export async function deliverCommunitySignup(signup: CommunitySignup): Promise<void> {
+async function deliverToWordPress(signup: CommunitySignup): Promise<void> {
   const subscribeUrl = process.env.NEWSLETTER_SUBSCRIBE_URL?.trim() || DEFAULT_SUBSCRIBE_URL;
   const signupFields = {
     nlang: "",
@@ -55,9 +56,31 @@ export async function deliverCommunitySignup(signup: CommunitySignup): Promise<v
   if (!response.ok) {
     throw new Error(`Newsletter subscription failed with status ${response.status}.`);
   }
+}
 
-  console.log(JSON.stringify({
-    event: "community_signup_delivered",
-    provider: "wordpress-newsletter",
-  }));
+/**
+ * Sends a website signup to Mailchimp (when MAILCHIMP_API_KEY is set) and to the
+ * WordPress newsletter list as a backup copy. Succeeds if at least one accepts it.
+ */
+export async function deliverCommunitySignup(signup: CommunitySignup): Promise<void> {
+  const mailchimp = getMailchimpConfig();
+  const providers: [string, Promise<void>][] = [["wordpress-newsletter", deliverToWordPress(signup)]];
+  if (mailchimp) providers.unshift(["mailchimp", subscribeToMailchimp(signup, mailchimp)]);
+
+  const results = await Promise.allSettled(providers.map(([, delivery]) => delivery));
+  const delivered: string[] = [];
+  const failures: string[] = [];
+  results.forEach((result, index) => {
+    const provider = providers[index][0];
+    if (result.status === "fulfilled") {
+      delivered.push(provider);
+    } else {
+      const reason = result.reason instanceof Error ? result.reason.message : "unknown";
+      failures.push(`${provider}: ${reason}`);
+      console.error(JSON.stringify({ event: "community_signup_provider_failed", provider, reason }));
+    }
+  });
+
+  if (!delivered.length) throw new Error(failures.join("; "));
+  console.log(JSON.stringify({ event: "community_signup_delivered", providers: delivered }));
 }
