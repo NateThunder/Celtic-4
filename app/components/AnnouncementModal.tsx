@@ -124,7 +124,17 @@ function ConcertArt({ event, fallback, shot, glitch, count }: ConcertArtProps) {
   if (event?.venue) {
     const v = event.venue;
     return (
-      <div className={styles.venue} style={{ backgroundImage: `url(${v.wall})` }}>
+      <div
+        className={styles.venue}
+        style={
+          {
+            backgroundImage: `url(${v.wall})`,
+            "--tint-color": v.tint?.color,
+            "--tint-mode": v.tint?.mode,
+            "--tint-opacity": v.tint ? v.tint.opacity ?? 0.6 : 0,
+          } as CSSProperties
+        }
+      >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className={styles.venueBoard} src={v.board} alt={v.alt} />
         {/* eslint-disable-next-line @next/next/no-img-element */}

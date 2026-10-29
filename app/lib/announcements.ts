@@ -41,6 +41,8 @@ export type AnnouncementVenue = {
   bannerRight: string;
   /** Wall texture that repeats behind the pieces. */
   wall: string;
+  /** Optional colour laid over the wall tiles, e.g. { color: "#1b2238", mode: "multiply", opacity: 0.85 }. */
+  tint?: { color: string; mode?: "multiply" | "color" | "overlay" | "soft-light"; opacity?: number };
   alt: string;
 };
 

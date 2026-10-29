@@ -148,6 +148,20 @@
   animation: annVenueDrift 18s ease-in-out infinite alternate;
 }
 
+/* Optional wall colour, laid over the tiles only (the board, banners and
+   doorway sit above it). Set through the venue's "tint" in announcements.ts. */
+.venue::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--tint-color, transparent);
+  mix-blend-mode: var(--tint-mode, multiply);
+  opacity: var(--tint-opacity, 0);
+  transition: background 0.6s ease, opacity 0.6s ease;
+  pointer-events: none;
+}
+
 .venueBoard {
   position: absolute;
   z-index: 3;
