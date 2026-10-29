@@ -389,7 +389,26 @@ export default function AnnouncementModal() {
                   </span>
                   <OutlineTitle id="cw-announcement-title" lines={release.titleLines} />
                   {release.list && (
-                    <ul className={styles.list} aria-label={release.listHeading}>
+                    <div className={styles.newSongs}>
+                      <p className={`${styles.newLine} ${styles.rise}`} style={{ animationDelay: "1.35s" }}>
+                        <span className={styles.newCount} aria-hidden="true">
+                          <span className={styles.newPlus}>+</span>
+                          <span className={styles.newDigits}>
+                            {release.list.map((_, i, all) => (
+                              <span
+                                key={i}
+                                className={i === all.length - 1 ? styles.digitLast : styles.digitMid}
+                                style={{ "--i": i } as CSSProperties}
+                              >
+                                {i + 1}
+                              </span>
+                            ))}
+                          </span>
+                        </span>
+                        <span className={styles.srOnly}>{release.list.length} </span>
+                        <span className={styles.newLabel}>{release.listHeading ?? "New songs"}</span>
+                      </p>
+                    <ul className={styles.list} aria-label={`${release.list.length} ${release.listHeading ?? "new songs"}`}>
                       {release.list.map((item, i) => (
                         <li
                           key={item.title}
@@ -400,6 +419,7 @@ export default function AnnouncementModal() {
                         </li>
                       ))}
                     </ul>
+                    </div>
                   )}
                   <div className={`${styles.actions} ${styles.rise}`} style={{ animationDelay: "2.2s" }}>
                     <a className={styles.button} href={primary.href} target="_blank" rel="noopener noreferrer">

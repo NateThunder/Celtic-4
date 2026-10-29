@@ -87,7 +87,7 @@ export const announcements: Announcement[] = [
       title: "Come Behold",
       titleLines: ["Come", "Behold"],
       subtitle: "Christmas Collaborations · Deluxe",
-      listHeading: "Three new tracks",
+      listHeading: "New songs on the Deluxe",
       list: [
         { title: "Silent Night", detail: "(Instrumental)" },
         { title: "Prince of Peace", detail: "(feat. Zerua)" },
