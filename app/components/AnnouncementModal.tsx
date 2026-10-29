@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { CSSProperties, FormEvent, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { type Announcement, getActiveAnnouncement } from "../lib/announcements";
+import { TITLE_PATHS } from "../lib/announcementTitlePaths";
 import styles from "./announcementModal.module.css";
 
 const OPEN_DELAY_MS = 1200;
@@ -59,24 +60,28 @@ function makeDust() {
 }
 
 function OutlineTitle({ id, lines }: { id: string; lines: [string, string] }) {
+  const baselines = [102, 210];
   return (
     <h2 id={id} tabIndex={-1} className={styles.title}>
       <span className={styles.srOnly}>{lines.join(" ")}</span>
       <svg className={styles.titleSvg} viewBox="0 0 520 216" aria-hidden="true" focusable="false">
-        {/* Letters like Anton's M are built from overlapping shapes, which show as stray
-            lines when stroked. The mask hides everything inside the letters, so only
-            the outer edge of the (doubled) stroke shows. */}
-        <defs>
-          <mask id={`${id}-outline`} maskUnits="userSpaceOnUse" x="-20" y="-20" width="600" height="260">
-            <rect x="-20" y="-20" width="600" height="260" fill="#fff" />
-            <text className={styles.titleMask} x="0" y="102">{lines[0].toUpperCase()}</text>
-            <text className={styles.titleMask} x="0" y="210">{lines[1].toUpperCase()}</text>
-          </mask>
-        </defs>
-        <g mask={`url(#${id}-outline)`}>
-          <text x="0" y="102">{lines[0].toUpperCase()}</text>
-          <text x="0" y="210">{lines[1].toUpperCase()}</text>
-        </g>
+        {lines.map((line, i) => {
+          const text = line.toUpperCase();
+          const paths = TITLE_PATHS[text];
+          // Letters drawn as paths look identical in every browser; anything not
+          // pre-drawn falls back to outlined text.
+          return paths ? (
+            <g key={i} transform={`translate(0 ${baselines[i]})`}>
+              {paths.glyphs.map((d, j) => (
+                <path key={j} d={d} pathLength={1} className={styles.titlePath} />
+              ))}
+            </g>
+          ) : (
+            <text key={i} x="0" y={baselines[i]} className={styles.titleText}>
+              {text}
+            </text>
+          );
+        })}
       </svg>
     </h2>
   );
