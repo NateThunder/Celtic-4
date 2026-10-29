@@ -192,7 +192,6 @@ export default function AnnouncementModal() {
   const lastFocus = useRef<HTMLElement | null>(null);
   const dust = useMemo(makeDust, []);
 
-  const dismissKey = announcement ? `cw-announcement-dismissed:${announcement.id}` : "";
   const barKey = announcement ? `cw-announcement-bar-closed:${announcement.id}` : "";
 
   useEffect(() => {
@@ -203,11 +202,7 @@ export default function AnnouncementModal() {
     setAnnouncement(active);
     setNow(current);
 
-    if (storageGet(`cw-announcement-dismissed:${active.id}`)) {
-      if (active.bar && !storageGet(`cw-announcement-bar-closed:${active.id}`)) setShowBar(true);
-      return;
-    }
-
+    // Opens on every page load, even if the visitor closed it last time.
     const timer = window.setTimeout(() => {
       lastFocus.current = document.activeElement as HTMLElement | null;
       setOpen(true);
@@ -216,11 +211,10 @@ export default function AnnouncementModal() {
   }, [hidden]);
 
   const close = useCallback(() => {
-    if (dismissKey) storageSet(dismissKey, new Date().toISOString());
     setOpen(false);
     if (announcement?.bar && !storageGet(barKey)) setShowBar(true);
     lastFocus.current?.focus?.();
-  }, [announcement, barKey, dismissKey]);
+  }, [announcement, barKey]);
 
   // Escape closes from anywhere, even after a step change has moved focus.
   useEffect(() => {

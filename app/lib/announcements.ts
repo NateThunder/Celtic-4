@@ -2,8 +2,7 @@
 //
 // To run a new announcement, add an entry below with its own unique `id` and
 // start/end dates. The popup shows the first announcement whose window includes
-// today, once per visitor (a visitor who closes it won't see that `id` again,
-// but a new `id` shows to everyone). Remove or expire old entries when done.
+// today, on every page load. Remove or expire old entries when done.
 
 export type AnnouncementLink = {
   label: string;
