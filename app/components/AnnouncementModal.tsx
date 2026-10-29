@@ -70,6 +70,87 @@ function OutlineTitle({ id, lines }: { id: string; lines: [string, string] }) {
   );
 }
 
+type ConcertArtProps = {
+  event?: Announcement["event"];
+  fallback: string;
+  shot: number;
+  glitch: boolean;
+  count: number;
+};
+
+/** Concert step artwork: the gig montage, framed by the O2 front as an archway when supplied. */
+function ConcertArt({ event, fallback, shot, glitch, count }: ConcertArtProps) {
+  const shots = event?.montage?.length ? event.montage : [{ src: fallback }];
+  const stage = (
+    <>
+      <div className={`${styles.montage} ${glitch ? styles.glitching : ""}`} aria-hidden="true">
+        {shots.map((item, i) =>
+          "kind" in item && item.kind === "video" ? (
+            <video
+              key={i}
+              className={`${styles.shot} ${i === shot ? styles.shotOn : ""}`}
+              src={item.src}
+              style={{ objectPosition: item.position }}
+              muted
+              loop
+              autoPlay
+              playsInline
+              preload="metadata"
+            />
+          ) : (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={i}
+              className={`${styles.shot} ${i === shot ? styles.shotOn : ""}`}
+              src={item.src}
+              alt=""
+              style={"position" in item ? { objectPosition: item.position, transform: item.zoom ? `scale(${item.zoom})` : undefined, transformOrigin: item.position } : undefined}
+            />
+          ),
+        )}
+      </div>
+      <div className={styles.film} aria-hidden="true" />
+      <div className={`${styles.beam} ${styles.beamA}`} aria-hidden="true" />
+      <div className={`${styles.beam} ${styles.beamB}`} aria-hidden="true" />
+      {event && (
+        <div className={styles.countdown}>
+          <span className={styles.count}>{count}</span>
+          <span className={styles.countLabel}>Days to go</span>
+        </div>
+      )}
+    </>
+  );
+
+  if (event?.venue) {
+    const v = event.venue;
+    return (
+      <div className={styles.venue} style={{ backgroundImage: `url(${v.wall})` }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className={styles.venueBoard} src={v.board} alt={v.alt} />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className={`${styles.venueBanner} ${styles.venueBannerLeft}`} src={v.bannerLeft} alt="" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img className={`${styles.venueBanner} ${styles.venueBannerRight}`} src={v.bannerRight} alt="" />
+        <div className={styles.doorway}>{stage}</div>
+        <div className={styles.venueGrain} aria-hidden="true" />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {stage}
+      {event && (
+        <div className={styles.marquee}>
+          <span>{event.artTitle}</span>
+          <strong>Celtic Worship · Zerua Music</strong>
+          <span>{event.eyebrow.replace(/^Live · /, "")}</span>
+        </div>
+      )}
+    </>
+  );
+}
+
 export default function AnnouncementModal() {
   const pathname = usePathname() || "/";
   const hidden = HIDDEN_ON.some((path) => pathname === path || pathname.startsWith(`${path}/`));
@@ -290,56 +371,13 @@ export default function AnnouncementModal() {
                   </div>
                 </>
               ) : (
-                <>
-                  <div className={`${styles.montage} ${glitch ? styles.glitching : ""}`} aria-hidden="true">
-                    {(event?.montage?.length ? event.montage : [{ src: image.src }]).map((item, i) =>
-                      item.kind === "video" ? (
-                        <video
-                          key={i}
-                          className={`${styles.shot} ${i === shot ? styles.shotOn : ""}`}
-                          src={item.src}
-                          style={{ objectPosition: item.position }}
-                          muted
-                          loop
-                          autoPlay
-                          playsInline
-                          preload="metadata"
-                        />
-                      ) : (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          key={i}
-                          className={`${styles.shot} ${i === shot ? styles.shotOn : ""}`}
-                          src={item.src}
-                          alt=""
-                          style={{ objectPosition: item.position, transform: item.zoom ? `scale(${item.zoom})` : undefined, transformOrigin: item.position }}
-                        />
-                      ),
-                    )}
-                  </div>
-                  <div className={styles.film} aria-hidden="true" />
-                  {event &&
-                    (event.banner ? (
-                      <div className={styles.banner}>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={event.banner.src} alt={event.banner.alt} />
-                      </div>
-                    ) : (
-                      <div className={styles.marquee}>
-                        <span>{event.artTitle}</span>
-                        <strong>Celtic Worship · Zerua Music</strong>
-                        <span>{event.eyebrow.replace(/^Live · /, "")}</span>
-                      </div>
-                    ))}
-                  <div className={`${styles.beam} ${styles.beamA}`} aria-hidden="true" />
-                  <div className={`${styles.beam} ${styles.beamB}`} aria-hidden="true" />
-                  {event && (
-                    <div className={styles.countdown}>
-                      <span className={styles.count}>{count}</span>
-                      <span className={styles.countLabel}>Days to go</span>
-                    </div>
-                  )}
-                </>
+                <ConcertArt
+                  event={event}
+                  fallback={image.src}
+                  shot={shot}
+                  glitch={glitch}
+                  count={count}
+                />
               )}
             </div>
 

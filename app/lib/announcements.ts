@@ -35,6 +35,15 @@ export type AnnouncementMontageItem = {
   zoom?: number;
 };
 
+export type AnnouncementVenue = {
+  board: string;
+  bannerLeft: string;
+  bannerRight: string;
+  /** Wall texture that repeats behind the pieces. */
+  wall: string;
+  alt: string;
+};
+
 export type AnnouncementEvent = {
   eyebrow: string;
   title: string;
@@ -46,8 +55,8 @@ export type AnnouncementEvent = {
   artTitle: string;
   /** Photos or short muted clips that cycle behind the concert step, with glitch cuts. */
   montage?: AnnouncementMontageItem[];
-  /** The venue letterboard, shown as a heading strip across the top of the concert step. */
-  banner?: { src: string; alt: string };
+  /** The venue's front, rebuilt as an archway around the montage: letterboard on top, banners down the sides. */
+  venue?: AnnouncementVenue;
   tickets: AnnouncementLink;
   signupHeading?: string;
 };
@@ -107,9 +116,12 @@ export const announcements: Announcement[] = [
         { src: "/announcements/live-o-night.jpg", position: "40% 50%" },
         { src: "/announcements/live-crowd.jpg", position: "50% 60%" },
       ],
-      banner: {
-        src: "/announcements/o2-marquee.jpg",
-        alt: "The O2 Academy Glasgow letterboard: Thursday 17th December, Celtic Worship & Zerua Music",
+      venue: {
+        board: "/announcements/o2-board.jpg",
+        bannerLeft: "/announcements/o2-banner-left.jpg",
+        bannerRight: "/announcements/o2-banner-right.jpg",
+        wall: "/announcements/o2-wall.jpg",
+        alt: "The O2 Academy Glasgow front: letterboard reading Thursday 17th December, Celtic Worship & Zerua Music",
       },
       tickets: {
         label: "Get tickets",
