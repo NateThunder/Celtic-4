@@ -9,6 +9,7 @@
   --ann-soft: #bdbdbd;
   --ann-line: rgba(255, 255, 255, 0.6);
   --ann-hover: #e8873a;
+  --ann-gold: #e8c46e;
   --ann-display: var(--font-anton), Impact, "Arial Narrow", sans-serif;
   --ann-body: var(--font-montserrat), Arial, Helvetica, sans-serif;
   /* Dialog height; the artwork column ends up exactly this wide (a square cover). */
@@ -243,6 +244,36 @@
 
 .muted {
   color: var(--ann-muted);
+}
+
+/* The three new tracks: a gold glint sweeps across each in turn, then a gold
+   rule draws under it and stays. */
+.track {
+  position: relative;
+  align-self: flex-start;
+  padding-bottom: 6px;
+}
+
+.trackName {
+  color: transparent;
+  background: linear-gradient(100deg, #ffffff 38%, var(--ann-gold) 47%, #fff4d0 50%, var(--ann-gold) 53%, #ffffff 62%) 100% 0 / 300% 100% no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: annGlint 1.1s ease-in-out calc(2.6s + var(--i, 0) * 0.55s) both;
+}
+
+.track::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--ann-gold);
+  box-shadow: 0 0 8px rgba(232, 196, 110, 0.7);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: annRule 0.9s cubic-bezier(0.45, 0, 0.2, 1) calc(2.9s + var(--i, 0) * 0.55s) forwards;
 }
 
 .rise {
@@ -498,6 +529,15 @@
   cursor: pointer;
 }
 
+@keyframes annGlint {
+  from { background-position: 100% 0; }
+  to { background-position: 0% 0; }
+}
+
+@keyframes annRule {
+  to { transform: scaleX(1); }
+}
+
 @keyframes annFade {
   from { opacity: 0; }
   to { opacity: 1; }
@@ -631,5 +671,16 @@
 
   .titleSvg text {
     stroke-dashoffset: 0;
+  }
+
+  .trackName {
+    animation: none;
+    color: var(--ann-text);
+    background: none;
+  }
+
+  .track::after {
+    animation: none;
+    transform: none;
   }
 }

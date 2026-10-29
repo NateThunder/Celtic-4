@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { FormEvent, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { CSSProperties, FormEvent, KeyboardEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { type Announcement, getActiveAnnouncement } from "../lib/announcements";
 import styles from "./announcementModal.module.css";
 
@@ -278,8 +278,12 @@ export default function AnnouncementModal() {
                   {release.list && (
                     <ul className={styles.list} aria-label={release.listHeading}>
                       {release.list.map((item, i) => (
-                        <li key={item.title} className={styles.rise} style={{ animationDelay: `${1.6 + i * 0.15}s` }}>
-                          {item.title} {item.detail && <span className={styles.muted}>{item.detail}</span>}
+                        <li
+                          key={item.title}
+                          className={`${styles.rise} ${styles.track}`}
+                          style={{ animationDelay: `${1.6 + i * 0.15}s`, "--i": i } as CSSProperties}
+                        >
+                          <span className={styles.trackName}>{item.title}</span> {item.detail && <span className={styles.muted}>{item.detail}</span>}
                         </li>
                       ))}
                     </ul>
