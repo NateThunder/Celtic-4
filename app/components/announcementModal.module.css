@@ -486,10 +486,18 @@
   font-size: 118px;
   fill: transparent;
   stroke: var(--ann-text);
-  stroke-width: 1.4;
+  /* Doubled because the mask hides the inner half. */
+  stroke-width: 2.8;
   stroke-dasharray: 900;
   stroke-dashoffset: 900;
   animation: annDraw 2.4s cubic-bezier(0.45, 0, 0.2, 1) 0.5s forwards;
+}
+
+.titleSvg .titleMask {
+  fill: #000;
+  stroke: none;
+  stroke-dasharray: none;
+  animation: none;
 }
 
 .list {
@@ -546,7 +554,8 @@
   font-size: 2.1rem;
   line-height: 1;
   color: var(--ann-gold);
-  text-shadow: 0 0 14px rgba(232, 196, 110, 0.45);
+  /* A filter glow follows the clipped digit, so no box edge shows around it. */
+  filter: drop-shadow(0 0 7px rgba(232, 196, 110, 0.45));
 }
 
 .newPlus {
