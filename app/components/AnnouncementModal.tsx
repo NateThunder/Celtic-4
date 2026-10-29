@@ -36,6 +36,12 @@ function daysUntil(iso: string, now: Date): number {
   return Math.max(0, Math.round((startOfTarget.getTime() - startOfToday.getTime()) / 86_400_000));
 }
 
+function ticketDate(iso: string): string {
+  const d = new Date(iso);
+  const p = (n: number) => String(n).padStart(2, "0");
+  return `${p(d.getUTCDate())}·${p(d.getUTCMonth() + 1)}·${String(d.getUTCFullYear()).slice(2)}`;
+}
+
 /** Deterministic "random" light dust so server and client agree and it looks the same each visit. */
 function makeDust() {
   let seed = 7;
@@ -314,8 +320,10 @@ export default function AnnouncementModal() {
                   <div className={styles.film} aria-hidden="true" />
                   {event &&
                     (event.banner ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img className={styles.banner} src={event.banner.src} alt={event.banner.alt} />
+                      <div className={styles.banner}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={event.banner.src} alt={event.banner.alt} />
+                      </div>
                     ) : (
                       <div className={styles.marquee}>
                         <span>{event.artTitle}</span>
@@ -382,13 +390,19 @@ export default function AnnouncementModal() {
                     ))}
                   </p>
                   <a
-                    className={`${styles.button} ${styles.rise}`}
+                    className={`${styles.ticket} ${styles.rise}`}
                     style={{ animationDelay: "1.6s" }}
                     href={event.tickets.href}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {event.tickets.label} <span aria-hidden="true">→</span>
+                    <span className={styles.ticketStub} aria-hidden="true">
+                      <span>Admit one</span>
+                      <strong>{ticketDate(event.date)}</strong>
+                    </span>
+                    <span className={styles.ticketMain}>
+                      {event.tickets.label} <span aria-hidden="true">→</span>
+                    </span>
                   </a>
 
                   <div className={`${styles.signup} ${styles.rise}`} style={{ animationDelay: "1.9s" }}>

@@ -46,7 +46,7 @@ export type AnnouncementEvent = {
   artTitle: string;
   /** Photos or short muted clips that cycle behind the concert step, with glitch cuts. */
   montage?: AnnouncementMontageItem[];
-  /** Photo of the O2 frontage/banner shown across the top of the concert step. */
+  /** The venue letterboard, shown as a heading strip across the top of the concert step. */
   banner?: { src: string; alt: string };
   tickets: AnnouncementLink;
   signupHeading?: string;
@@ -108,8 +108,8 @@ export const announcements: Announcement[] = [
         { src: "/announcements/live-crowd.jpg", position: "50% 60%" },
       ],
       banner: {
-        src: "/announcements/o2-front.jpg",
-        alt: "O2 Academy Glasgow with Celtic Worship & Zerua Music on the front board",
+        src: "/announcements/o2-marquee.jpg",
+        alt: "The O2 Academy Glasgow letterboard: Thursday 17th December, Celtic Worship & Zerua Music",
       },
       tickets: {
         label: "Get tickets",

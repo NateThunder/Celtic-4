@@ -90,7 +90,7 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  filter: sepia(0.35) saturate(0.75) contrast(1.18) brightness(0.55);
+  filter: sepia(0.15) saturate(0.95) contrast(1.08) brightness(0.82);
 }
 
 .shot {
@@ -120,8 +120,8 @@
   inset: 0;
   pointer-events: none;
   background:
-    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.22) 0 1px, transparent 1px 3px),
-    radial-gradient(ellipse at 50% 45%, transparent 45%, rgba(0, 0, 0, 0.7) 100%);
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.12) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 50% 55%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
 }
 
 .film::before {
@@ -129,7 +129,7 @@
   position: absolute;
   inset: -50%;
   background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/></svg>");
-  opacity: 0.35;
+  opacity: 0.25;
   mix-blend-mode: overlay;
   animation: annGrain 0.6s steps(4, end) infinite;
 }
@@ -142,14 +142,29 @@
   left: 0;
   right: 0;
   top: 0;
-  width: 100%;
-  height: 52%;
-  object-fit: cover;
-  object-position: 50% 70%;
-  filter: sepia(0.2) contrast(1.08) brightness(0.88);
-  -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent);
-  mask-image: linear-gradient(180deg, #000 72%, transparent);
+  overflow: hidden;
+  aspect-ratio: 1800 / 260;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.65);
   animation: annBannerIn 1.1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s both;
+}
+
+.banner img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: 50% 50%;
+  animation: annBannerDrift 16s ease-in-out infinite alternate;
+}
+
+/* A slow sheen of light passing along the board. */
+.banner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 35%, rgba(255, 250, 235, 0.16) 50%, transparent 65%) -100% 0 / 60% 100% no-repeat;
+  animation: annBannerSheen 7s ease-in-out 1.6s infinite;
+  pointer-events: none;
 }
 
 .marquee {
@@ -187,7 +202,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.92) 92%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 62%, rgba(0, 0, 0, 0.85) 96%);
   pointer-events: none;
 }
 
@@ -402,6 +417,64 @@
 .button:hover {
   background: var(--ann-text);
   color: var(--ann-bg);
+}
+
+.ticket {
+  --notch: 9px;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: stretch;
+  min-height: 60px;
+  color: #000000;
+  background: #ffffff;
+  text-decoration: none;
+  -webkit-mask:
+    radial-gradient(circle var(--notch) at 0 50%, transparent 97%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--notch) at 100% 50%, transparent 97%, #000) right / 51% 100% no-repeat;
+  mask:
+    radial-gradient(circle var(--notch) at 0 50%, transparent 97%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--notch) at 100% 50%, transparent 97%, #000) right / 51% 100% no-repeat;
+  transition: transform 0.25s ease;
+}
+
+.ticket:hover {
+  transform: translateY(-2px) rotate(-1.2deg);
+}
+
+.ticketStub {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 16px 0 20px;
+  border-right: 2px dashed rgba(0, 0, 0, 0.55);
+  font-size: 0.55rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.ticketStub strong {
+  font-family: var(--ann-display);
+  font-weight: 400;
+  font-size: 1.05rem;
+  letter-spacing: 0.06em;
+}
+
+.ticketMain {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 0 26px 0 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ticket:focus-visible {
+  outline: 2px solid var(--ann-text);
+  outline-offset: 4px;
 }
 
 .textLink {
@@ -640,8 +713,18 @@
 }
 
 @keyframes annBannerIn {
-  from { opacity: 0; transform: translateY(-14px) scale(1.04); filter: sepia(0.2) brightness(1.6) blur(3px); }
+  from { opacity: 0; transform: translateY(-100%); }
   to { opacity: 1; transform: none; }
+}
+
+@keyframes annBannerDrift {
+  from { transform: scale(1.05) translateX(-1.2%); }
+  to { transform: scale(1.08) translateX(1.2%); }
+}
+
+@keyframes annBannerSheen {
+  0% { background-position: -100% 0; }
+  45%, 100% { background-position: 260% 0; }
 }
 
 @keyframes annGrain {
@@ -797,6 +880,8 @@
     display: none;
   }
 
+  .banner img,
+  .banner::after,
   .glitching,
   .glitching .shotOn,
   .film::before,
