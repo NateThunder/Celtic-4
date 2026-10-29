@@ -26,6 +26,15 @@ export type AnnouncementRelease = {
   nextLabel?: string;
 };
 
+export type AnnouncementMontageItem = {
+  src: string;
+  kind?: "image" | "video";
+  /** CSS object-position, e.g. "50% 20%". */
+  position?: string;
+  /** Extra zoom for stills, e.g. 1.4. */
+  zoom?: number;
+};
+
 export type AnnouncementEvent = {
   eyebrow: string;
   title: string;
@@ -35,6 +44,10 @@ export type AnnouncementEvent = {
   details: string[];
   artLabel: string;
   artTitle: string;
+  /** Photos or short muted clips that cycle behind the concert step, with glitch cuts. */
+  montage?: AnnouncementMontageItem[];
+  /** Photo of the O2 frontage/banner shown across the top of the concert step. */
+  banner?: { src: string; alt: string };
   tickets: AnnouncementLink;
   signupHeading?: string;
 };
@@ -83,6 +96,21 @@ export const announcements: Announcement[] = [
       details: ["O2 Academy Glasgow", "Celtic Worship with Zerua Music"],
       artLabel: "Live on stage",
       artTitle: "O2 Academy Glasgow",
+      // Photos from the St Luke's Celtic Worship & Zerua night.
+      montage: [
+        { src: "/announcements/live-choir-stage.jpg", position: "45% 50%" },
+        { src: "/announcements/live-drums.jpg", position: "45% 55%" },
+        { src: "/announcements/live-choir.jpg", position: "60% 45%" },
+        { src: "/announcements/live-fiddle.jpg", position: "62% 40%" },
+        { src: "/announcements/live-guitar.jpg", position: "42% 40%" },
+        { src: "/announcements/live-band.jpg", position: "55% 55%" },
+        { src: "/announcements/live-o-night.jpg", position: "40% 50%" },
+        { src: "/announcements/live-crowd.jpg", position: "50% 60%" },
+      ],
+      banner: {
+        src: "/announcements/o2-front.jpg",
+        alt: "O2 Academy Glasgow with Celtic Worship & Zerua Music on the front board",
+      },
       tickets: {
         label: "Get tickets",
         href: "https://www.ticketmaster.co.uk/celtic-worship-glasgow-17-12-2026/event/3E0064B6C3704E18",

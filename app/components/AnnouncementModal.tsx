@@ -8,6 +8,8 @@ import styles from "./announcementModal.module.css";
 const OPEN_DELAY_MS = 1200;
 const HIDDEN_ON = ["/shop/checkout", "/admin", "/stem-player"];
 const DUST_COUNT = 36;
+const MONTAGE_MS = 2600;
+const GLITCH_MS = 420;
 
 type SignupState = "idle" | "submitting" | "success" | "error";
 
@@ -72,6 +74,8 @@ export default function AnnouncementModal() {
   const [showBar, setShowBar] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
   const [count, setCount] = useState(0);
+  const [shot, setShot] = useState(0);
+  const [glitch, setGlitch] = useState(false);
   const [signup, setSignup] = useState<SignupState>("idle");
   const dialogRef = useRef<HTMLDivElement>(null);
   const lastFocus = useRef<HTMLElement | null>(null);
@@ -145,6 +149,31 @@ export default function AnnouncementModal() {
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
   }, [open, step, announcement, now]);
+
+  // Cycle the concert montage, with a short glitch on every cut (and on arrival).
+  useEffect(() => {
+    if (!open || step !== 2) return;
+    const shots = announcement?.event?.montage?.length ?? 0;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    setShot(0);
+    if (reduce) return;
+    const timers: number[] = [];
+    const cut = () => {
+      setGlitch(true);
+      timers.push(window.setTimeout(() => setGlitch(false), GLITCH_MS));
+    };
+    cut();
+    const interval = shots > 1
+      ? window.setInterval(() => {
+          cut();
+          timers.push(window.setTimeout(() => setShot((n) => (n + 1) % shots), GLITCH_MS / 2));
+        }, MONTAGE_MS)
+      : 0;
+    return () => {
+      window.clearInterval(interval);
+      timers.forEach((t) => window.clearTimeout(t));
+    };
+  }, [open, step, announcement]);
 
   const closeBar = () => {
     if (barKey) storageSet(barKey, "1");
@@ -234,7 +263,7 @@ export default function AnnouncementModal() {
 
             <div className={styles.art} data-step={step}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img key={`art-${step}`} src={image.src} alt={step === 1 ? image.alt : ""} className={styles.artImage} />
+              {step === 1 && <img src={image.src} alt={image.alt} className={styles.artImage} />}
               {step === 1 ? (
                 <>
                   <div className={styles.bloom} aria-hidden="true" />
@@ -256,6 +285,44 @@ export default function AnnouncementModal() {
                 </>
               ) : (
                 <>
+                  <div className={`${styles.montage} ${glitch ? styles.glitching : ""}`} aria-hidden="true">
+                    {(event?.montage?.length ? event.montage : [{ src: image.src }]).map((item, i) =>
+                      item.kind === "video" ? (
+                        <video
+                          key={i}
+                          className={`${styles.shot} ${i === shot ? styles.shotOn : ""}`}
+                          src={item.src}
+                          style={{ objectPosition: item.position }}
+                          muted
+                          loop
+                          autoPlay
+                          playsInline
+                          preload="metadata"
+                        />
+                      ) : (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          key={i}
+                          className={`${styles.shot} ${i === shot ? styles.shotOn : ""}`}
+                          src={item.src}
+                          alt=""
+                          style={{ objectPosition: item.position, transform: item.zoom ? `scale(${item.zoom})` : undefined, transformOrigin: item.position }}
+                        />
+                      ),
+                    )}
+                  </div>
+                  <div className={styles.film} aria-hidden="true" />
+                  {event &&
+                    (event.banner ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img className={styles.banner} src={event.banner.src} alt={event.banner.alt} />
+                    ) : (
+                      <div className={styles.marquee}>
+                        <span>{event.artTitle}</span>
+                        <strong>Celtic Worship · Zerua Music</strong>
+                        <span>{event.eyebrow.replace(/^Live · /, "")}</span>
+                      </div>
+                    ))}
                   <div className={`${styles.beam} ${styles.beamA}`} aria-hidden="true" />
                   <div className={`${styles.beam} ${styles.beamB}`} aria-hidden="true" />
                   {event && (
