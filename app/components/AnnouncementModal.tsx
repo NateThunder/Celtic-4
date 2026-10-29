@@ -475,19 +475,15 @@ export default function AnnouncementModal() {
                       )}
                     </div>
                     {event && (
-                      <button type="button" className={styles.nextCard} onClick={() => setStep(2)}>
-                        {event.venue?.boardTight && (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img className={styles.nextThumb} src={event.venue.boardTight} alt="" />
-                        )}
-                        <span className={styles.nextText}>
-                          <span className={styles.nextKicker}>{release.nextKicker ?? "Next"}</span>
+                      <button type="button" className={styles.nextLink} onClick={() => setStep(2)}>
+                        <span className={styles.nextKicker}>{release.nextKicker ?? "Next"}</span>
+                        <span className={styles.nextRow}>
                           <span className={styles.nextLabel}>{release.nextLabel ?? "Next"}</span>
-                        </span>
-                        <span className={styles.nextArrow} aria-hidden="true">
-                          <svg width="28" height="14" viewBox="0 0 28 14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M1 7h25M20 1l6 6-6 6" />
-                          </svg>
+                          <span className={styles.nextArrow} aria-hidden="true">
+                            <svg width="34" height="16" viewBox="0 0 34 16" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M1 8h31M25 1l7 7-7 7" />
+                            </svg>
+                          </span>
                         </span>
                       </button>
                     )}

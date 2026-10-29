@@ -725,7 +725,7 @@
 }
 
 .platforms {
-  --size: 30px;
+  --size: 34px;
   display: inline-flex;
   align-items: center;
   height: var(--size);
@@ -738,7 +738,7 @@
   height: var(--size);
   margin-left: -13px;
   border-radius: 50%;
-  box-shadow: 0 0 0 2px var(--ann-bg), 0 4px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
   opacity: 0;
   transform: translateX(-14px) scale(0.6);
   animation:
@@ -746,87 +746,69 @@
     annChipFront 7.5s ease-in-out calc(3.6s + var(--i) * 1.5s) infinite;
 }
 
-.platform:last-child {
-  outline: 1px solid rgba(255, 255, 255, 0.35);
-  outline-offset: -1px;
-}
-
-/* "Next: hear it live" card: big, clearly tappable, the lit sign as a thumbnail
-   and an arrow that nudges forward. */
-.nextCard {
-  position: relative;
+/* "Next: hear it live at the O2": no box, just loud. Big condensed type with a
+   light sheen sweeping across it and an arrow that nudges forward. */
+.nextLink {
+  align-self: flex-start;
   display: flex;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-  min-height: 64px;
-  padding: 10px 18px 10px 10px;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 0;
   color: var(--ann-text);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: none;
+  border: 0;
   font: inherit;
   text-align: left;
   cursor: pointer;
-  overflow: hidden;
-  transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-.nextCard::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(100deg, transparent 30%, rgba(255, 244, 214, 0.14) 50%, transparent 70%) -120% 0 / 60% 100% no-repeat;
-  animation: annBannerSheen 4.5s ease-in-out 3s infinite;
-  pointer-events: none;
-}
-
-.nextCard:hover {
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(255, 255, 255, 0.6);
-}
-
-.nextThumb {
-  flex: none;
-  width: 88px;
-  height: auto;
-  border: 2px solid #17171c;
-  filter: brightness(1.45) saturate(0.85) sepia(0.12);
-  box-shadow: 0 0 16px rgba(255, 238, 200, 0.35);
-  animation: annThumbHum 3.2s ease-in-out infinite;
-}
-
-.nextText {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
 }
 
 .nextKicker {
-  font-size: 0.6rem;
-  letter-spacing: 0.3em;
+  font-size: 0.62rem;
+  letter-spacing: 0.32em;
   text-transform: uppercase;
   color: var(--ann-gold);
 }
 
+.nextRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
 .nextLabel {
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
+  font-family: var(--ann-display);
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  line-height: 1;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
+  color: transparent;
+  background:
+    linear-gradient(100deg, rgba(255, 255, 255, 0) 38%, #fff4d0 46%, var(--ann-gold) 50%, #fff4d0 54%, rgba(255, 255, 255, 0) 62%) 130% 0 / 300% 100% no-repeat,
+    linear-gradient(#ffffff, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: annNextSheen 4.2s ease-in-out 3s infinite;
 }
 
 .nextArrow {
   flex: none;
   display: grid;
   place-items: center;
+  color: var(--ann-gold);
   animation: annNudge 2.2s ease-in-out 3s infinite;
 }
 
-.nextCard:focus-visible {
+.nextLink:hover .nextLabel {
+  animation-duration: 1.4s;
+}
+
+.nextLink:hover .nextArrow {
+  transform: translateX(6px);
+}
+
+.nextLink:focus-visible {
   outline: 2px solid var(--ann-text);
-  outline-offset: 3px;
+  outline-offset: 4px;
 }
 
 .textLink {
@@ -1172,7 +1154,12 @@
 
 @keyframes annChipFront {
   0%, 18%, 100% { transform: none; z-index: auto; }
-  6%, 12% { transform: translateY(-6px) scale(1.18); z-index: 20; box-shadow: 0 0 0 2px var(--ann-bg), 0 8px 18px rgba(0, 0, 0, 0.6); }
+  6%, 12% { transform: translateY(-5px) scale(1.18); z-index: 20; filter: brightness(1.3); box-shadow: 0 8px 18px rgba(0, 0, 0, 0.7), 0 0 14px rgba(232, 196, 110, 0.45); }
+}
+
+@keyframes annNextSheen {
+  0% { background-position: 130% 0, 0 0; }
+  40%, 100% { background-position: -30% 0, 0 0; }
 }
 
 @keyframes annNudge {
@@ -1300,17 +1287,8 @@
     margin-top: 6px;
   }
 
-  .nextThumb {
-    width: 64px;
-  }
-
-  .nextCard {
-    gap: 12px;
-    padding-right: 14px;
-  }
-
   .nextLabel {
-    letter-spacing: 0.12em;
+    font-size: 1.45rem;
   }
 }
 
@@ -1388,10 +1366,14 @@
     transform: none;
   }
 
-  .nextArrow,
-  .nextThumb,
-  .nextCard::before {
+  .nextArrow {
     animation: none;
+  }
+
+  .nextLabel {
+    animation: none;
+    color: var(--ann-text);
+    background: none;
   }
 
   .trackName {
