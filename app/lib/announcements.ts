@@ -140,12 +140,13 @@ export const announcements: Announcement[] = [
       venue: {
         board: "/announcements/o2-board.jpg",
         boardTight: "/announcements/o2-board-tight.jpg",
-        layout: "classic",
+        layout: "bigSign",
         bannerLeft: "/announcements/o2-banner-left.jpg",
         bannerRight: "/announcements/o2-banner-right.jpg",
         bannerLeftSlim: "/announcements/o2-banner-left-slim.jpg",
         bannerRightSlim: "/announcements/o2-banner-right-slim.jpg",
         wall: "/announcements/o2-wall.jpg",
+        tint: { color: "#1c2846", mode: "multiply", opacity: 0.93 },
         alt: "The O2 Academy Glasgow front: letterboard reading Thursday 17th December, Celtic Worship & Zerua Music",
       },
       tickets: {
