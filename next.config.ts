@@ -28,10 +28,6 @@ try {
 
 const nextConfig: NextConfig = {
   output: "standalone",
-  // Fonts and photos the automatic event poster (app/api/poster) reads at runtime.
-  outputFileTracingIncludes: {
-    "/api/poster": ["./assets/poster/**/*"],
-  },
   images: {
     // SiteGround blocks Next's `/_next/image` endpoint at nginx with a 403.
     // Serve image sources directly so the same build works on SiteGround and
