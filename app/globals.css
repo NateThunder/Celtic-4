@@ -1332,7 +1332,17 @@ body {
   transform: translateX(calc(-50% + clamp(12rem, 29vw, 25rem) + var(--live-events-drag-x, 0px))) scale(0.74);
 }
 
-.live-events-poster-slider.is-dragging .live-events-poster-slide {
+/* Posters out of view wait off to one side, so every move slides the same way. */
+.live-events-poster-slide.is-hidden-left {
+  transform: translateX(calc(-50% - 2 * clamp(12rem, 29vw, 25rem))) scale(0.6);
+}
+
+.live-events-poster-slide.is-hidden-right {
+  transform: translateX(calc(-50% + 2 * clamp(12rem, 29vw, 25rem))) scale(0.6);
+}
+
+.live-events-poster-slider.is-dragging .live-events-poster-slide,
+.live-events-poster-slide.is-snap {
   transition: none;
 }
 
@@ -1430,6 +1440,14 @@ body {
 
   .live-events-poster-slide.is-next {
     transform: translateX(calc(-50% + 54vw + var(--live-events-drag-x, 0px))) scale(0.64);
+  }
+
+  .live-events-poster-slide.is-hidden-left {
+    transform: translateX(calc(-50% - 108vw)) scale(0.6);
+  }
+
+  .live-events-poster-slide.is-hidden-right {
+    transform: translateX(calc(-50% + 108vw)) scale(0.6);
   }
 
   .live-events-poster-slide.is-prev,

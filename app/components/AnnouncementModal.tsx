@@ -11,6 +11,8 @@ const HIDDEN_ON = ["/shop/checkout", "/admin", "/stem-player"];
 const DUST_COUNT = 36;
 const MONTAGE_MS = 2600;
 const GLITCH_MS = 420;
+/** How long each slide stays up before the popup moves to the other one by itself. */
+const AUTO_ADVANCE_MS = 7000;
 
 type SignupState = "idle" | "submitting" | "success" | "error";
 
@@ -27,6 +29,22 @@ function storageSet(key: string, value: string) {
     window.localStorage.setItem(key, value);
   } catch {
     // Storage can be unavailable (private mode); the popup then simply shows again next visit.
+  }
+}
+
+function sessionGet(key: string): string | null {
+  try {
+    return window.sessionStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function sessionSet(key: string, value: string) {
+  try {
+    window.sessionStorage.setItem(key, value);
+  } catch {
+    // Without session storage the popup shows on each page, as before.
   }
 }
 
@@ -200,6 +218,10 @@ export default function AnnouncementModal() {
   const [now, setNow] = useState<Date | null>(null);
   const [open, setOpen] = useState(false);
   const [showBar, setShowBar] = useState(false);
+  const [showFloat, setShowFloat] = useState(false);
+  const [auto, setAuto] = useState(true);
+  const [floatFly, setFloatFly] = useState(false);
+  const [floatTop, setFloatTop] = useState<number | null>(null);
   const [step, setStep] = useState<1 | 2>(1);
   const [count, setCount] = useState(0);
   const [shot, setShot] = useState(0);
@@ -210,6 +232,7 @@ export default function AnnouncementModal() {
   const dust = useMemo(makeDust, []);
 
   const barKey = announcement ? `cw-announcement-bar-closed:${announcement.id}` : "";
+  const floatKey = announcement ? `cw-announcement-float-closed:${announcement.id}` : "";
 
   useEffect(() => {
     if (hidden) return;
@@ -219,19 +242,42 @@ export default function AnnouncementModal() {
     setAnnouncement(active);
     setNow(current);
 
-    // Opens on every page load, even if the visitor closed it last time.
+    const seenKey = `cw-announcement-seen:${active.id}`;
+    const floatLive = active.float && current.getTime() < Date.parse(active.float.endsAt);
+
+    // Once per visit: later pages in the same visit go straight to the reminders.
+    if (sessionGet(seenKey)) {
+      if (active.bar && !storageGet(`cw-announcement-bar-closed:${active.id}`)) setShowBar(true);
+      if (floatLive && !sessionGet(`cw-announcement-float-closed:${active.id}`)) setShowFloat(true);
+      return;
+    }
+
     const timer = window.setTimeout(() => {
+      sessionSet(seenKey, "1");
       lastFocus.current = document.activeElement as HTMLElement | null;
       setOpen(true);
     }, OPEN_DELAY_MS);
     return () => window.clearTimeout(timer);
   }, [hidden]);
 
+  const floatLive = Boolean(announcement?.float && now && now.getTime() < Date.parse(announcement.float.endsAt));
+
   const close = useCallback(() => {
     setOpen(false);
     if (announcement?.bar && !storageGet(barKey)) setShowBar(true);
+    if (floatLive && !sessionGet(floatKey)) {
+      setFloatFly(true);
+      setShowFloat(true);
+    }
     lastFocus.current?.focus?.();
-  }, [announcement, barKey]);
+  }, [announcement, barKey, floatLive, floatKey]);
+
+  // Moves between the album and the concert by itself until the visitor takes over.
+  useEffect(() => {
+    if (!open || !auto || !announcement?.event) return;
+    const timer = window.setTimeout(() => setStep((s) => (s === 1 ? 2 : 1)), AUTO_ADVANCE_MS);
+    return () => window.clearTimeout(timer);
+  }, [open, auto, step, announcement]);
 
   // Escape closes from anywhere, even after a step change has moved focus.
   useEffect(() => {
@@ -302,10 +348,30 @@ export default function AnnouncementModal() {
     setShowBar(false);
   };
 
+  // Sit just under the site header, whatever its height on this page.
+  useEffect(() => {
+    if (!showFloat) return;
+    const place = () => {
+      const header = document.querySelector(".site-header");
+      const bottom = header?.getBoundingClientRect().bottom ?? 0;
+      setFloatTop(bottom > 0 ? Math.round(bottom + 12) : null);
+    };
+    place();
+    window.addEventListener("resize", place);
+    return () => window.removeEventListener("resize", place);
+  }, [showFloat]);
+
+  const closeFloat = () => {
+    if (floatKey) sessionSet(floatKey, "1");
+    setShowFloat(false);
+  };
+
   const reopen = () => {
     lastFocus.current = document.activeElement as HTMLElement | null;
     setStep(1);
+    setAuto(true);
     setShowBar(false);
+    setShowFloat(false);
     setOpen(true);
   };
 
@@ -375,7 +441,11 @@ export default function AnnouncementModal() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="cw-announcement-title"
-            onKeyDown={onKeyDown}
+            onKeyDown={(e) => {
+              if (e.key !== "Escape") setAuto(false);
+              onKeyDown(e);
+            }}
+            onPointerDown={() => setAuto(false)}
           >
             <button type="button" className={styles.close} aria-label="Close" onClick={close}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
@@ -572,9 +642,17 @@ export default function AnnouncementModal() {
               )}
 
               {event && (
-                <div className={styles.dots}>
-                  <button type="button" aria-label="The release" aria-current={step === 1} className={step === 1 ? styles.dotOn : styles.dot} onClick={() => setStep(1)} />
-                  <button type="button" aria-label="The concert" aria-current={step === 2} className={step === 2 ? styles.dotOn : styles.dot} onClick={() => setStep(2)} />
+                <div className={styles.dots} style={{ "--ann-auto": `${AUTO_ADVANCE_MS}ms` } as CSSProperties}>
+                  {([1, 2] as const).map((n) => (
+                    <button
+                      key={n === step && auto ? `run-${step}` : n}
+                      type="button"
+                      aria-label={n === 1 ? "The release" : "The concert"}
+                      aria-current={step === n}
+                      className={step === n ? `${styles.dotOn} ${auto ? styles.dotRun : ""}` : styles.dot}
+                      onClick={() => setStep(n)}
+                    />
+                  ))}
                 </div>
               )}
             </div>
@@ -585,13 +663,40 @@ export default function AnnouncementModal() {
       {!open && showBar && bar && (
         <div className={styles.bar} role="region" aria-label="Announcement">
           <button type="button" className={styles.barText} onClick={reopen}>
-            {bar.text}
+            {bar.image && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img className={styles.barArt} src={bar.image} alt="" />
+            )}
+            <span className={styles.barWords}>
+              <span className={styles.barTitle}>{bar.text.split(" · ")[0]}</span>
+              <span className={styles.barKicker}>{bar.text.split(" · ").slice(1).join(" · ")}</span>
+            </span>
           </button>
           <a className={styles.barLink} href={bar.link.href} target="_blank" rel="noopener noreferrer">
             {bar.link.label} <span aria-hidden="true">→</span>
           </a>
           <button type="button" className={styles.barClose} aria-label="Hide announcement" onClick={closeBar}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+              <path d="M6 6l12 12M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
+      )}
+
+      {!open && showFloat && announcement.float && (
+        <div className={`${styles.float} ${floatFly ? styles.floatFly : ""}`} role="region" aria-label="New album" style={floatTop !== null ? { top: floatTop } : undefined}>
+          <a className={styles.floatLink} href={primary.href} target="_blank" rel="noopener noreferrer">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img className={styles.floatArt} src={image.src} alt="" />
+            <span className={styles.floatText}>
+              <span className={styles.floatKicker}>{announcement.float.kicker}</span>
+              <span className={styles.floatLabel}>
+                {primary.label} <span aria-hidden="true">→</span>
+              </span>
+            </span>
+          </a>
+          <button type="button" className={styles.floatClose} aria-label="Hide album reminder" onClick={closeFloat}>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
               <path d="M6 6l12 12M18 6L6 18" />
             </svg>
           </button>

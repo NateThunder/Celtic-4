@@ -978,6 +978,29 @@
   background: var(--ann-text);
 }
 
+/* While the popup is moving on by itself, the current line fills up as a timer. */
+.dotRun::after {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.dotRun::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  top: 9px;
+  z-index: 1;
+  height: 2px;
+  background: var(--ann-text);
+  transform-origin: left center;
+  animation: annDotFill var(--ann-auto, 7000ms) linear forwards;
+}
+
+@keyframes annDotFill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
 .close:focus-visible,
 .button:focus-visible,
 .textLink:focus-visible,
@@ -991,62 +1014,228 @@
   outline-offset: 3px;
 }
 
-/* Small reminder shown after the popup is closed. */
+/* Small concert reminder shown after the popup is closed, in the O Holy Night poster's colours. */
 .bar {
   position: fixed;
   left: max(16px, env(safe-area-inset-left));
   bottom: max(16px, env(safe-area-inset-bottom));
   z-index: 900;
   display: flex;
-  align-items: center;
-  gap: 4px;
+  align-items: stretch;
   max-width: calc(100vw - 32px);
-  padding: 4px;
-  color: #ffffff;
-  background: #000000;
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  padding: 1px;
+  color: #f4ead6;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #c4413a, #d39a5e 50%, #ac794e);
+  box-shadow: 0 10px 28px rgba(12, 8, 6, 0.35);
   font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
-  font-size: 0.68rem;
-  letter-spacing: 0.2em;
   text-transform: uppercase;
   animation: annRise 0.5s ease both;
 }
 
 .barText {
-  min-height: 40px;
-  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 6px 12px 6px 6px;
   color: inherit;
-  background: transparent;
+  background: #1d1512;
   border: 0;
+  border-radius: 13px 0 0 13px;
   font: inherit;
-  letter-spacing: inherit;
   text-transform: inherit;
   text-align: left;
   cursor: pointer;
 }
 
+.barArt {
+  flex: none;
+  width: 32px;
+  height: 40px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.barWords {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.barTitle {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  white-space: nowrap;
+}
+
+.barKicker {
+  overflow: hidden;
+  color: #e2b86b;
+  font-size: 0.56rem;
+  letter-spacing: 0.2em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .barLink {
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-height: 40px;
+  gap: 8px;
   padding: 0 14px;
-  color: #000000;
-  background: #ffffff;
+  color: #1d1512;
+  background: #e2b86b;
+  font-size: 0.68rem;
   font-weight: 700;
+  letter-spacing: 0.18em;
   text-decoration: none;
   white-space: nowrap;
+}
+
+.barLink:hover {
+  background: #f0cd85;
 }
 
 .barClose {
   display: grid;
   place-items: center;
+  width: 32px;
+  color: rgba(244, 234, 214, 0.7);
+  background: #1d1512;
+  border: 0;
+  border-radius: 0 13px 13px 0;
+  cursor: pointer;
+}
+
+.barClose:hover {
+  color: #ffffff;
+}
+
+@media (max-width: 420px) {
+  .barTitle,
+  .barKicker,
+  .barLink {
+    letter-spacing: 0.1em;
+  }
+
+  .barLink {
+    padding: 0 10px;
+  }
+}
+
+/* Album reminder that floats top right for the rest of the visit, in the artwork's colours. */
+.float {
+  position: fixed;
+  top: calc(max(12px, env(safe-area-inset-top)) + 76px);
+  right: max(16px, env(safe-area-inset-right));
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  max-width: calc(100vw - 32px);
+  padding: 1px;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #4f8b8a, #e6cf8e 45%, #e79a6d);
+  box-shadow: 0 10px 28px rgba(12, 8, 10, 0.35);
+  animation: annFloatFade 400ms ease both;
+}
+
+/* Straight after the popup closes it flies up into the corner. */
+.floatFly {
+  animation: annFloatIn 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.floatLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px 6px 6px;
+  color: #f4ead6;
+  background: #281e21;
+  border-radius: 13px 0 0 13px;
+  text-decoration: none;
+}
+
+.floatArt {
   width: 40px;
   height: 40px;
-  color: inherit;
-  background: transparent;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.floatText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.floatKicker {
+  color: #e6cf8e;
+  font-size: 0.56rem;
+  letter-spacing: 0.22em;
+}
+
+.floatLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.floatClose {
+  display: grid;
+  place-items: center;
+  align-self: stretch;
+  width: 32px;
+  color: rgba(244, 234, 214, 0.7);
+  background: #281e21;
   border: 0;
+  border-left: 1px solid rgba(230, 207, 142, 0.18);
+  border-radius: 0 13px 13px 0;
   cursor: pointer;
+}
+
+.floatLink:hover .floatLabel,
+.floatClose:hover {
+  color: #ffffff;
+}
+
+.floatLink:focus-visible,
+.floatClose:focus-visible {
+  outline: 2px solid #e6cf8e;
+  outline-offset: 3px;
+}
+
+@keyframes annFloatFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes annFloatIn {
+  from { opacity: 0; transform: translate(-28vw, 30vh) scale(0.6); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (max-width: 700px) {
+  .float {
+    top: calc(max(10px, env(safe-area-inset-top)) + 64px);
+    right: max(10px, env(safe-area-inset-right));
+  }
+
+  .floatArt {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float,
+  .dotRun::before {
+    animation: none;
+  }
 }
 
 @keyframes annGlitch {
