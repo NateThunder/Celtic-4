@@ -2,7 +2,8 @@
 //
 // To run a new announcement, add an entry below with its own unique `id` and
 // start/end dates. The popup shows the first announcement whose window includes
-// today, on every page load. Remove or expire old entries when done.
+// today, once per visit (browser session), not on every page change. Remove or
+// expire old entries when done.
 
 export type AnnouncementLink = {
   label: string;
@@ -80,7 +81,9 @@ export type Announcement = {
   image: { src: string; alt: string };
   release: AnnouncementRelease;
   event?: AnnouncementEvent;
-  bar?: { text: string; link: AnnouncementLink };
+  bar?: { text: string; link: AnnouncementLink; /** Small poster shown at the left of the bar. */ image?: string };
+  /** Small album pill that floats top right after the popup is closed, until `endsAt`. */
+  float?: { kicker: string; endsAt: string };
 };
 
 export const announcements: Announcement[] = [
@@ -154,8 +157,11 @@ export const announcements: Announcement[] = [
       },
       signupHeading: "Join the list",
     },
+    // 20 days after the release.
+    float: { kicker: "Come Behold · Deluxe", endsAt: "2026-11-19T00:00:00Z" },
     bar: {
       text: "O Holy Night · O2 Academy Glasgow · 17 Dec",
+      image: "/oh holy night poster.jpg",
       link: {
         label: "Tickets",
         href: "https://www.ticketmaster.co.uk/celtic-worship-glasgow-17-12-2026/event/3E0064B6C3704E18",
