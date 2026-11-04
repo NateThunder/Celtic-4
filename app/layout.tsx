@@ -36,9 +36,19 @@ const bebasNeue = Bebas_Neue({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://celticworship.co.uk"),
   title: "Celtic Worship | Songs for the Church",
   description:
-    "Celtic Worship is a Christ-centred worship collective writing and leading songs through the sounds of Scotland.",
+    "Celtic Worship is a Christ-centred worship collective writing and leading songs through the sounds of Scotland. New album Come Behold (Deluxe Edition) out now.",
+  openGraph: {
+    title: "Celtic Worship | Come Behold (Deluxe Edition) out now",
+    description:
+      "Christ-centred worship through the sounds of Scotland. Listen to Come Behold (Deluxe Edition) and join us at O Holy Night, O2 Academy Glasgow, 17 December.",
+    url: "https://celticworship.co.uk",
+    siteName: "Celtic Worship",
+    images: [{ url: "/announcements/come-behold-deluxe.jpg", width: 1600, height: 1600, alt: "Come Behold Deluxe Edition album artwork" }],
+    type: "website",
+  },
 };
 
 export default function RootLayout({

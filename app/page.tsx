@@ -24,6 +24,33 @@ const FEATURED_VIDEOS = [
   { videoId: "-KnzDx8UV5M", title: "Where Can I Go" },
 ];
 
+// Tells Google who the band is and what the latest album is, so search results
+// lead with Come Behold (Deluxe Edition). Update latestAlbum for each new release.
+const BAND_STRUCTURED_DATA = {
+  "@context": "https://schema.org",
+  "@type": "MusicGroup",
+  name: "Celtic Worship",
+  url: "https://celticworship.co.uk",
+  description: "A Christ-centred worship collective writing and leading songs through the sounds of Scotland.",
+  genre: ["Worship", "Celtic", "Christian"],
+  foundingLocation: { "@type": "Place", name: "Glasgow, Scotland" },
+  sameAs: [
+    "https://open.spotify.com/artist/0h2AQKpVBEEXQQ03KGf7ep",
+    "https://music.apple.com/us/artist/celtic-worship/1456387920",
+    "https://www.youtube.com/CelticWorshipMusic",
+    "https://www.instagram.com/celtic_worship",
+  ],
+  album: {
+    "@type": "MusicAlbum",
+    name: "Come Behold (Deluxe Edition)",
+    alternateName: "Come Behold: Christmas Collaborations (Deluxe)",
+    datePublished: "2026-10-30",
+    image: "https://celticworship.co.uk/announcements/come-behold-deluxe.jpg",
+    url: "https://found.ee/ComeBeholdDeluxe",
+    byArtist: { "@type": "MusicGroup", name: "Celtic Worship" },
+  },
+};
+
 export default async function Home() {
   const [events, featuredProducts] = await Promise.all([
     getUpcomingEvents(),
@@ -32,6 +59,10 @@ export default async function Home() {
 
   return (
     <div className="site-shell editorial-home-shell">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(BAND_STRUCTURED_DATA) }}
+      />
       <ScrollHomeToTop />
       <HomeReveal />
       <SiteHeader variant="home" />
