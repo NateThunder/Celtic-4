@@ -28,6 +28,10 @@ try {
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  // SiteGround stops any build after 5 minutes, and its compile step alone can
+  // take most of that. The type check is run on every change before it is
+  // pushed (npx tsc --noEmit), so it is skipped during the hosting build.
+  typescript: { ignoreBuildErrors: true },
   images: {
     // SiteGround blocks Next's `/_next/image` endpoint at nginx with a 403.
     // Serve image sources directly so the same build works on SiteGround and
