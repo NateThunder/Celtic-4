@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Anton, Bebas_Neue, Geist, Geist_Mono, Montserrat } from "next/font/google";
+import localFont from "next/font/local";
 import Script from "next/script";
 import "lenis/dist/lenis.css";
 import "./globals.css";
@@ -7,31 +7,35 @@ import SmoothScrollProvider from "./components/SmoothScrollProvider";
 import SiteFooter from "./components/SiteFooter";
 import AnnouncementModal from "./components/AnnouncementModal";
 
-const geistSans = Geist({
+// Fonts are stored in app/fonts instead of being downloaded from Google during each
+// build, so a slow connection to Google can no longer stall the SiteGround build.
+const geistSans = localFont({
+  src: "./fonts/geist-latin-wght-normal.woff2",
   variable: "--font-geist-sans",
-  subsets: ["latin"],
+  weight: "100 900",
 });
 
-const geistMono = Geist_Mono({
+const geistMono = localFont({
+  src: "./fonts/geist-mono-latin-wght-normal.woff2",
   variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: "100 900",
 });
 
-const montserrat = Montserrat({
+const montserrat = localFont({
+  src: "./fonts/montserrat-latin-wght-normal.woff2",
   variable: "--font-montserrat",
-  subsets: ["latin"],
-  weight: ["400", "700", "800"],
+  weight: "100 900",
 });
 
-const anton = Anton({
+const anton = localFont({
+  src: "./fonts/anton-latin-400-normal.woff2",
   variable: "--font-anton",
-  subsets: ["latin"],
   weight: "400",
 });
 
-const bebasNeue = Bebas_Neue({
+const bebasNeue = localFont({
+  src: "./fonts/bebas-neue-latin-400-normal.woff2",
   variable: "--font-bebas-neue",
-  subsets: ["latin"],
   weight: "400",
 });
 
