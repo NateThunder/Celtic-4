@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -59,6 +60,7 @@ type WooStoreProduct = {
   has_options?: boolean;
   short_description?: string;
   description?: string;
+  sku?: string;
   images?: WooStoreImage[];
   prices?: WooStorePrices;
   categories?: WooStoreCategory[];
@@ -73,6 +75,26 @@ const RECOMMENDED_PRODUCTS_POOL_SIZE = 100;
 function stripHtml(input?: string): string {
   if (!input) return "";
   return input.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+}
+
+/** Splits product HTML into readable paragraphs and list lines for the details panel. */
+function htmlToLines(input?: string): string[] {
+  if (!input) return [];
+  return input
+    .split(/<\/(?:p|li|h[1-6])>|<br\s*\/?>/i)
+    .map((chunk) => stripHtml(chunk))
+    .filter(Boolean);
+}
+
+function truncateForMeta(text: string, max = 155): string {
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max - 1);
+  return `${cut.slice(0, cut.lastIndexOf(" ")).replace(/[,.;:]$/, "")}\u2026`;
+}
+
+function priceAmount(prices?: WooStorePrices): string | undefined {
+  if (!prices?.price) return undefined;
+  return (Number(prices.price) / 10 ** Number(prices.currency_minor_unit ?? 2)).toFixed(2);
 }
 
 function formatProductPrice(prices?: WooStorePrices): string {
@@ -259,6 +281,33 @@ type ShopProductPageProps = {
   params: Promise<{ productId: string }>;
 };
 
+export async function generateMetadata({ params }: ShopProductPageProps): Promise<Metadata> {
+  const { productId } = await params;
+  const numericId = Number(productId);
+  if (!Number.isFinite(numericId)) return {};
+  const product = await getStoreProduct(numericId);
+  if (!product) return {};
+
+  const summary = stripHtml(product.short_description) || stripHtml(product.description);
+  const description = truncateForMeta(summary || `${product.name} from the official Celtic Worship shop.`);
+  const image = product.images?.find((candidate) => candidate.src);
+  const url = `/shop/${product.id}`;
+
+  return {
+    title: `${product.name} | Celtic Worship Shop`,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: `${product.name} | Celtic Worship`,
+      description,
+      url,
+      siteName: "Celtic Worship",
+      type: "website",
+      images: image?.src ? [{ url: image.src, alt: image.alt || product.name }] : undefined,
+    },
+  };
+}
+
 export default async function ShopProductPage({ params }: ShopProductPageProps) {
   const { productId } = await params;
   const numericId = Number(productId);
@@ -276,8 +325,31 @@ export default async function ShopProductPage({ params }: ShopProductPageProps) 
   const image = product.images?.[0];
   const shortDescription = stripHtml(product.short_description);
   const longDescription = stripHtml(product.description);
-  const description = longDescription || shortDescription;
+  // The short description is what shoppers read; the longer one sits in a closed details panel.
+  const description = shortDescription || longDescription;
+  const detailLines = longDescription && longDescription !== shortDescription ? htmlToLines(product.description) : [];
   const price = formatProductPrice(product.prices);
+  const amount = priceAmount(product.prices);
+  const productStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: shortDescription || longDescription || undefined,
+    image: (product.images ?? []).map((candidate) => candidate.src).filter(Boolean),
+    sku: product.sku || undefined,
+    brand: { "@type": "Brand", name: "Celtic Worship" },
+    url: `https://celticworship.co.uk/shop/${product.id}`,
+    offers: amount
+      ? {
+          "@type": "Offer",
+          price: amount,
+          priceCurrency: product.prices?.currency_code || "GBP",
+          availability:
+            product.is_in_stock === false ? "https://schema.org/OutOfStock" : "https://schema.org/InStock",
+          url: `https://celticworship.co.uk/shop/${product.id}`,
+        }
+      : undefined,
+  };
 
   return (
     <div className="site-shell">
@@ -341,6 +413,22 @@ export default async function ShopProductPage({ params }: ShopProductPageProps) 
               </div>
             </article>
           )}
+
+          {detailLines.length > 0 ? (
+            <details className={styles.details}>
+              <summary className={styles.detailsSummary}>Product details</summary>
+              <div className={styles.detailsBody}>
+                {detailLines.map((line, index) => (
+                  <p key={index}>{line}</p>
+                ))}
+              </div>
+            </details>
+          ) : null}
+
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(productStructuredData).replace(/</g, "\\u003c") }}
+          />
 
           {recommendedProducts.length > 0 ? (
             <section className={styles.recommendations} aria-labelledby="recommended-products-heading">
