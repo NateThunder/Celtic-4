@@ -30,12 +30,16 @@ const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 async function storeGet(path: string, params: Record<string, string>): Promise<CatalogRecord[]> {
   const url = new URL(`/wp-json/wc/store/v1${path}`, WOO_BASE_URL);
   for (const [key, value] of Object.entries(params)) url.searchParams.set(key, value);
+  // SiteGround's server cache on cms.celticworship.co.uk keeps old copies of these
+  // WooCommerce responses (stale sizes and stock). A fresh value on every request
+  // means the cache can never answer with an old copy.
+  url.searchParams.set("_fresh", String(Date.now()));
 
   let failure = "unknown error";
   for (let attempt = 1; attempt <= ATTEMPTS; attempt += 1) {
     try {
       const response = await fetch(url, {
-        headers: WOO_REQUEST_HEADERS,
+        headers: { ...WOO_REQUEST_HEADERS, "Cache-Control": "no-cache" },
         cache: "no-store",
         signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
       });
