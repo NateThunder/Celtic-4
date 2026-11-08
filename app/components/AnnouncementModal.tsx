@@ -7,7 +7,8 @@ import { TITLE_PATHS } from "../lib/announcementTitlePaths";
 import styles from "./announcementModal.module.css";
 
 const OPEN_DELAY_MS = 1200;
-const HIDDEN_ON = ["/shop/checkout", "/admin", "/stem-player"];
+// Never over the shop: it covered Add to Cart and lost the shopper's first click.
+const HIDDEN_ON = ["/shop", "/merch", "/admin", "/stem-player"];
 const DUST_COUNT = 36;
 const MONTAGE_MS = 2600;
 const GLITCH_MS = 420;
