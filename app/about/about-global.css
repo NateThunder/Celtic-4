@@ -1,0 +1,8 @@
+/* This page lays its own ink canvas from the header to the footer, so the
+   site's 2.2 MB paper texture is never visible behind it, and should not be
+   fetched. Route-scoped: only /about imports this stylesheet. Kept out of
+   about.module.css because CSS modules may only hold local selectors. */
+html body {
+  background-image: none;
+  background-color: #070605;
+}

@@ -10,8 +10,8 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "build:siteground": "next build && node scripts/package-siteground.mjs",
+    "build": "next build --webpack",
+    "build:siteground": "next build --webpack && node scripts/package-siteground.mjs",
     "package:siteground": "node scripts/package-siteground.mjs",
     "start:siteground": "node .siteground/server.js",
     "start": "next start",

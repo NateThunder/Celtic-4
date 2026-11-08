@@ -9,14 +9,6 @@
   with reduced motion on the page renders fully visible and nothing animates.
 */
 
-/* This page lays its own ink canvas from the header to the footer, so the
-   site's 2.2 MB paper texture is never visible behind it — and should not be
-   fetched. Route-scoped: only /about links this stylesheet. */
-:global(html body) {
-  background-image: none;
-  background-color: #070605;
-}
-
 .page {
   --ink: #070605;
   --paper: #f2efe9;
