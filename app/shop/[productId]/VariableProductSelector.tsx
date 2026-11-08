@@ -105,6 +105,35 @@ function isColourAttribute(attribute: VariableProductAttribute): boolean {
   return label.includes("colour") || label.includes("color");
 }
 
+// Clothing sizes always show smallest to largest, whatever order they were
+// entered in WordPress. Unknown values keep their original order, after known sizes.
+const SIZE_ORDER = ["xxs", "xs", "s", "m", "l", "xl", "xxl", "2xl", "xxxl", "3xl", "4xl", "5xl"];
+
+function isSizeAttribute(attribute: VariableProductAttribute): boolean {
+  return `${attribute.name ?? ""} ${attribute.taxonomy ?? ""}`.toLowerCase().includes("size");
+}
+
+function sizeRank(term: VariableProductTerm): number {
+  const keys = [term.slug, term.name].map((value) => value?.trim().toLowerCase().replace(/[\s_-]+/g, "") ?? "");
+  const aliases: Record<string, string> = {
+    extrasmall: "xs", small: "s", medium: "m", large: "l", extralarge: "xl", xxlarge: "xxl",
+  };
+  for (const key of keys) {
+    const index = SIZE_ORDER.indexOf(aliases[key] ?? key);
+    if (index !== -1) return index;
+  }
+  return SIZE_ORDER.length;
+}
+
+function withSortedSizes(attribute: VariableProductAttribute): VariableProductAttribute {
+  if (!isSizeAttribute(attribute) || !attribute.terms) return attribute;
+  const terms = attribute.terms
+    .map((term, index) => ({ term, index }))
+    .sort((a, b) => sizeRank(a.term) - sizeRank(b.term) || a.index - b.index)
+    .map(({ term }) => term);
+  return { ...attribute, terms };
+}
+
 function getOptionValue(term: VariableProductTerm): string {
   return normalizeOptionValue(term.slug || term.name);
 }
@@ -250,7 +279,7 @@ export default function VariableProductSelector({
           getAttributeKey(attribute) &&
           Array.isArray(attribute.terms) &&
           attribute.terms.some((term) => getOptionValue(term)),
-      ),
+      ).map(withSortedSizes),
     [product.attributes],
   );
   const colourAttribute = useMemo(
