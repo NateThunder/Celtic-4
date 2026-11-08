@@ -4,6 +4,7 @@ import AboutBody from "./about-body";
 import { ABOUT_PHOTOS, MEMBERS } from "./about-data";
 import { ebGaramond } from "./about-fonts";
 import AboutHero from "./about-hero";
+import "./about-global.css";
 import styles from "./about.module.css";
 
 const SITE_URL = "https://www.celticworship.co.uk";
