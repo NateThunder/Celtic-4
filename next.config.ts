@@ -1,4 +1,16 @@
+import { execSync } from "node:child_process";
 import type { NextConfig } from "next";
+
+// The commit this build was made from. The secret shopper reads it from the
+// status page to prove it is testing the new version, not an old one still live
+// (SiteGround builds have failed silently before).
+function buildCommit(): string {
+  try {
+    return execSync("git rev-parse HEAD", { stdio: ["ignore", "pipe", "ignore"] }).toString().trim();
+  } catch {
+    return "unknown";
+  }
+}
 
 const wooUrl =
   process.env.NEXT_PUBLIC_WOO_URL || "https://cms.celticworship.co.uk";
@@ -28,6 +40,7 @@ try {
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  env: { BUILD_COMMIT: buildCommit() },
   // SiteGround stops any build after 5 minutes, and its compile step alone can
   // take most of that. The type check is run on every change before it is
   // pushed (npx tsc --noEmit), so it is skipped during the hosting build.
