@@ -155,6 +155,26 @@ function getVariationValue(
   return normalizeOptionValue(match?.value);
 }
 
+// WooCommerce only accepts the exact stored value when adding to the cart:
+// the term slug for global attributes (pa_size), and the exact name, with its
+// capital letters, for attributes typed into the product itself (Package:
+// "Complete"). The lowercased value used for matching here is rejected.
+function getCartOptionValue(
+  variation: VariableProductVariation,
+  attribute: VariableProductAttribute,
+  selectedValue: string,
+): string {
+  const targetNames = [attribute.name, attribute.taxonomy].map(normalizeAttributeName).filter(Boolean);
+  const exact = variation.attributes.find((variationAttribute) =>
+    targetNames.includes(normalizeAttributeName(variationAttribute.name)),
+  )?.value?.trim();
+  if (exact) return exact;
+
+  const term = attribute.terms?.find((candidate) => getOptionValue(candidate) === selectedValue);
+  const stored = attribute.taxonomy ? term?.slug : term?.name;
+  return stored?.trim() || selectedValue;
+}
+
 function variationMatchesSelection(
   variation: VariableProductVariation,
   attributes: VariableProductAttribute[],
@@ -401,7 +421,7 @@ export default function VariableProductSelector({
         permalink: product.permalink,
         variation: variableAttributes.map((attribute) => ({
           attribute: attribute.taxonomy || attribute.name || getAttributeKey(attribute),
-          value: selectedOptions[getAttributeKey(attribute)],
+          value: getCartOptionValue(selectedVariation, attribute, selectedOptions[getAttributeKey(attribute)]),
         })),
       }
     : undefined;
